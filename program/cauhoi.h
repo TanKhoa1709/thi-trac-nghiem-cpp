@@ -1,29 +1,35 @@
-#pragma once
-#include <string>
-#include <fstream>
-using namespace std;
+#ifndef CAUHOI_H
+#define CAUHOI_H
 
-struct CauHoi // cay nhi phan
-{
-  int id;
-  string noiDung;
-  string A, B, C, D;
-  char dapAn;
+#include "define.h"
 
-  CauHoi *left;
-  CauHoi *right;
-};
+// Hàm quản lý cây câu hỏi
+CauHoi* taoCauHoi(int id, const string& noiDung, const string& a, const string& b, 
+                  const string& c, const string& d, char dapAnDung);
+CauHoi* themCauHoi(CauHoi* goc, CauHoi* cauHoiMoi);
+CauHoi* timCauHoi(CauHoi* goc, int id);
+CauHoi* xoaCauHoi(CauHoi* goc, int id);
+CauHoi* timMin(CauHoi* goc);
+void huyBoCay(CauHoi* goc);
 
-CauHoi *themCauHoi(CauHoi *root, CauHoi *node);
-CauHoi *taoCauHoi(int id, const string &nd, const string &A, const string &B,
-                  const string &C, const string &D, char dapAn);
-CauHoi *timCauHoi(CauHoi *root, int id);
-void duyetNLR(CauHoi *root);
-void xuatCauHoi(const CauHoi *ch);
-void giaiPhongCauHoi(CauHoi *&root);
-int demSoLuongCauHoi(CauHoi *root);
-void layNgauNhienCauHoi(CauHoi *root, CauHoi **arr, int &index, int soLuong);
-bool cauHoiDaDuocDung(int id);
+// Hàm duyệt cây
+void duyetTruoc(CauHoi* goc);
+void duyetGiua(CauHoi* goc);
+void duyetSau(CauHoi* goc);
 
-void ghiFileCauHoi(ofstream &out, CauHoi *root);
-void docFileCauHoi(ifstream &in, CauHoi *&root);
+// Hàm hiển thị và xử lý câu hỏi
+void hienThiCauHoi(CauHoi* cauHoi);
+void nhapCauHoi(CauHoi*& goc);
+void suaCauHoi(CauHoi* goc);
+void hienThiTatCaCauHoi(CauHoi* goc);
+int demSoCauHoi(CauHoi* goc);
+
+// Hàm ngẫu nhiên câu hỏi
+void layCauHoiNgauNhien(CauHoi* goc, vector<CauHoi*>& dsNgauNhien, int soLuong);
+void layTatCaCauHoi(CauHoi* goc, vector<CauHoi*>& danhSach);
+
+// Hàm file
+void ghiCauHoiRaFile(CauHoi* goc, const string& tenFile);
+void docCauHoiTuFile(CauHoi*& goc, const string& tenFile);
+
+#endif

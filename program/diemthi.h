@@ -1,30 +1,33 @@
-#pragma once
-#include <string>
-#include <fstream>
-using namespace std;
+#ifndef DIEMTHI_H
+#define DIEMTHI_H
 
-struct BaiThiChiTiet // danh sach lien ket don
-{
-  int idCauHoi;
-  char luaChon;
-  BaiThiChiTiet *next;
-};
+#include "define.h"
 
-struct DiemThi // danh sach lien ket don
-{
-  string maMH;
-  float diem;
+// Hàm quản lý chi tiết bài thi
+ChiTietBaiThi* taoChiTietBaiThi(int idCauHoi, char dapAnChon, bool dung);
+void themChiTietBaiThi(ChiTietBaiThi*& danhSach, ChiTietBaiThi* chiTietMoi);
+void hienThiChiTietBaiThi(ChiTietBaiThi* danhSach);
+void xoaChiTietBaiThi(ChiTietBaiThi*& danhSach);
 
-  BaiThiChiTiet *chiTiet = nullptr; // tro den root cua BaiThiChiTiet
-  DiemThi *next;
-};
+// Hàm quản lý điểm thi
+DiemThi* taoDiemThi(const string& maMon, float diem, const string& ngayThi);
+void themDiemThi(DiemThi*& danhSach, DiemThi* diemMoi);
+DiemThi* timDiemThi(DiemThi* danhSach, const string& maMon);
+void hienThiDanhSachDiem(DiemThi* danhSach);
+void xoaDanhSachDiem(DiemThi*& danhSach);
 
-void themDiemThi(DiemThi *&head, const string &maMH, float diem);
-DiemThi *timDiemThi(DiemThi *head, const string &maMH);
-void themChiTiet(BaiThiChiTiet *&head, int idCauHoi, char luaChon);
-void xuatChiTietBaiThi(BaiThiChiTiet *head);
-void giaiPhongChiTiet(BaiThiChiTiet *&head);
-void giaiPhongDiemThi(DiemThi *&head);
+// Hàm tính điểm và xử lý bài thi
+float tinhDiem(ChiTietBaiThi* chiTiet);
+void luuKetQuaThi(SinhVien* sv, const string& maMon, ChiTietBaiThi* chiTiet);
+void xemChiTietBaiThi(SinhVien* sv, const string& maMon);
 
-void ghiFileDiemThi(ofstream &out, DiemThi *head);
-void docFileDiemThi(ifstream &in, DiemThi *&head);
+// Hàm báo cáo và thống kê
+void inBangDiemTheoLop(const string& maLop, const string& maMon);
+void inBangDiemTongKet(const string& maLop);
+void thongKeDiemTheoMon(const string& maMon);
+
+// Hàm file
+void ghiDiemRaFile(DiemThi* danhSach, const string& tenFile);
+void docDiemTuFile(DiemThi*& danhSach, const string& tenFile);
+
+#endif

@@ -1,26 +1,27 @@
-#pragma once
-#include "sinhvien.h"
+#ifndef LOP_H
+#define LOP_H
+
 #include "define.h"
-#include <fstream>
 
-struct Lop
-{
-  string maLop;
-  string tenLop;
-  SinhVien *dsSinhVien = nullptr; // tro den root cua SinhVien
-};
+// Hàm quản lý lớp
+void khoiTaoLop();
+int timLop(const string& maLop);
+void themLop(const string& maLop, const string& tenLop);
+void xoaLop(const string& maLop);
+void hienThiDanhSachLop();
+void nhapLop();
+void suaLop();
 
-struct DSLop // mang con tro
-{
-  int n = 0;
-  Lop *ds[MAX_LOP];
-};
+// Hàm file
+void ghiLopRaFile(const string& tenFile);
+void docLopTuFile(const string& tenFile);
 
-bool themLop(DSLop &ds, const string &maLop, const string &tenLop);
-int timLop(DSLop &ds, const string &maLop);
-void xuatDanhSachLop(const DSLop &ds);
-void xuatBangDiemTheoMon(DSLop &ds, const string &maMH);
-void giaiPhongDSLop(DSLop &ds);
+// Hàm hiển thị thông tin lớp
+void hienThiThongTinLop(const string& maLop);
+void hienThiSinhVienTheoLop(const string& maLop);
 
-void ghiFileDSLop(const DSLop &ds, const string &filename);
-void docFileDSLop(DSLop &ds, const string &filename);
+// Hàm tiện ích
+bool kiemTraLopRong(const string& maLop);
+int demSoSinhVienTrongLop(const string& maLop);
+
+#endif
