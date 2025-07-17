@@ -27,6 +27,6 @@ Chương trình quản lý và thực hiện thi trắc nghiệm cho sinh viên.
 - `diemthi.h` – Quản lý điểm thi và bài thi chi tiết.
 
 ## Biên dịch
-Sử dụng trình biên dịch C++ như `g++`:
+- Sử dụng trình biên dịch C++ như `g++`:
 `g++ main.cpp cauhoi.cpp monhoc.cpp sinhvien.cpp diemthi.cpp lop.cpp -o ThiTracNghiem `
-Sau đó chạy `./ThiTracNghiem`
+- Sau đó chạy `./ThiTracNghiem`
