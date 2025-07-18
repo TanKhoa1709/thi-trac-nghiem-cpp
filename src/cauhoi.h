@@ -4,8 +4,9 @@
 #include "define.h"
 
 // Hàm quản lý cây câu hỏi
-CauHoi* taoCauHoi(int id, const string& noiDung, const string& a, const string& b, 
-                  const string& c, const string& d, char dapAnDung);
+CauHoi* taoCauHoi(int id, const string& noiDung, const string& a,
+                  const string& b, const string& c, const string& d,
+                  char dapAnDung);
 CauHoi* themCauHoi(CauHoi* goc, CauHoi* cauHoiMoi);
 CauHoi* timCauHoi(CauHoi* goc, int id);
 CauHoi* xoaCauHoi(CauHoi* goc, int id);
