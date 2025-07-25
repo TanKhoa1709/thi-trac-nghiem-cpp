@@ -275,7 +275,7 @@ void layCauHoiNgauNhien(CauHoi* goc, vector<CauHoi*>& dsNgauNhien, int soLuong) 
     vector<CauHoi*> tatCaCauHoi;
     layTatCaCauHoi(goc, tatCaCauHoi);
     
-    if (tatCaCauHoi.size() <= soLuong) {
+    if (tatCaCauHoi.size() <= static_cast<size_t>(soLuong)) {
         dsNgauNhien = tatCaCauHoi;
         return;
     }

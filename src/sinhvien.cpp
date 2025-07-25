@@ -1,3 +1,5 @@
+#include <random>
+#include <algorithm>
 #include "sinhvien.h"
 #include "lop.h"
 #include "diemthi.h"
@@ -440,7 +442,6 @@ void capNhatThongTinSinhVien(SinhVien* sv) {
     if (sv == nullptr) return;
     
     string ho, ten, sdt, matKhau;
-    bool gioiTinh;
     
     cout << "Thông tin hiện tại:" << endl;
     cout << "Mã SV: " << sv->maSV << endl;
