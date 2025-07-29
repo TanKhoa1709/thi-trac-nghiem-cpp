@@ -1,32 +1,34 @@
-# Đề tài môn CTDL&GT: Thi Trắc Nghiệm
+# Exam Management System (CTDL&GT)
 
-## Mô tả
-Chương trình quản lý và thực hiện thi trắc nghiệm cho sinh viên. Gồm các chức năng nhập, lưu trữ và xử lý dữ liệu về lớp, sinh viên, môn học, câu hỏi thi và điểm số. Cho phép sinh viên đăng nhập và làm bài thi trắc nghiệm, đồng thời hỗ trợ giáo viên quản lý toàn bộ hệ thống.
+## Overview
+A Qt-based exam management system for multiple choice tests with student and teacher roles.
 
-## Cấu trúc dữ liệu
-- **Danh sách môn học**: Danh sách tuyến tính, mỗi môn học có con trỏ đến cây câu hỏi.
-- **Danh sách câu hỏi thi**: Cây nhị phân tìm kiếm, mỗi câu hỏi có ID duy nhất.
-- **Danh sách lớp**: Mảng con trỏ, mỗi phần tử trỏ đến danh sách liên kết sinh viên.
-- **Danh sách sinh viên**: Danh sách liên kết, mỗi sinh viên có danh sách điểm đã thi.
-- **Danh sách điểm thi**: Danh sách liên kết đơn, lưu điểm và bài thi chi tiết.
+## Core Features
+- **Authentication**: Student/Teacher login system
+- **Subject Management**: CRUD operations for subjects
+- **Question Management**: Binary search tree for questions
+- **Class Management**: Array-based class storage with linked student lists
+- **Student Management**: Linked list implementation
+- **Exam System**: Random question selection and scoring
+- **Score Tracking**: Detailed exam results and history
 
-## Chức năng chính
-- Đăng nhập với quyền sinh viên hoặc giáo viên.
-- Nhập/xuất lớp, sinh viên, môn học, câu hỏi thi.
-- Làm bài thi trắc nghiệm (ngẫu nhiên câu hỏi theo môn).
-- Xem lại chi tiết bài thi đã làm.
-- In bảng điểm của môn học theo lớp.
-- Lưu và đọc dữ liệu từ file.
+## Data Structures
+- **Subjects**: Linear list with BST for questions
+- **Questions**: Binary search tree by ID
+- **Classes**: Array of pointers to student lists
+- **Students**: Linked list with exam scores
+- **Scores**: Linked list with detailed results
 
-## File chính
-- `main.cpp` – Hàm main và menu chương trình.
-- `monhoc.h` – Khai báo & xử lý danh sách môn học.
-- `cauhoi.h` – Cấu trúc cây câu hỏi và thao tác câu hỏi.
-- `lop.h` – Khai báo mảng lớp và nhập/xuất lớp.
-- `sinhvien.h` – Danh sách sinh viên và chức năng xử lý.
-- `diemthi.h` – Quản lý điểm thi và bài thi chi tiết.
+## Build Requirements
+- Qt6 Widgets
+- Qt6 Core
+- Qt6 PrintSupport
+- C++17 compiler
 
-## Biên dịch
-- Sử dụng trình biên dịch C++ như `g++`:
-`g++ main.cpp cauhoi.cpp monhoc.cpp sinhvien.cpp diemthi.cpp lop.cpp -o ThiTracNghiem `
-- Sau đó chạy `./ThiTracNghiem`
+## Usage
+1. Login as teacher (full access) or student (exam only)
+2. Teachers can manage subjects, questions, classes, and students
+3. Students can take exams and view their results
+4. System supports file-based data persistence
+
+
