@@ -1,86 +1,36 @@
 #ifndef MONHOC_H
 #define MONHOC_H
 
-#include <QString>
-#include <QList>
-#include <memory>
+#include <string>
 
-// Forward declarations
-class CauHoi;
-class CayNhiPhan;
+// Forward declaration
+class QuanLyCauHoi;
 
 /**
- * @brief Môn học - Subject class
- * Quản lý danh sách tuyến tính các môn học, mỗi môn có con trỏ đến cây câu hỏi
+ * @brief Môn học - MAMH (C15), TENMH, con trỏ câu hỏi
  */
 class MonHoc {
 private:
-    QString maMon;          // Subject ID
-    QString tenMon;         // Subject name
-    int soTinChi;          // Credit hours
-    std::shared_ptr<CayNhiPhan> cayCauHoi;  // Binary tree of questions
+    char maMon[16];              // MAMH (C15)
+    std::string tenMon;          // TENMH
+    QuanLyCauHoi* quanLyCauHoi;      // con trỏ quản lý câu hỏi
 
 public:
     MonHoc();
-    MonHoc(const QString& ma, const QString& ten, int tinChi = 3);
+    MonHoc(const char* ma, const std::string& ten);
     ~MonHoc();
 
-    // Getters
-    QString getMaMon() const { return maMon; }
-    QString getTenMon() const { return tenMon; }
-    int getSoTinChi() const { return soTinChi; }
-    std::shared_ptr<CayNhiPhan> getCayCauHoi() const { return cayCauHoi; }
+    // Getters/Setters
+    const char* getMaMon() const { return maMon; }
+    std::string getTenMon() const { return tenMon; }
+    QuanLyCauHoi* getQuanLyCauHoi() const { return quanLyCauHoi; }
 
-    // Setters
-    void setMaMon(const QString& ma) { maMon = ma; }
-    void setTenMon(const QString& ten) { tenMon = ten; }
-    void setSoTinChi(int tinChi) { soTinChi = tinChi; }
-    void setCayCauHoi(std::shared_ptr<CayNhiPhan> cay) { cayCauHoi = cay; }
+    void setMaMon(const char* ma);
+    void setTenMon(const std::string& ten) { tenMon = ten; }
+    void setQuanLyCauHoi(QuanLyCauHoi* ql) { quanLyCauHoi = ql; }
 
-    // Operations
-    bool themCauHoi(const CauHoi& cauHoi);
-    bool xoaCauHoi(int idCauHoi);
-    CauHoi* timCauHoi(int idCauHoi);
-    QList<CauHoi> layDanhSachCauHoi() const;
-    QList<CauHoi> layNgauNhienCauHoi(int soLuong) const;
-
-    // File operations
-    bool luuVaoFile(const QString& tenFile) const;
-    bool docTuFile(const QString& tenFile);
-
-    // Operators
-    bool operator==(const MonHoc& other) const;
-    bool operator<(const MonHoc& other) const;
-};
-
-/**
- * @brief Quản lý danh sách môn học
- */
-class QuanLyMonHoc {
-private:
-    QList<MonHoc> danhSachMonHoc;
-
-public:
-    QuanLyMonHoc();
-    ~QuanLyMonHoc();
-
-    // CRUD operations
-    bool themMonHoc(const MonHoc& monHoc);
-    bool xoaMonHoc(const QString& maMon);
-    bool capNhatMonHoc(const QString& maMon, const MonHoc& monHocMoi);
-    MonHoc* timMonHoc(const QString& maMon);
-    
-    // List operations
-    QList<MonHoc> layDanhSachMonHoc() const { return danhSachMonHoc; }
-    int soLuongMonHoc() const { return danhSachMonHoc.size(); }
-    void xoaTatCa() { danhSachMonHoc.clear(); }
-
-    // File operations
-    bool luuVaoFile(const QString& tenFile) const;
-    bool docTuFile(const QString& tenFile);
-
-    // Validation
-    bool kiemTraMaMonTonTai(const QString& maMon) const;
+    // Basic operations
+    void inThongTinMonHoc() const;
 };
 
 #endif // MONHOC_H

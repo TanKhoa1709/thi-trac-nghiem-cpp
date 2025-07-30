@@ -1,34 +1,69 @@
-# Exam Management System (CTDL&GT)
+# Hệ Thống Quản Lý Thi Trắc Nghiệm (CTDL&GT)
 
-## Overview
-A Qt-based exam management system for multiple choice tests with student and teacher roles.
+## Tổng Quan
+Hệ thống quản lý thi trắc nghiệm toàn diện với phân quyền truy cập cho giáo viên và sinh viên.
 
-## Core Features
-- **Authentication**: Student/Teacher login system
-- **Subject Management**: CRUD operations for subjects
-- **Question Management**: Binary search tree for questions
-- **Class Management**: Array-based class storage with linked student lists
-- **Student Management**: Linked list implementation
-- **Exam System**: Random question selection and scoring
-- **Score Tracking**: Detailed exam results and history
+## Cấu Trúc Dữ Liệu
 
-## Data Structures
-- **Subjects**: Linear list with BST for questions
-- **Questions**: Binary search tree by ID
-- **Classes**: Array of pointers to student lists
-- **Students**: Linked list with exam scores
-- **Scores**: Linked list with detailed results
+### 1. Danh Sách Môn Học (Danh Sách Tuyến Tính)
+- **Cấu trúc**: `MAMH (C15)`, `TENMH`, `con trỏ câu hỏi`
+- **Mô tả**: Quản lý các môn học với con trỏ trỏ đến danh sách câu hỏi tương ứng
 
-## Build Requirements
-- Qt6 Widgets
-- Qt6 Core
-- Qt6 PrintSupport
-- C++17 compiler
+### 2. Danh Sách Câu Hỏi Thi (Cây Nhị Phân Tìm Kiếm)
+- **Khóa**: ID câu hỏi (duy nhất trong toàn hệ thống)
+- **Cấu trúc**: `Id`, `Nội dung`, `A`, `B`, `C`, `D`, `Đáp án`
+- **Mô tả**: Lưu trữ câu hỏi trắc nghiệm với 4 lựa chọn
 
-## Usage
-1. Login as teacher (full access) or student (exam only)
-2. Teachers can manage subjects, questions, classes, and students
-3. Students can take exams and view their results
-4. System supports file-based data persistence
+### 3. Danh Sách Lớp (Mảng Con Trỏ)
+- **Cấu trúc**: `MALOP`, `TENLOP`, `con trỏ sinh viên`
+- **Mô tả**: Quản lý các lớp học với con trỏ trỏ đến danh sách sinh viên
 
+### 4. Danh Sách Sinh Viên (Danh Sách Liên Kết)
+- **Cấu trúc**: `MASV`, `HO`, `TEN`, `PHAI`, `password`, `con trỏ điểm`
+- **Mô tả**: Thông tin sinh viên với con trỏ trỏ đến điểm thi
 
+### 5. Danh Sách Điểm Thi (Danh Sách Liên Kết Đơn)
+- **Cấu trúc**: `MAMH`, `Điểm`, `Chi Tiết Bài Thi`
+- **Mô tả**: Lưu trữ kết quả thi và chi tiết câu trả lời
+
+## Chức Năng Hệ Thống
+
+### Đăng Nhập
+- **Sinh viên**: Sử dụng MASV + mật khẩu
+- **Giáo viên**: Tài khoản "GV" + mật khẩu "GV" (toàn quyền)
+
+### Quản Lý Lớp Học
+- Nhập lớp mới
+- In danh sách lớp
+- Nhập sinh viên vào lớp (yêu cầu mã lớp trước)
+
+### Quản Lý Môn Học
+- Thêm/sửa/xóa môn học
+- Cập nhật thông tin môn học
+
+### Quản Lý Câu Hỏi
+- ID câu hỏi tự động tạo ngẫu nhiên
+- Thêm/sửa câu hỏi
+- Không cho phép xóa câu hỏi đã có trong bài thi
+
+### Hệ Thống Thi Trắc Nghiệm
+- **Thiết lập trước khi thi**: Chọn môn, số câu hỏi, thời gian thi
+- **Lấy câu hỏi ngẫu nhiên**: Tự động chọn câu hỏi từ ngân hàng đề
+- **Thi có giới hạn thời gian**: Tính năng đếm ngược thời gian
+
+### Báo Cáo và Thống Kê
+- **Chi tiết bài thi**: Xem câu trả lời chi tiết của sinh viên theo môn
+- **Bảng điểm lớp**: Điểm thi trắc nghiệm của cả lớp (hiển thị "Chưa thi" nếu chưa làm bài)
+
+## Yêu Cầu Kỹ Thuật
+- Lưu trữ dữ liệu vào file
+- Kiểm tra và xác thực dữ liệu
+- Thiết kế mở rộng cho các tính năng bổ sung
+- Quản lý bộ nhớ cho cấu trúc dữ liệu động
+
+## Quy Trình Sử Dụng
+1. Đăng nhập với tài khoản phù hợp
+2. Thiết lập lớp học và sinh viên (chỉ giáo viên)
+3. Cấu hình môn học và câu hỏi (chỉ giáo viên)
+4. Sinh viên làm bài thi với câu hỏi ngẫu nhiên
+5. Xem kết quả và tạo báo cáo
