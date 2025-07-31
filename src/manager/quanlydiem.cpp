@@ -1,120 +1,212 @@
 #include "manager/quanlydiem.h"
+#include <fstream>
+#include <sstream>
 #include <iostream>
-#include <iomanip>
 
-QuanLyDiem::QuanLyDiem() {}
-
-QuanLyDiem::~QuanLyDiem() {
-    // Clean up all DiemThi pointers
-    danhSachDiem.forEach([](DiemThi* const& dt) {
-        delete dt;
-    });
-    danhSachDiem.clear();
+// Constructor
+QuanLyDiem::QuanLyDiem(const std::string& maSinhVien) 
+    : maSinhVien(maSinhVien) {
+    loadFromFile();
 }
 
-bool QuanLyDiem::themDiem(DiemThi* diem) {
-    if (diem == nullptr) {
+// Destructor
+QuanLyDiem::~QuanLyDiem() {
+    saveToFile();
+    
+    // Clean up all score pointers
+    auto current = danhSachDiem.first();
+    while (current != nullptr) {
+        DiemThi* score = *current;
+        danhSachDiem.removeFirst();
+        delete score;
+        current = danhSachDiem.first();
+    }
+}
+
+// Get all scores as dynamic array
+DynamicArray<DiemThi*> QuanLyDiem::danhSach() {
+    DynamicArray<DiemThi*> result;
+    
+    for (int i = 0; i < danhSachDiem.size(); i++) {
+        DiemThi* score = danhSachDiem.get(i);
+        if (score) {
+            result.push_back(score);
+        }
+    }
+    
+    return result;
+}
+
+// Find score by subject code
+DiemThi* QuanLyDiem::tim(const std::string& maMonHoc) {
+    for (int i = 0; i < danhSachDiem.size(); i++) {
+        DiemThi* score = danhSachDiem.get(i);
+        if (score && score->getMaMonHoc() == maMonHoc) {
+            return score;
+        }
+    }
+    return nullptr; // Not found
+}
+
+// Add new score
+bool QuanLyDiem::them(DiemThi* diem) {
+    if (!diem || !diem->validate()) {
         return false;
     }
     
     // Check if score for this subject already exists
-    if (timDiem(diem->getMaMonHoc()) != nullptr) {
-        return false; // Score already exists for this subject
+    if (tim(diem->getMaMonHoc()) != nullptr) {
+        return false;
     }
     
     return danhSachDiem.add(diem);
 }
 
-bool QuanLyDiem::xoaDiem(const std::string& maMonHoc) {
-    DiemThi* found = timDiem(maMonHoc);
-    if (found == nullptr) {
+// Update existing score
+bool QuanLyDiem::sua(DiemThi* diem) {
+    if (!diem || !diem->validate()) {
         return false;
     }
     
-    bool removed = danhSachDiem.remove(found);
-    if (removed) {
-        delete found;
+    // Find existing score
+    DiemThi* existing = tim(diem->getMaMonHoc());
+    if (!existing) {
+        return false; // Score doesn't exist
     }
+    
+    // Update the existing score's data
+    existing->setDiem(diem->getDiem());
+    existing->setChiTietBaiThi(diem->getChiTietBaiThi());
+    
+    return true;
+}
+
+// Remove score by subject code
+bool QuanLyDiem::xoa(const std::string& maMonHoc) {
+    DiemThi* score = tim(maMonHoc);
+    if (!score) {
+        return false;
+    }
+    
+    bool removed = danhSachDiem.remove(score);
+    if (removed) {
+        delete score;
+    }
+    
     return removed;
 }
 
-DiemThi* QuanLyDiem::timDiem(const std::string& maMonHoc) {
-    // Manual search since we need to compare by maMonHoc
-    for (int i = 0; i < danhSachDiem.size(); i++) {
-        DiemThi** dtPtr = danhSachDiem.get(i);
-        if (dtPtr && *dtPtr && (*dtPtr)->getMaMonHoc() == maMonHoc) {
-            return *dtPtr;
-        }
-    }
-    return nullptr;
-}
-
-void QuanLyDiem::inDanhSachDiem() const {
-    if (danhSachDiem.isEmpty()) {
-        std::cout << "Danh sach diem trong!" << std::endl;
-        return;
-    }
-    
-    std::cout << "=== DANH SACH DIEM ===" << std::endl;
-    danhSachDiem.forEach([](DiemThi* const& dt) {
-        if (dt) {
-            dt->inDiem();
-        }
-    });
-    std::cout << "Tong so mon: " << danhSachDiem.size() << std::endl;
-}
-
-void QuanLyDiem::inBangDiem() const {
-    if (danhSachDiem.isEmpty()) {
-        std::cout << "Chua co diem thi!" << std::endl;
-        return;
-    }
-    
-    std::cout << "=== BANG DIEM ===" << std::endl;
-    std::cout << std::left << std::setw(15) << "Ma Mon Hoc" 
-              << std::setw(10) << "Diem" << std::endl;
-    std::cout << std::string(25, '-') << std::endl;
-    
-    danhSachDiem.forEach([](DiemThi* const& dt) {
-        if (dt) {
-            std::cout << std::left << std::setw(15) << dt->getMaMonHoc()
-                      << std::setw(10) << std::fixed << std::setprecision(2) 
-                      << dt->getDiem() << std::endl;
-        }
-    });
-}
-
-double QuanLyDiem::tinhDiemTrungBinh() const {
+// Calculate average score
+double QuanLyDiem::tinhDiemTrungBinh() {
     if (danhSachDiem.isEmpty()) {
         return 0.0;
     }
     
-    double tongDiem = 0.0;
-    danhSachDiem.forEach([&tongDiem](DiemThi* const& dt) {
-        if (dt) {
-            tongDiem += dt->getDiem();
-        }
-    });
+    double total = 0.0;
+    int count = 0;
     
-    return tongDiem / danhSachDiem.size();
-}
-
-int QuanLyDiem::demSoMonDau() const {
-    int count = 0;
-    danhSachDiem.forEach([&count](DiemThi* const& dt) {
-        if (dt && dt->getDiem() >= 5.0) {
+    for (int i = 0; i < danhSachDiem.size(); i++) {
+        DiemThi* score = danhSachDiem.get(i);
+        if (score) {
+            total += score->getDiem();
             count++;
         }
-    });
+    }
+    
+    return count > 0 ? total / count : 0.0;
+}
+
+// Count passing subjects (score >= 5.0)
+int QuanLyDiem::demSoMonDau() {
+    int count = 0;
+    
+    for (int i = 0; i < danhSachDiem.size(); i++) {
+        DiemThi* score = danhSachDiem.get(i);
+        if (score && score->getDiem() >= 5.0) {
+            count++;
+        }
+    }
+    
     return count;
 }
 
-int QuanLyDiem::demSoMonRot() const {
+// Count failing subjects (score < 5.0)
+int QuanLyDiem::demSoMonRot() {
     int count = 0;
-    danhSachDiem.forEach([&count](DiemThi* const& dt) {
-        if (dt && dt->getDiem() < 5.0) {
+    
+    for (int i = 0; i < danhSachDiem.size(); i++) {
+        DiemThi* score = danhSachDiem.get(i);
+        if (score && score->getDiem() < 5.0) {
             count++;
         }
-    });
+    }
+    
     return count;
+}
+
+// Count total examined subjects
+int QuanLyDiem::demSoMonDaThi() {
+    return danhSachDiem.size();
+}
+
+// Save to file
+void QuanLyDiem::saveToFile() {
+    std::string filename = "data/diemthi/diemthi_" + maSinhVien + ".txt";
+    std::ofstream file(filename);
+    
+    if (!file.is_open()) {
+        std::cerr << "Cannot open file for writing: " << filename << std::endl;
+        return;
+    }
+    
+    file << danhSachDiem.size() << std::endl;
+    
+    for (int i = 0; i < danhSachDiem.size(); i++) {
+        DiemThi* score = danhSachDiem.get(i);
+        if (score) {
+            file << score->getMaMonHoc() << "|"
+                 << score->getDiem() << "|"
+                 << score->getChiTietBaiThi() << std::endl;
+        }
+    }
+    
+    file.close();
+}
+
+// Load from file
+void QuanLyDiem::loadFromFile() {
+    std::string filename = "data/diemthi/diemthi_" + maSinhVien + ".txt";
+    std::ifstream file(filename);
+    
+    if (!file.is_open()) {
+        return; // File doesn't exist yet, that's okay
+    }
+    
+    int count;
+    file >> count;
+    file.ignore(); // Ignore newline after count
+    
+    for (int i = 0; i < count; i++) {
+        std::string line;
+        std::getline(file, line);
+        
+        std::stringstream ss(line);
+        std::string token;
+        std::vector<std::string> tokens;
+        
+        while (std::getline(ss, token, '|')) {
+            tokens.push_back(token);
+        }
+        
+        if (tokens.size() >= 2) {
+            std::string subjectCode = tokens[0];
+            double score = std::stod(tokens[1]);
+            std::string details = tokens.size() > 2 ? tokens[2] : "";
+            
+            DiemThi* examScore = new DiemThi(subjectCode, score, details);
+            danhSachDiem.add(examScore);
+        }
+    }
+    
+    file.close();
 }

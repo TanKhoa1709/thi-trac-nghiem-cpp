@@ -2,36 +2,37 @@
 #define QUANLYMONHOC_H
 
 #include <string>
-#include <vector>
 #include "../models/monhoc.h"
-#include "../utils/Array.h"
-
-// File name constant for subject data
-const std::string MONHOC_DATA_FILE = "data/subjects.txt";
+#include "../utils/DynamicArray.h"
 
 /**
  * @brief Quản lý môn học - Danh sách tuyến tính
+ * Quản lý tất cả các môn học trong hệ thống
  */
 class QuanLyMonHoc {
 private:
-    Array<MonHoc*> danhSachMonHoc;  // Danh sách tuyến tính
+    static const std::string DATA_FILE_PATH;           // "data/monhoc.txt"
+    DynamicArray<MonHoc*> danhSachMonHoc;              // Danh sách tuyến tính môn học
 
 public:
+    // Constructors & Destructor
     QuanLyMonHoc();
     ~QuanLyMonHoc();
 
-    // Basic CRUD
-    bool themMonHoc(const char* maMon, const std::string& tenMon);
-    bool xoaMonHoc(const char* maMon);
-    MonHoc* timMonHoc(const char* maMon);
+    // Basic CRUD operations
+    DynamicArray<MonHoc*> danhSach();
+    MonHoc* tim(const char* maMon);
+    bool them(MonHoc* monHoc);
+    bool sua(MonHoc* monHoc);
+    bool xoa(const char* maMon);
     
-    // Display
-    void inDanhSachMonHoc() const;
-    
-    // File I/O
-    void saveToFile() const;
+    // Data persistence data/monhoc.txt
+    void saveToFile();
     void loadFromFile();
-    int getSoLuongMonHoc() const;
+
+    // Utility methods
+    int size() { return danhSachMonHoc.getSize(); }
+    bool isEmpty() { return danhSachMonHoc.isEmpty(); }
 };
 
 #endif // QUANLYMONHOC_H

@@ -1,25 +1,44 @@
 #include "models/sinhvien.h"
-#include "models/diemthi.h"
-#include <iostream>
+#include "manager/quanlydiem.h"
 
-SinhVien::SinhVien() : maSinhVien(""), ho(""), ten(""), phai(true), password(""), danhSachDiem(nullptr) {}
+// Default constructor
+SinhVien::SinhVien() : maSinhVien(""), ho(""), ten(""), phai(true), 
+                       password(""), danhSachDiem(nullptr) {}
 
-SinhVien::SinhVien(const std::string& ma, const std::string& ho, const std::string& ten, 
-                   bool phai, const std::string& pass) 
-    : maSinhVien(ma), ho(ho), ten(ten), phai(phai), password(pass), danhSachDiem(nullptr) {}
+// Parameterized constructor
+SinhVien::SinhVien(const std::string& ma, const std::string& ho, 
+                   const std::string& ten, bool phai, const std::string& pass)
+    : maSinhVien(ma), ho(ho), ten(ten), phai(phai), password(pass) {
+    danhSachDiem = new QuanLyDiem(ma);
+}
 
+// Destructor
 SinhVien::~SinhVien() {
-    // danhSachDiem is managed by QuanLyDiem, not directly by SinhVien
-    // No cleanup needed here as it's just a pointer to the head of the list
+    delete danhSachDiem;
+    danhSachDiem = nullptr;
 }
 
-bool SinhVien::xacThucMatKhau(const std::string& matKhau) const {
-    return password == matKhau;
-}
-
-void SinhVien::inThongTin() const {
-    std::cout << "MASV: " << maSinhVien 
-              << " | Ho: " << ho 
-              << " | Ten: " << ten 
-              << " | Phai: " << (phai ? "Nam" : "Nu") << std::endl;
+// Validate student data
+bool SinhVien::validate() const {
+    // Check if student ID is not empty
+    if (maSinhVien.empty()) {
+        return false;
+    }
+    
+    // Check if last name is not empty
+    if (ho.empty()) {
+        return false;
+    }
+    
+    // Check if first name is not empty
+    if (ten.empty()) {
+        return false;
+    }
+    
+    // Check if password is not empty
+    if (password.empty()) {
+        return false;
+    }
+    
+    return true;
 }

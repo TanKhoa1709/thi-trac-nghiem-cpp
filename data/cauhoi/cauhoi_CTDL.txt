@@ -1,0 +1,3 @@
+2
+562176|Cấu trúc dữ liệu nào có tính chất LIFO?|Stack|Queue|Tree|Graph|A
+562176|Thuật toán sắp xếp nào có độ phức tạp O(n²)?|Merge Sort|Quick Sort|Bubble Sort|Heap Sort|C

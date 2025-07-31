@@ -1,154 +1,219 @@
-#include <iostream>
-#include <random>
-#include <ctime>
-#include <algorithm>
-#include <fstream>
-#include <vector>
 #include "manager/quanlycauhoi.h"
+#include <random>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <iostream>
 
-QuanLyCauHoi::QuanLyCauHoi() {
-    // Seed random number generator
-    std::srand(std::time(nullptr));
+// Constructor
+QuanLyCauHoi::QuanLyCauHoi(const char* maMon) {
+    std::strncpy(this->maMon, maMon, 15);
+    this->maMon[15] = '\0';
+    
+    // Set up comparison function for BST (compare by question ID)
+    cayQuanLyCauHoi = BinarySearchTree<CauHoi*>();
+    
+    loadFromFile();
 }
 
-QuanLyCauHoi::~QuanLyCauHoi() {}
-
-bool QuanLyCauHoi::themCauHoi(const CauHoi& cauHoi) {
-    bool result = cayQuanLyCauHoi.insert(cauHoi);
+// Destructor
+QuanLyCauHoi::~QuanLyCauHoi() {
+    saveToFile();
     
-    if (result) {
-        std::cout << "Cau hoi da duoc them vao BST thanh cong!" << std::endl;
+    // Clean up all question pointers
+    auto allQuestions = cayQuanLyCauHoi.inOrder();
+    for (CauHoi* question : allQuestions) {
+        delete question;
+    }
+    cayQuanLyCauHoi.clear();
+}
+
+// Get all questions as dynamic array
+DynamicArray<CauHoi*> QuanLyCauHoi::danhSach() {
+    DynamicArray<CauHoi*> result;
+    auto questions = cayQuanLyCauHoi.inOrder();
+    
+    for (CauHoi* question : questions) {
+        result.push_back(question);
     }
     
     return result;
 }
 
-bool QuanLyCauHoi::xoaCauHoi(int maCauHoi) {
-    CauHoi temp;
-    temp.setMaCauHoi(maCauHoi);
-    return cayQuanLyCauHoi.remove(temp);
+// Find question by ID
+CauHoi* QuanLyCauHoi::tim(int maCauHoi) {
+    for (CauHoi* question : cayQuanLyCauHoi.inOrder()) {
+        if (question->getMaCauHoi() == maCauHoi) {
+            return question;
+        }
+    }
+
+    return nullptr; // Not found
 }
 
-CauHoi* QuanLyCauHoi::timCauHoi(int maCauHoi) {
-    CauHoi temp;
-    temp.setMaCauHoi(maCauHoi);
-    return cayQuanLyCauHoi.search(temp);
+// Add new question
+bool QuanLyCauHoi::them(CauHoi* cauHoi) {
+    if (!cauHoi || !cauHoi->validate()) {
+        return false;
+    }
+    
+    // Check if question ID already exists
+    if (tim(cauHoi->getMaCauHoi()) != nullptr) {
+        return false;
+    }
+    
+    return cayQuanLyCauHoi.insert(cauHoi);
 }
 
+// Update existing question
+bool QuanLyCauHoi::sua(CauHoi* cauHoi) {
+    if (!cauHoi || !cauHoi->validate()) {
+        return false;
+    }
+    
+    // Find existing question
+    CauHoi* existing = tim(cauHoi->getMaCauHoi());
+    if (!existing) {
+        return false; // Question doesn't exist
+    }
+    
+    // Update the existing question's data
+    existing->setNoiDung(cauHoi->getNoiDung());
+    existing->setLuaChonA(cauHoi->getLuaChonA());
+    existing->setLuaChonB(cauHoi->getLuaChonB());
+    existing->setLuaChonC(cauHoi->getLuaChonC());
+    existing->setLuaChonD(cauHoi->getLuaChonD());
+    existing->setDapAnDung(cauHoi->getDapAnDung());
+    
+    return true;
+}
+
+// Remove question by ID
+bool QuanLyCauHoi::xoa(int maCauHoi) {
+    CauHoi* question = tim(maCauHoi);
+    if (!question) {
+        return false;
+    }
+    
+    // TODO: Check if question is used in any exam
+    if (kiemTraCauHoiDaSuDung(maCauHoi)) {
+        return false;
+    }
+    
+    bool removed = cayQuanLyCauHoi.remove(question);
+    if (removed) {
+        delete question;
+    }
+    
+    return removed;
+}
+
+// Generate random unique question ID
 int QuanLyCauHoi::taoMaCauHoiNgauNhien() {
-    int maCauHoi;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(1000, 999999);
+    
+    int newId;
     do {
-        maCauHoi = std::rand() % 100000 + 1; // Random ID from 1 to 100000
-    } while (timCauHoi(maCauHoi) != nullptr); // Ensure uniqueness
+        newId = dis(gen);
+    } while (tim(newId) != nullptr);
     
-    return maCauHoi;
+    return newId;
 }
 
-void QuanLyCauHoi::layNgauNhienCauHoi(int soLuong) {
-    if (cayQuanLyCauHoi.isEmpty()) {
-        std::cout << "Khong co cau hoi nao!" << std::endl;
-        return;
+// Get random questions
+DynamicArray<CauHoi*> QuanLyCauHoi::layNgauNhien(int soLuong) {
+    DynamicArray<CauHoi*> result;
+    auto allQuestions = cayQuanLyCauHoi.inOrder();
+    
+    if (soLuong >= static_cast<int>(allQuestions.size())) {
+        // Return all questions if requested more than available
+        for (CauHoi* question : allQuestions) {
+            result.push_back(question);
+        }
+        return result;
     }
     
-    std::vector<CauHoi> tatCaCauHoi = cayQuanLyCauHoi.inOrder();
+    // Shuffle and take first soLuong questions
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(allQuestions.begin(), allQuestions.end(), gen);
     
-    if (soLuong > static_cast<int>(tatCaCauHoi.size())) {
-        std::cout << "Khong du cau hoi! Chi co " << tatCaCauHoi.size() << " cau hoi." << std::endl;
-        soLuong = tatCaCauHoi.size();
-    }
-    
-    // Shuffle and select random questions
-    std::random_shuffle(tatCaCauHoi.begin(), tatCaCauHoi.end());
-    
-    std::cout << "=== " << soLuong << " CAU HOI NGAU NHIEN ===" << std::endl;
     for (int i = 0; i < soLuong; i++) {
-        std::cout << "\n--- Cau " << (i + 1) << " ---" << std::endl;
-        tatCaCauHoi[i].inCauHoi();
+        result.push_back(allQuestions[i]);
     }
+    
+    return result;
 }
 
-void QuanLyCauHoi::inTatCaCauHoi() const {
-    if (cayQuanLyCauHoi.isEmpty()) {
-        std::cout << "Khong co cau hoi nao!" << std::endl;
+// Save to file
+void QuanLyCauHoi::saveToFile() {
+    std::string filename = "data/cauhoi/cauhoi_" + std::string(maMon) + ".txt";
+    std::ofstream file(filename);
+    
+    if (!file.is_open()) {
+        std::cerr << "Cannot open file for writing: " << filename << std::endl;
         return;
     }
     
-    std::vector<CauHoi> tatCaCauHoi = cayQuanLyCauHoi.inOrder();
+    auto questions = cayQuanLyCauHoi.inOrder();
+    file << questions.size() << std::endl;
     
-    std::cout << "=== TAT CA CAU HOI ===" << std::endl;
-    for (size_t i = 0; i < tatCaCauHoi.size(); i++) {
-        std::cout << "\n--- Cau " << (i + 1) << " ---" << std::endl;
-        tatCaCauHoi[i].inCauHoi();
-    }
-    std::cout << "\nTong so cau hoi: " << cayQuanLyCauHoi.size() << std::endl;
-}
-
-bool QuanLyCauHoi::xoaCauHoiAnToan(int maCauHoi) {
-    // TODO: Check if question is used in any exam before deleting
-    // For now, just delete normally
-    std::cout << "Canh bao: Kiem tra xem cau hoi co dang duoc su dung trong bai thi khong!" << std::endl;
-    return xoaCauHoi(maCauHoi);
-}
-
-void QuanLyCauHoi::saveToFile(const std::string& filename) const {
-    std::ofstream file(filename);
-    if (!file.is_open()) return;
-    
-    std::vector<CauHoi> allQuestions = cayQuanLyCauHoi.inOrder();
-    file << allQuestions.size() << std::endl;
-    
-    for (const auto& ch : allQuestions) {
-        file << ch.getMaCauHoi() << "|"
-             << ch.getNoiDung() << "|"
-             << ch.getLuaChonA() << "|"
-             << ch.getLuaChonB() << "|"
-             << ch.getLuaChonC() << "|"
-             << ch.getLuaChonD() << "|"
-             << ch.getDapAnDung() << std::endl;
+    for (CauHoi* question : questions) {
+        file << question->getMaCauHoi() << "|"
+             << question->getNoiDung() << "|"
+             << question->getLuaChonA() << "|"
+             << question->getLuaChonB() << "|"
+             << question->getLuaChonC() << "|"
+             << question->getLuaChonD() << "|"
+             << question->getDapAnDung() << std::endl;
     }
     
     file.close();
 }
 
-void QuanLyCauHoi::loadFromFile(const std::string& filename) {
+// Load from file
+void QuanLyCauHoi::loadFromFile() {
+    std::string filename = "data/cauhoi/cauhoi_" + std::string(maMon) + ".txt";
     std::ifstream file(filename);
-    if (!file.is_open()) return;
+    
+    if (!file.is_open()) {
+        return; // File doesn't exist yet, that's okay
+    }
     
     int count;
     file >> count;
-    file.ignore();
+    file.ignore(); // Ignore newline after count
     
     for (int i = 0; i < count; i++) {
         std::string line;
         std::getline(file, line);
         
-        // Parse the line with multiple delimiters
-        std::vector<std::string> parts;
-        std::string current = "";
+        std::stringstream ss(line);
+        std::string token;
+        std::vector<std::string> tokens;
         
-        for (char c : line) {
-            if (c == '|') {
-                parts.push_back(current);
-                current = "";
-            } else {
-                current += c;
-            }
+        while (std::getline(ss, token, '|')) {
+            tokens.push_back(token);
         }
-        parts.push_back(current); // Add the last part
         
-        if (parts.size() >= 7) {
-            int maCauHoi = std::stoi(parts[0]);
-            std::string noiDung = parts[1];
-            std::string luaChonA = parts[2];
-            std::string luaChonB = parts[3];
-            std::string luaChonC = parts[4];
-            std::string luaChonD = parts[5];
-            char dapAn = parts[6][0];
+        if (tokens.size() == 7) {
+            int id = std::stoi(tokens[0]);
+            char answer = tokens[6].empty() ? 'A' : tokens[6][0];
             
-            CauHoi ch(maCauHoi, noiDung, luaChonA, luaChonB, luaChonC, luaChonD, dapAn);
-            themCauHoi(ch);
+            CauHoi* question = new CauHoi(id, tokens[1], tokens[2], 
+                                         tokens[3], tokens[4], tokens[5], answer);
+            cayQuanLyCauHoi.insert(question);
         }
     }
     
     file.close();
+}
+
+// Check if question is used in exams (placeholder implementation)
+bool QuanLyCauHoi::kiemTraCauHoiDaSuDung(int maCauHoi) {
+    // TODO: Implement check against exam records
+    // For now, return false to allow deletion
+    return false;
 }

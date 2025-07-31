@@ -1,132 +1,140 @@
 #include "manager/quanlylop.h"
-#include "manager/quanlysinhvien.h"
-#include "models/sinhvien.h"
-// #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <iostream>
 
-QuanLyLop::QuanLyLop() {}
-
-QuanLyLop::~QuanLyLop() {
-    // Clean up all Lop pointers
-    for (int i = 0; i < danhSachLop.size(); i++) {
-        delete danhSachLop[i];
-    }
+// Constructor
+QuanLyLop::QuanLyLop() {
+    loadFromFile();
 }
 
-bool QuanLyLop::themLop(const std::string& maLop, const std::string& tenLop) {
-    // Check if class already exists
-    if (timLop(maLop) != nullptr) {
-        return false; // Class already exists
+// Destructor
+QuanLyLop::~QuanLyLop() {
+    saveToFile();
+    
+    // Clean up all class pointers
+    for (size_t i = 0; i < danhSachLop.getSize(); i++) {
+        delete danhSachLop.get(i);
+    }
+    danhSachLop.clear();
+}
+
+// Get all classes as dynamic array
+DynamicArray<Lop*> QuanLyLop::danhSach() {
+    DynamicArray<Lop*> result;
+    
+    for (size_t i = 0; i < danhSachLop.getSize(); i++) {
+        result.push_back(danhSachLop.get(i));
     }
     
-    Lop* lopMoi = new Lop(maLop, tenLop);
-    danhSachLop.add(lopMoi);
+    return result;
+}
 
-    // Auto-save class data to file
-    saveToFile();
-    // Removed: std::cout << "Du lieu lop da duoc luu vao file ..."
+// Find class by code
+Lop* QuanLyLop::tim(const std::string& maLop) {
+    for (size_t i = 0; i < danhSachLop.getSize(); i++) {
+        if (danhSachLop.get(i)->getMaLop() == maLop) {
+            return danhSachLop.get(i);
+        }
+    }
+    return nullptr;
+}
+
+// Add new class
+bool QuanLyLop::them(Lop* lop) {
+    if (!lop || !lop->validate()) {
+        return false;
+    }
+    
+    // Check if class code already exists
+    if (tim(lop->getMaLop()) != nullptr) {
+        return false;
+    }
+    
+    danhSachLop.push_back(lop);
+    return true;
+}
+
+// Update existing class
+bool QuanLyLop::sua(Lop* lop) {
+    if (!lop || !lop->validate()) {
+        return false;
+    }
+    
+    // Find existing class
+    Lop* existing = tim(lop->getMaLop());
+    if (!existing) {
+        return false; // Class doesn't exist
+    }
+    
+    // Update the existing class's data (only name can be updated, not the code)
+    existing->setTenLop(lop->getTenLop());
     
     return true;
 }
 
-bool QuanLyLop::xoaLop(const std::string& maLop) {
-    for (int i = 0; i < danhSachLop.size(); i++) {
-        if (danhSachLop[i] && danhSachLop[i]->getMaLop() == maLop) {
-            delete danhSachLop[i];
-            danhSachLop.removeAt(i);
+// Remove class by code
+bool QuanLyLop::xoa(const std::string& maLop) {
+    for (size_t i = 0; i < danhSachLop.getSize(); i++) {
+        if (danhSachLop.get(i)->getMaLop() == maLop) {
+            Lop* classToDelete = danhSachLop.get(i);
+            
+            // Shift elements to remove the class
+            for (size_t j = i; j < danhSachLop.getSize() - 1; j++) {
+                danhSachLop.set(j, danhSachLop.get(j + 1));
+            }
+            danhSachLop.pop_back();
+            
+            delete classToDelete;
             return true;
         }
     }
     return false;
 }
 
-Lop* QuanLyLop::timLop(const std::string& maLop) {
-    for (int i = 0; i < danhSachLop.size(); i++) {
-        if (danhSachLop[i] && danhSachLop[i]->getMaLop() == maLop) {
-            return danhSachLop[i];
-        }
-    }
-    return nullptr;
-}
-
-void QuanLyLop::inDanhSachLop() const {
-    if (danhSachLop.isEmpty()) {
-        // Removed: std::cout << "Danh sach lop trong!" << std::endl;
-        return;
-    }
+// Save to file
+void QuanLyLop::saveToFile() {
+    std::ofstream file("data/lop.txt");
     
-    // Removed: std::cout << "=== DANH SACH LOP ===" << std::endl;
-    for (int i = 0; i < danhSachLop.size(); i++) {
-        if (danhSachLop[i]) {
-            danhSachLop[i]->inThongTinLop();
-        }
-    }
-    // Removed: std::cout << "Tong so lop: ..."
-}
-
-void QuanLyLop::saveToFile() const {
-    std::ofstream file(LOP_DATA_FILE);
     if (!file.is_open()) {
-        // Removed: std::cerr << "Khong the mo file ... de ghi!"
+        std::cerr << "Cannot open file for writing: " << "data/lop.txt" << std::endl;
         return;
     }
     
-    file << danhSachLop.size() << std::endl;
+    file << danhSachLop.getSize() << std::endl;
     
-    for (int i = 0; i < danhSachLop.size(); i++) {
-        if (danhSachLop[i]) {
-            file << danhSachLop[i]->getMaLop() << "|" 
-                 << danhSachLop[i]->getTenLop() << std::endl;
-            
-            // Save students in this class to separate file
-            if (danhSachLop[i]->getQuanLySinhVien()) {
-                std::string studentFile = "data/students/" + danhSachLop[i]->getMaLop() + "_students.txt";
-                danhSachLop[i]->getQuanLySinhVien()->saveToFile(studentFile);
-            }
-        }
+    for (size_t i = 0; i < danhSachLop.getSize(); i++) {
+        Lop* lop = danhSachLop.get(i);
+        file << lop->getMaLop() << "|" << lop->getTenLop() << std::endl;
     }
     
     file.close();
 }
 
+// Load from file
 void QuanLyLop::loadFromFile() {
-    std::ifstream file(LOP_DATA_FILE);
+    std::ifstream file("data/lop.txt");
+    
     if (!file.is_open()) {
-        // Removed: std::cerr << "Khong the mo file ... de doc!"
-        return;
+        return; // File doesn't exist yet, that's okay
     }
     
     int count;
     file >> count;
-    file.ignore();
+    file.ignore(); // Ignore newline after count
     
     for (int i = 0; i < count; i++) {
         std::string line;
         std::getline(file, line);
         
-        size_t pos = line.find('|');
-        if (pos != std::string::npos) {
-            std::string maLop = line.substr(0, pos);
-            std::string tenLop = line.substr(pos + 1);
-            
-            themLop(maLop, tenLop);
-            
-            // Load students for this class
-            Lop* lop = timLop(maLop);
-            if (lop && lop->getQuanLySinhVien()) {
-                #ifdef _WIN32
-                    std::string studentFile = "data\\students\\" + maLop + "_students.txt";
-                #else
-                    std::string studentFile = "data/students/" + maLop + "_students.txt";
-                #endif
-                lop->getQuanLySinhVien()->loadFromFile(studentFile);
-            }
+        std::stringstream ss(line);
+        std::string maLop, tenLop;
+        
+        if (std::getline(ss, maLop, '|') && std::getline(ss, tenLop)) {
+            Lop* lop = new Lop(maLop, tenLop);
+            danhSachLop.push_back(lop);
         }
     }
     
     file.close();
-}
-
-int QuanLyLop::getSoLuongLop() const {
-    return danhSachLop.size();
 }

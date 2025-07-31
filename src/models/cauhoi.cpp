@@ -1,25 +1,44 @@
 #include "models/cauhoi.h"
-#include <iostream>
+#include <cctype>
 
+// Default constructor
 CauHoi::CauHoi() : maCauHoi(0), noiDung(""), luaChonA(""), luaChonB(""), 
                    luaChonC(""), luaChonD(""), dapAnDung('A') {}
 
-CauHoi::CauHoi(int ma, const std::string& noiDung, const std::string& a, const std::string& b,
-               const std::string& c, const std::string& d, char dapAn)
+// Parameterized constructor
+CauHoi::CauHoi(int ma, const std::string& noiDung, const std::string& a, 
+               const std::string& b, const std::string& c, const std::string& d, 
+               char dapAn) 
     : maCauHoi(ma), noiDung(noiDung), luaChonA(a), luaChonB(b), 
-      luaChonC(c), luaChonD(d), dapAnDung(dapAn) {}
+      luaChonC(c), luaChonD(d), dapAnDung(std::toupper(dapAn)) {}
 
-CauHoi::~CauHoi() {}
-
-void CauHoi::inCauHoi() const {
-    std::cout << "Cau " << maCauHoi << ": " << noiDung << std::endl;
-    std::cout << "A. " << luaChonA << std::endl;
-    std::cout << "B. " << luaChonB << std::endl;
-    std::cout << "C. " << luaChonC << std::endl;
-    std::cout << "D. " << luaChonD << std::endl;
-    std::cout << "Dap an dung: " << dapAnDung << std::endl;
+// Validate question data
+bool CauHoi::validate() const {
+    // Check if ID is positive
+    if (maCauHoi <= 0) {
+        return false;
+    }
+    
+    // Check if content is not empty
+    if (noiDung.empty()) {
+        return false;
+    }
+    
+    // Check if all choices are not empty
+    if (luaChonA.empty() || luaChonB.empty() || luaChonC.empty() || luaChonD.empty()) {
+        return false;
+    }
+    
+    // Check if answer is valid (A, B, C, or D)
+    char upperAnswer = std::toupper(dapAnDung);
+    if (upperAnswer != 'A' && upperAnswer != 'B' && upperAnswer != 'C' && upperAnswer != 'D') {
+        return false;
+    }
+    
+    return true;
 }
 
+// Check if the chosen answer is correct
 bool CauHoi::kiemTraDapAn(char dapAnChon) const {
-    return (dapAnChon == dapAnDung);
+    return std::toupper(dapAnChon) == std::toupper(dapAnDung);
 }

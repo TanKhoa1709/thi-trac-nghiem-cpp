@@ -172,11 +172,6 @@ public:
         TreeNode<T>* node = searchNode(root, value);
         return node ? &(node->data) : nullptr;
     }
-
-    const T* search(const T& value) const {
-        TreeNode<T>* node = const_cast<BinarySearchTree<T>*>(this)->searchNode(root, value);
-        return node ? &(node->data) : nullptr;
-    }
     
     // Properties
     int size() const { return nodeCount; }

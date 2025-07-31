@@ -4,42 +4,36 @@
 #include <string>
 #include "../models/sinhvien.h"
 #include "../utils/LinkedList.h"
-
-// File name constant for student data
-const std::string SINHVIEN_DATA_FILE = "data/sinhvien.txt";
+#include "../utils/DynamicArray.h"
 
 /**
  * @brief Quản lý sinh viên - Danh sách liên kết
+ * Quản lý danh sách sinh viên trong một lớp học
  */
 class QuanLySinhVien {
 private:
-    LinkedList<SinhVien*> danhSachSinhVien;  // Danh sách liên kết sinh viên
+    std::string maLop;                                 // Mã lớp học
+    LinkedList<SinhVien*> danhSachSinhVien;            // Danh sách liên kết sinh viên
 
 public:
-    QuanLySinhVien();
+    // Constructors & Destructor
+    explicit QuanLySinhVien(const std::string& maLop);
     ~QuanLySinhVien();
 
-    // Basic CRUD
-    bool themSinhVien(SinhVien* sinhVien);
-    bool xoaSinhVien(const std::string& maSinhVien);
-    SinhVien* timSinhVien(const std::string& maSinhVien);
+    // Basic CRUD operations
+    DynamicArray<SinhVien*> danhSach();
+    SinhVien* tim(const std::string& maSinhVien);
+    bool them(SinhVien* sinhVien);
+    bool sua(SinhVien* sinhVien);
+    bool xoa(const std::string& maSinhVien);
     
-    // Authentication
-    SinhVien* dangNhap(const std::string& maSinhVien, const std::string& matKhau);
-    
-    // Display
-    void inDanhSachSinhVien() const;
-    
-    // Additional utility methods
-    int getSoLuongSinhVien() const { return danhSachSinhVien.size(); }
-    bool isEmpty() const { return danhSachSinhVien.isEmpty(); }
-    
-    // File I/O
-    void saveToFile() const;
+    // Data persistence data/sinhvien/sinhvien_<maLop>.txt
+    void saveToFile();
     void loadFromFile();
-    
-    // Iterator support for file operations
-    void forEach(std::function<void(SinhVien*)> callback) const;
+
+    // Utility methods
+    int size() { return danhSachSinhVien.size(); }
+    bool isEmpty() { return danhSachSinhVien.isEmpty(); }
 };
 
 #endif // QUANLYSINHVIEN_H

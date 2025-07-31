@@ -1,33 +1,46 @@
 #include "models/monhoc.h"
 #include "manager/quanlycauhoi.h"
-#include <iostream>
 #include <cstring>
 
+// Default constructor
 MonHoc::MonHoc() : tenMon(""), quanLyCauHoi(nullptr) {
-    maMon[0] = '\0';
+    std::memset(maMon, 0, sizeof(maMon));
 }
 
+// Parameterized constructor
 MonHoc::MonHoc(const char* ma, const std::string& ten) 
-    : tenMon(ten), quanLyCauHoi(new QuanLyCauHoi()) {
+    : tenMon(ten) {
     setMaMon(ma);
+    quanLyCauHoi = new QuanLyCauHoi(ma);
 }
 
+// Destructor
 MonHoc::~MonHoc() {
     delete quanLyCauHoi;
+    quanLyCauHoi = nullptr;
 }
 
+// Set subject code with validation
 void MonHoc::setMaMon(const char* ma) {
     if (ma != nullptr) {
-        strncpy(maMon, ma, 15);
+        std::strncpy(maMon, ma, 15);
         maMon[15] = '\0'; // Ensure null termination
+    } else {
+        std::memset(maMon, 0, sizeof(maMon));
     }
 }
 
-void MonHoc::inThongTinMonHoc() const {
-    std::cout << "Ma Mon: " << maMon 
-              << " | Ten Mon: " << tenMon;
-    if (quanLyCauHoi) {
-        std::cout << " | So cau hoi: " << quanLyCauHoi->getSoLuongCauHoi();
+// Validate subject data
+bool MonHoc::validate() const {
+    // Check if subject code is not empty
+    if (std::strlen(maMon) == 0) {
+        return false;
     }
-    std::cout << std::endl;
+    
+    // Check if subject name is not empty
+    if (tenMon.empty()) {
+        return false;
+    }
+    
+    return true;
 }

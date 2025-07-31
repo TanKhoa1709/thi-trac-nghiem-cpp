@@ -1,21 +1,32 @@
 #include "models/lop.h"
 #include "manager/quanlysinhvien.h"
-#include <iostream>
 
+// Default constructor
 Lop::Lop() : maLop(""), tenLop(""), quanLySinhVien(nullptr) {}
 
+// Parameterized constructor
 Lop::Lop(const std::string& ma, const std::string& ten) 
-    : maLop(ma), tenLop(ten), quanLySinhVien(new QuanLySinhVien()) {}
-
-Lop::~Lop() {
-    delete quanLySinhVien;
+    : maLop(ma), tenLop(ten) {
+    quanLySinhVien = new QuanLySinhVien(ma);
 }
 
-void Lop::inThongTinLop() const {
-    std::cout << "Ma Lop: " << maLop 
-              << " | Ten Lop: " << tenLop;
-    if (quanLySinhVien) {
-        std::cout << " | So sinh vien: " << quanLySinhVien->getSoLuongSinhVien();
+// Destructor
+Lop::~Lop() {
+    delete quanLySinhVien;
+    quanLySinhVien = nullptr;
+}
+
+// Validate class data
+bool Lop::validate() const {
+    // Check if class code is not empty
+    if (maLop.empty()) {
+        return false;
     }
-    std::cout << std::endl;
+    
+    // Check if class name is not empty
+    if (tenLop.empty()) {
+        return false;
+    }
+    
+    return true;
 }

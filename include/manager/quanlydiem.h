@@ -2,37 +2,44 @@
 #define QUANLYDIEM_H
 
 #include <string>
-#include "../models/diemthi.h"
+#include "../utils/DynamicArray.h"
 #include "../utils/LinkedList.h"
+#include "../models/diemthi.h"
 
 /**
  * @brief Quản lý điểm thi - Danh sách liên kết đơn
+ * Lưu trữ điểm thi của một sinh viên theo từng môn học
  */
 class QuanLyDiem {
 private:
-    LinkedList<DiemThi*> danhSachDiem;  // Danh sách liên kết đơn điểm thi
+    std::string maSinhVien;                    // Mã sinh viên
+    LinkedList<DiemThi*> danhSachDiem;         // Danh sách liên kết điểm thi
 
 public:
-    QuanLyDiem();
+    // Constructors & Destructor
+    explicit QuanLyDiem(const std::string& maSinhVien);
     ~QuanLyDiem();
 
-    // Basic CRUD
-    bool themDiem(DiemThi* diem);
-    bool xoaDiem(const std::string& maMonHoc);
-    DiemThi* timDiem(const std::string& maMonHoc);
+    // Basic CRUD operations
+    DynamicArray<DiemThi*> danhSach();
+    DiemThi* tim(const std::string& maMonHoc);
+    bool them(DiemThi* diem);
+    bool sua(DiemThi* diem);
+    bool xoa(const std::string& maMonHoc);
     
-    // Display
-    void inDanhSachDiem() const;
-    void inBangDiem() const;
+    // Statistics and analysis
+    double tinhDiemTrungBinh();
+    int demSoMonDau();
+    int demSoMonRot();
+    int demSoMonDaThi();
+
+    // Data persistence data/diemthi/diemthi_<maSinhVien>.txt
+    void saveToFile();
+    void loadFromFile();
     
-    // Statistics
-    double tinhDiemTrungBinh() const;
-    int demSoMonDau() const;
-    int demSoMonRot() const;
-    
-    // Additional utility methods
-    int getSoLuongDiem() const { return danhSachDiem.size(); }
-    bool isEmpty() const { return danhSachDiem.isEmpty(); }
+    // Utility methods
+    int size() { return danhSachDiem.size(); }
+    bool isEmpty() { return danhSachDiem.isEmpty(); }
 };
 
 #endif // QUANLYDIEM_H

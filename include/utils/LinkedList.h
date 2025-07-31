@@ -4,6 +4,7 @@
 #include <memory>
 #include <functional>
 #include <vector>
+#include <iostream>
 
 /**
  * @brief Generic Linked List Node
@@ -41,15 +42,17 @@ private:
         return current;
     }
 
-    std::shared_ptr<ListNode<T>> findNode(const T& value) {
+    std::shared_ptr<const ListNode<T>> getNodeAt(int index) const {
+        if (index < 0 || index >= count) {
+            return nullptr;
+        }
+        
         auto current = head;
-        while (current != nullptr) {
-            if (current->data == value) {
-                return current;
-            }
+        for (int i = 0; i < index && current != nullptr; i++) {
             current = current->next;
         }
-        return nullptr;
+        
+        return current;
     }
 
 public:
@@ -184,63 +187,24 @@ public:
         count--;
         return true;
     }
-    
-    // Access operations
-    T* search(const T& value) {
-        auto node = findNode(value);
-        return node ? &(node->data) : nullptr;
-    }
 
-    const T* search(const T& value) const {
-        auto current = head;
-        while (current != nullptr) {
-            if (current->data == value) {
-                return &(current->data);
-            }
-            current = current->next;
-        }
-        return nullptr;
-    }
-
-    T* get(int index) {
+    T get(int index) {
         auto node = getNodeAt(index);
-        return node ? &(node->data) : nullptr;
+        return node ? node->data : T();
     }
 
-    const T* get(int index) const {
-        if (index < 0 || index >= count) {
-            return nullptr;
+    void set(int index, const T& value) {
+        auto node = getNodeAt(index);
+        if (node) {
+            node->data = value;
         }
-        
-        auto current = head;
-        for (int i = 0; i < index && current != nullptr; i++) {
-            current = current->next;
-        }
-        
-        return current ? &(current->data) : nullptr;
     }
 
     T* first() {
         return head ? &(head->data) : nullptr;
     }
 
-    const T* first() const {
-        return head ? &(head->data) : nullptr;
-    }
-
     T* last() {
-        if (head == nullptr) {
-            return nullptr;
-        }
-        
-        auto current = head;
-        while (current->next != nullptr) {
-            current = current->next;
-        }
-        return &(current->data);
-    }
-
-    const T* last() const {
         if (head == nullptr) {
             return nullptr;
         }

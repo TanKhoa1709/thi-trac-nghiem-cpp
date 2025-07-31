@@ -2,39 +2,37 @@
 #define QUANLYLOP_H
 
 #include <string>
-#include <vector>
 #include "../models/lop.h"
-#include "../utils/Array.h"
-
-// File name constant for class data
-const std::string LOP_DATA_FILE = "data/classes.txt";
-
-// Forward declaration
-class SinhVien;
+#include "../utils/DynamicArray.h"
 
 /**
  * @brief Quản lý danh sách lớp - Mảng con trỏ
+ * Quản lý tất cả các lớp học trong hệ thống
  */
 class QuanLyLop {
 private:
-    Array<Lop*> danhSachLop;  // Mảng con trỏ
+    static const std::string DATA_FILE_PATH;           // "data/lop.txt"
+    DynamicArray<Lop*> danhSachLop;                    // Mảng con trỏ lớp học
 
 public:
+    // Constructors & Destructor
     QuanLyLop();
     ~QuanLyLop();
 
-    // Basic CRUD
-    bool themLop(const std::string& maLop, const std::string& tenLop);
-    bool xoaLop(const std::string& maLop);
-    Lop* timLop(const std::string& maLop);
+    // Basic CRUD operations
+    DynamicArray<Lop*> danhSach();
+    Lop* tim(const std::string& maLop);
+    bool them(Lop* lop);
+    bool sua(Lop* lop);
+    bool xoa(const std::string& maLop);
     
-    // Display
-    void inDanhSachLop() const;
-    
-    // File I/O
-    void saveToFile() const;
+    // Data persistence data/lop.txt
+    void saveToFile();
     void loadFromFile();
-    int getSoLuongLop() const;
+
+    // Utility methods
+    int size() { return danhSachLop.getSize(); }
+    bool isEmpty() { return danhSachLop.isEmpty(); }
 };
 
 #endif // QUANLYLOP_H

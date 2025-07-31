@@ -6,7 +6,7 @@ Hệ thống quản lý thi trắc nghiệm toàn diện với phân quyền tru
 ## Cấu Trúc Dữ Liệu
 
 ### 1. Danh Sách Môn Học (Danh Sách Tuyến Tính)
-- **Cấu trúc**: `MAMH (C15)`, `TENMH`, `con trỏ câu hỏi`
+- **Cấu trúc**: `MAMH (C15)`, `TENMH`, `con trỏ quản lí câu hỏi`
 - **Mô tả**: Quản lý các môn học với con trỏ trỏ đến danh sách câu hỏi tương ứng
 
 ### 2. Danh Sách Câu Hỏi Thi (Cây Nhị Phân Tìm Kiếm)
@@ -15,11 +15,11 @@ Hệ thống quản lý thi trắc nghiệm toàn diện với phân quyền tru
 - **Mô tả**: Lưu trữ câu hỏi trắc nghiệm với 4 lựa chọn
 
 ### 3. Danh Sách Lớp (Mảng Con Trỏ)
-- **Cấu trúc**: `MALOP`, `TENLOP`, `con trỏ sinh viên`
+- **Cấu trúc**: `MALOP`, `TENLOP`, `con trỏ quản lí sinh viên`
 - **Mô tả**: Quản lý các lớp học với con trỏ trỏ đến danh sách sinh viên
 
 ### 4. Danh Sách Sinh Viên (Danh Sách Liên Kết)
-- **Cấu trúc**: `MASV`, `HO`, `TEN`, `PHAI`, `password`, `con trỏ điểm`
+- **Cấu trúc**: `MASV`, `HO`, `TEN`, `PHAI`, `password`, `con trỏ quản lí điểm`
 - **Mô tả**: Thông tin sinh viên với con trỏ trỏ đến điểm thi
 
 ### 5. Danh Sách Điểm Thi (Danh Sách Liên Kết Đơn)
@@ -32,18 +32,11 @@ Hệ thống quản lý thi trắc nghiệm toàn diện với phân quyền tru
 - **Sinh viên**: Sử dụng MASV + mật khẩu
 - **Giáo viên**: Tài khoản "GV" + mật khẩu "GV" (toàn quyền)
 
-### Quản Lý Lớp Học
-- Nhập lớp mới
-- In danh sách lớp
-- Nhập sinh viên vào lớp (yêu cầu mã lớp trước)
-
-### Quản Lý Môn Học
-- Thêm/sửa/xóa môn học
-- Cập nhật thông tin môn học
+### basic crud
+- Nhập/xóa/sửa thông tin lớp, sinh viên, môn học, câu hỏi, ...
 
 ### Quản Lý Câu Hỏi
-- ID câu hỏi tự động tạo ngẫu nhiên
-- Thêm/sửa câu hỏi
+- ID câu hỏi tự động tạo ngẫu nhiên và ID phù hợp cho cây nhị phân câu hỏi
 - Không cho phép xóa câu hỏi đã có trong bài thi
 
 ### Hệ Thống Thi Trắc Nghiệm

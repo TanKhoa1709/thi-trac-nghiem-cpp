@@ -2,57 +2,58 @@
 #define SINHVIEN_H
 
 #include <string>
+#include <iostream>
 
 // Forward declaration
-class DiemThi;
+class QuanLyDiem;
 
 /**
- * @brief Sinh viên - MASV, HO, TEN, PHAI, password, con trỏ điểm
+ * @brief Sinh viên - MASV, HO, TEN, PHAI, password, con trỏ quản lý điểm
  */
 class SinhVien {
 private:
-    std::string maSinhVien;
-    std::string ho;
-    std::string ten;
-    bool phai;                    // true = Nam, false = Nữ
-    std::string password;
-    DiemThi* danhSachDiem;       // con trỏ điểm
+    std::string maSinhVien;              // Mã sinh viên (khóa duy nhất)
+    std::string ho;                      // Họ
+    std::string ten;                     // Tên
+    bool phai;                           // Giới tính (true = Nam, false = Nữ)
+    std::string password;                // Mật khẩu
+    QuanLyDiem* danhSachDiem;            // Con trỏ quản lý điểm
 
 public:
+    // Constructors & Destructor
     SinhVien();
     SinhVien(const std::string& ma, const std::string& ho, const std::string& ten, 
              bool phai, const std::string& pass);
     ~SinhVien();
 
-    // Getters/Setters
-    std::string getMaSinhVien() const { return maSinhVien; }
-    std::string getHo() const { return ho; }
-    std::string getTen() const { return ten; }
+    // Getters (const methods)
+    const std::string& getMaSinhVien() const { return maSinhVien; }
+    const std::string& getHo() const { return ho; }
+    const std::string& getTen() const { return ten; }
     bool getPhai() const { return phai; }
-    std::string getPassword() const { return password; }
-    DiemThi* getDanhSachDiem() const { return danhSachDiem; }
+    const std::string& getPassword() const { return password; }
+    QuanLyDiem* getDanhSachDiem() const { return danhSachDiem; }
 
+    // Setters
     void setMaSinhVien(const std::string& ma) { maSinhVien = ma; }
     void setHo(const std::string& h) { ho = h; }
     void setTen(const std::string& t) { ten = t; }
     void setPhai(bool p) { phai = p; }
     void setPassword(const std::string& pass) { password = pass; }
-    void setDanhSachDiem(DiemThi* ds) { danhSachDiem = ds; }
-
-    // Authentication
-    bool xacThucMatKhau(const std::string& matKhau) const;
+    void setDanhSachDiem(QuanLyDiem* ds) { danhSachDiem = ds; }
     
-    // Display
-    void inThongTin() const;
+    // Business logic methods
+    bool validate() const;
+    std::string getHoTen() const { return ho + " " + ten; }
+    std::string getPhaiBangChu() const { return phai ? "Nam" : "Nữ"; }
     
-    // Equality operator for LinkedList operations
+    // Operators for LinkedList operations
     bool operator==(const SinhVien& other) const {
         return maSinhVien == other.maSinhVien;
     }
     
-    // Equality operator for pointer comparisons in LinkedList
-    bool operator==(const SinhVien* other) const {
-        return other && maSinhVien == other->maSinhVien;
+    bool operator!=(const SinhVien& other) const {
+        return !(*this == other);
     }
 };
 

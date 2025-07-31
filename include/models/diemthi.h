@@ -8,35 +8,36 @@
  */
 class DiemThi {
 private:
-    std::string maMonHoc;        // MAMH
-    double diem;                 // Điểm
-    std::string chiTietBaiThi;   // Chi Tiết Bài Thi
+    std::string maMonHoc;        // Mã môn học
+    double diem;                 // Điểm số
+    std::string chiTietBaiThi;   // Chi tiết bài thi (câu trả lời)
 
 public:
+    // Constructors & Destructor
     DiemThi();
     DiemThi(const std::string& maMon, double diem, const std::string& chiTiet);
-    ~DiemThi();
+    ~DiemThi() = default;
 
-    // Getters/Setters
-    std::string getMaMonHoc() const { return maMonHoc; }
+    // Getters (const methods)
+    const std::string& getMaMonHoc() const { return maMonHoc; }
     double getDiem() const { return diem; }
-    std::string getChiTietBaiThi() const { return chiTietBaiThi; }
+    const std::string& getChiTietBaiThi() const { return chiTietBaiThi; }
 
+    // Setters
     void setMaMonHoc(const std::string& ma) { maMonHoc = ma; }
     void setDiem(double d) { diem = d; }
     void setChiTietBaiThi(const std::string& chiTiet) { chiTietBaiThi = chiTiet; }
 
-    // Display
-    void inDiem() const;
+    // Business logic methods
+    bool validate() const;
     
-    // Equality operator for LinkedList operations
+    // Operators for LinkedList operations
     bool operator==(const DiemThi& other) const {
         return maMonHoc == other.maMonHoc;
     }
     
-    // Equality operator for pointer comparisons in LinkedList
-    bool operator==(const DiemThi* other) const {
-        return other && maMonHoc == other->maMonHoc;
+    bool operator!=(const DiemThi& other) const {
+        return !(*this == other);
     }
 };
 

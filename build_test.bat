@@ -2,6 +2,7 @@
 echo Building test application...
 
 g++ -std=c++11 -Iinclude ^
+    main_test.cpp ^
     src/models/sinhvien.cpp ^
     src/models/diemthi.cpp ^
     src/models/lop.cpp ^
