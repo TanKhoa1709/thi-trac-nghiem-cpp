@@ -1,7 +1,6 @@
-#include "../../include/manager/quanlydiem.h"
+#include "manager/quanlydiem.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <vector>
 
 // Constructor

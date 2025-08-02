@@ -1,4 +1,4 @@
-#include "../../include/manager/quanlymonhoc.h"
+#include "manager/quanlymonhoc.h"
 #include <fstream>
 #include <sstream>
 #include <cstring>

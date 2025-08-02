@@ -2,9 +2,9 @@
 #define QUANLYDIEM_H
 
 #include <string>
-#include "../utils/DynamicArray.h"
-#include "../utils/LinkedList.h"
-#include "../models/diemthi.h"
+#include "utils/DynamicArray.h"
+#include "utils/LinkedList.h"
+#include "models/diemthi.h"
 
 /**
  * @brief Quản lý điểm thi - Danh sách liên kết đơn

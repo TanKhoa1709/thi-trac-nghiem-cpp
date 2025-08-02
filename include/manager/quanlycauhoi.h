@@ -1,9 +1,9 @@
 #ifndef QUANLYCAUHOI_H
 #define QUANLYCAUHOI_H
 
-#include "../utils/BinaryTree.h"
-#include "../utils/DynamicArray.h"
-#include "../models/cauhoi.h"
+#include "utils/BinaryTree.h"
+#include "utils/DynamicArray.h"
+#include "models/cauhoi.h"
 
 /**
  * @brief Quản lý câu hỏi - Cây nhị phân tìm kiếm

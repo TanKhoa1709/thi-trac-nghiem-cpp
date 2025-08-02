@@ -1,8 +1,8 @@
 #ifndef QUANLYMONHOC_H
 #define QUANLYMONHOC_H
 
-#include "../models/monhoc.h"
-#include "../utils/DynamicArray.h"
+#include "models/monhoc.h"
+#include "utils/DynamicArray.h"
 
 /**
  * @brief Quản lý môn học - Danh sách tuyến tính

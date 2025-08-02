@@ -2,7 +2,6 @@
 #define SINHVIEN_H
 
 #include <string>
-#include <iostream>
 
 // Forward declaration
 class QuanLyDiem;

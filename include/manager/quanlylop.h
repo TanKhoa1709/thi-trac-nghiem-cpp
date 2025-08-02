@@ -2,8 +2,8 @@
 #define QUANLYLOP_H
 
 #include <string>
-#include "../models/lop.h"
-#include "../utils/DynamicArray.h"
+#include "models/lop.h"
+#include "utils/DynamicArray.h"
 
 /**
  * @brief Quản lý danh sách lớp - Mảng con trỏ

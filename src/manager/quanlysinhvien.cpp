@@ -1,4 +1,4 @@
-#include "../../include/manager/quanlysinhvien.h"
+#include "manager/quanlysinhvien.h"
 #include <fstream>
 #include <sstream>
 #include <vector>

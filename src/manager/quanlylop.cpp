@@ -1,4 +1,4 @@
-#include "../../include/manager/quanlylop.h"
+#include "manager/quanlylop.h"
 #include <fstream>
 #include <sstream>
 
