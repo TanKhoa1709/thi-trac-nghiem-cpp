@@ -21,7 +21,7 @@ public:
     ~QuanLySinhVien();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<SinhVien>& result);
+    void danhSach(DynamicArray<SinhVien*>& result);
     SinhVien* tim(const std::string& maSinhVien);
     bool them(SinhVien& sinhVien);
     bool sua(SinhVien& sinhVien);

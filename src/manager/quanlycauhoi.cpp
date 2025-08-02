@@ -21,13 +21,15 @@ QuanLyCauHoi::~QuanLyCauHoi() {
 }
 
 // Get all questions as dynamic array
-void QuanLyCauHoi::danhSach(DynamicArray<CauHoi>& result) {
+void QuanLyCauHoi::danhSach(DynamicArray<CauHoi*>& result) {
     // Clear the result array before adding
     result.clear();
     
     // Use in-order traversal to get questions in sorted order
     cayQuanLyCauHoi.inOrderTraversal([&result](CauHoi& cauHoi) {
-        result.add(cauHoi);
+        // result.add(&cauHoi);
+        CauHoi* question = &cauHoi;
+        result.add(question);
     });
 }
 
@@ -103,10 +105,10 @@ int QuanLyCauHoi::taoMaCauHoiNgauNhien() {
 }
 
 // Get random questions
-DynamicArray<CauHoi> QuanLyCauHoi::layNgauNhien(int soLuong) {
-    DynamicArray<CauHoi> allQuestions;
+DynamicArray<CauHoi*> QuanLyCauHoi::layNgauNhien(int soLuong) {
+    DynamicArray<CauHoi*> allQuestions;
     danhSach(allQuestions);
-    DynamicArray<CauHoi> result;
+    DynamicArray<CauHoi*> result;
     
     if (soLuong >= allQuestions.size()) {
         return allQuestions; // Return all if requested more than available
@@ -149,19 +151,19 @@ void QuanLyCauHoi::saveToFile() {
         throw std::runtime_error("Cannot open file for writing: " + filename);
     }
     
-    DynamicArray<CauHoi> allQuestions;
+    DynamicArray<CauHoi*> allQuestions;
     danhSach(allQuestions);
     file << allQuestions.size() << std::endl;
     
     for (int i = 0; i < allQuestions.size(); i++) {
-        CauHoi question = allQuestions.get(i);
-        file << question.getMaCauHoi() << "|"
-             << question.getNoiDung() << "|"
-             << question.getLuaChonA() << "|"
-             << question.getLuaChonB() << "|"
-             << question.getLuaChonC() << "|"
-             << question.getLuaChonD() << "|"
-             << question.getDapAnDung() << std::endl;
+        CauHoi* question = allQuestions.get(i);
+        file << question->getMaCauHoi() << "|"
+             << question->getNoiDung() << "|"
+             << question->getLuaChonA() << "|"
+             << question->getLuaChonB() << "|"
+             << question->getLuaChonC() << "|"
+             << question->getLuaChonD() << "|"
+             << question->getDapAnDung() << std::endl;
     }
     
     file.close();

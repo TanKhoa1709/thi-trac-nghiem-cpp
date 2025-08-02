@@ -15,12 +15,13 @@ QuanLySinhVien::~QuanLySinhVien() {
 }
 
 // Get all students as dynamic array
-void QuanLySinhVien::danhSach(DynamicArray<SinhVien>& result) {
+void QuanLySinhVien::danhSach(DynamicArray<SinhVien*>& result) {
     // Clear the result array before adding
     result.clear();
     
     for (int i = 0; i < danhSachSinhVien.size(); i++) {
-        result.add(danhSachSinhVien.get(i));
+      SinhVien* student = &danhSachSinhVien.get(i);
+      result.add(student);
     }
 }
 

@@ -18,7 +18,7 @@ public:
     ~QuanLyMonHoc();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<MonHoc>& result);
+    void danhSach(DynamicArray<MonHoc*>& result);
     MonHoc* tim(const char* maMon);
     bool them(MonHoc& monHoc);
     bool sua(MonHoc& monHoc);

@@ -14,12 +14,14 @@ QuanLyLop::~QuanLyLop() {
 }
 
 // Get all classes as dynamic array
-void QuanLyLop::danhSach(DynamicArray<Lop>& result) {
+void QuanLyLop::danhSach(DynamicArray<Lop*>& result) {
     // Clear the result array before adding
     result.clear();
 
     for (int i = 0; i < danhSachLop.size(); i++) {
-        result.add(danhSachLop.get(i));
+        // result.add(&danhSachLop.get(i));
+        Lop* lop = &danhSachLop.get(i);
+        result.add(lop);
     }
 }
 

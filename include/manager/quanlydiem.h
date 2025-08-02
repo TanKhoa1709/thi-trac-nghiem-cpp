@@ -21,7 +21,7 @@ public:
     ~QuanLyDiem();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<DiemThi>& result);
+    void danhSach(DynamicArray<DiemThi*>& result);
     DiemThi* tim(const std::string& maMonHoc);
     bool them(DiemThi& diem);
     bool sua(DiemThi& diem);

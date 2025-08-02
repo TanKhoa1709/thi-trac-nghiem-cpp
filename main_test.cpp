@@ -79,11 +79,11 @@ bool authenticateStudent() {
     cin >> password;
     
     // Find student in all classes
-    DynamicArray<Lop> danhSachLop;
+    DynamicArray<Lop*> danhSachLop;
     quanLyLop->danhSach(danhSachLop);
     for (int i = 0; i < danhSachLop.size(); i++) {
-        Lop& lop = danhSachLop.get(i);
-        SinhVien* sv = lop.getQuanLySinhVien()->tim(masv);
+        Lop* lop = danhSachLop.get(i);
+        SinhVien* sv = lop->getQuanLySinhVien()->tim(masv);
         if (sv && sv->getPassword() == password) {
             currentStudent = sv;
             return true;
@@ -109,7 +109,7 @@ void menuQuanLyLop() {
         switch (choice) {
             case 1: {
                 printHeader("DANH SACH LOP");
-                DynamicArray<Lop> danhSach;
+                DynamicArray<Lop*> danhSach;
                 quanLyLop->danhSach(danhSach);
                 if (danhSach.size() == 0) {
                     cout << "Chua co lop nao!\n";
@@ -117,10 +117,10 @@ void menuQuanLyLop() {
                     cout << left << setw(10) << "Ma Lop" << setw(30) << "Ten Lop" << setw(15) << "So SV" << endl;
                     printSeparator();
                     for (int i = 0; i < danhSach.size(); i++) {
-                        Lop& lop = danhSach.get(i);
-                        cout << left << setw(10) << lop.getMaLop() 
-                             << setw(30) << lop.getTenLop()
-                             << setw(15) << lop.getQuanLySinhVien()->size() << endl;
+                        Lop* lop = danhSach.get(i);
+                        cout << left << setw(10) << lop->getMaLop() 
+                             << setw(30) << lop->getTenLop()
+                             << setw(15) << lop->getQuanLySinhVien()->size() << endl;
                     }
                 }
                 pauseScreen();
@@ -205,7 +205,7 @@ void menuQuanLyLop() {
                         switch (svChoice) {
                             case 1: {
                                 printHeader("DANH SACH SINH VIEN - " + lop->getTenLop());
-                                DynamicArray<SinhVien> dsSV;
+                                DynamicArray<SinhVien*> dsSV;
                                 lop->getQuanLySinhVien()->danhSach(dsSV);
                                 if (dsSV.size() == 0) {
                                     cout << "Lop chua co sinh vien nao!\n";
@@ -214,11 +214,11 @@ void menuQuanLyLop() {
                                          << setw(15) << "Ten" << setw(10) << "Phai" << endl;
                                     printSeparator();
                                     for (int i = 0; i < dsSV.size(); i++) {
-                                        SinhVien& sv = dsSV.get(i);
-                                        cout << left << setw(12) << sv.getMaSinhVien()
-                                             << setw(20) << sv.getHo()
-                                             << setw(15) << sv.getTen()
-                                             << setw(10) << sv.getPhaiBangChu() << endl;
+                                        SinhVien* sv = dsSV.get(i);
+                                        cout << left << setw(12) << sv->getMaSinhVien()
+                                             << setw(20) << sv->getHo()
+                                             << setw(15) << sv->getTen()
+                                             << setw(10) << sv->getPhaiBangChu() << endl;
                                     }
                                 }
                                 pauseScreen();
@@ -282,7 +282,7 @@ void menuQuanLyMonHoc() {
         switch (choice) {
             case 1: {
                 printHeader("DANH SACH MON HOC");
-                DynamicArray<MonHoc> danhSach;
+                DynamicArray<MonHoc*> danhSach;
                 quanLyMonHoc->danhSach(danhSach);
                 if (danhSach.size() == 0) {
                     cout << "Chua co mon hoc nao!\n";
@@ -290,17 +290,13 @@ void menuQuanLyMonHoc() {
                     cout << left << setw(10) << "Ma Mon" << setw(40) << "Ten Mon" << setw(15) << "So Cau Hoi" << endl;
                     printSeparator();
 
-                    MonHoc& mon = danhSach.get(0);
-                    
-                    std::cout<<mon.getMaMon()<<" - "<<mon.getTenMon()<<" - "<<mon.getQuanLyCauHoi()->size()<<std::endl;
-                    std::cout<<"Loaded subject: "<<mon.getMaMon()<<" - "<<mon.getTenMon()<<" - "<<std::endl;
+                    MonHoc* mon = danhSach.get(0);
 
-                    pauseScreen();
                     for (int i = 0; i < danhSach.size(); i++) {
-                        MonHoc& mon = danhSach.get(i);
-                        cout << left << setw(10) << mon.getMaMon()
-                             << setw(40) << mon.getTenMon()
-                             << setw(15) << mon.getQuanLyCauHoi()->size() << endl;
+                        MonHoc* mon = danhSach.get(i);
+                        cout << left << setw(10) << mon->getMaMon()
+                             << setw(40) << mon->getTenMon()
+                             << setw(15) << mon->getQuanLyCauHoi()->size() << endl;
                     }
                 }
                 pauseScreen();
@@ -347,20 +343,20 @@ void menuQuanLyMonHoc() {
                         switch (chChoice) {
                             case 1: {
                                 printHeader("DANH SACH CAU HOI - " + mon->getTenMon());
-                                DynamicArray<CauHoi> dsCH;
+                                DynamicArray<CauHoi*> dsCH;
                                 mon->getQuanLyCauHoi()->danhSach(dsCH);
                                 if (dsCH.size() == 0) {
                                     cout << "Mon hoc chua co cau hoi nao!\n";
                                 } else {
                                     for (int i = 0; i < dsCH.size(); i++) {
-                                        CauHoi& ch = dsCH.get(i);
-                                        cout << "ID: " << ch.getMaCauHoi() << endl;
-                                        cout << "Cau hoi: " << ch.getNoiDung() << endl;
-                                        cout << "A. " << ch.getLuaChonA() << endl;
-                                        cout << "B. " << ch.getLuaChonB() << endl;
-                                        cout << "C. " << ch.getLuaChonC() << endl;
-                                        cout << "D. " << ch.getLuaChonD() << endl;
-                                        cout << "Dap an: " << ch.getDapAnDung() << endl;
+                                        CauHoi* ch = dsCH.get(i);
+                                        cout << "ID: " << ch->getMaCauHoi() << endl;
+                                        cout << "Cau hoi: " << ch->getNoiDung() << endl;
+                                        cout << "A. " << ch->getLuaChonA() << endl;
+                                        cout << "B. " << ch->getLuaChonB() << endl;
+                                        cout << "C. " << ch->getLuaChonC() << endl;
+                                        cout << "D. " << ch->getLuaChonD() << endl;
+                                        cout << "Dap an: " << ch->getDapAnDung() << endl;
                                         printSeparator();
                                     }
                                 }
@@ -430,7 +426,7 @@ void menuBaoCao() {
                 
                 Lop* lop = quanLyLop->tim(maLop);
                 if (lop) {
-                    DynamicArray<SinhVien> dsSV;
+                    DynamicArray<SinhVien*> dsSV;
                     lop->getQuanLySinhVien()->danhSach(dsSV);
                     cout << "\nBANG DIEM LOP: " << lop->getTenLop() << endl;
                     cout << left << setw(12) << "MASV" << setw(25) << "Ho Ten" << setw(15) << "Toan" 
@@ -438,9 +434,9 @@ void menuBaoCao() {
                     printSeparator();
                     
                     for (int i = 0; i < dsSV.size(); i++) {
-                        SinhVien& sv = dsSV.get(i);
-                        cout << left << setw(12) << sv.getMaSinhVien()
-                             << setw(25) << sv.getHoTen();
+                        SinhVien* sv = dsSV.get(i);
+                        cout << left << setw(12) << sv->getMaSinhVien()
+                             << setw(25) << sv->getHoTen();
                         
                         // Display scores for each subject (simplified)
                         cout << setw(15) << "Chua thi"
@@ -461,16 +457,16 @@ void menuBaoCao() {
                 int tongSinhVien = 0;
                 int tongCauHoi = 0;
 
-                DynamicArray<Lop> danhSachLop;
+                DynamicArray<Lop*> danhSachLop;
                 quanLyLop->danhSach(danhSachLop);
                 for (int i = 0; i < danhSachLop.size(); i++) {
-                    tongSinhVien += danhSachLop.get(i).getQuanLySinhVien()->size();
+                    tongSinhVien += danhSachLop.get(i)->getQuanLySinhVien()->size();
                 }
 
-                DynamicArray<MonHoc> danhSachMon;
+                DynamicArray<MonHoc*> danhSachMon;
                 quanLyMonHoc->danhSach(danhSachMon);
                 for (int i = 0; i < danhSachMon.size(); i++) {
-                    tongCauHoi += danhSachMon.get(i).getQuanLyCauHoi()->size();
+                    tongCauHoi += danhSachMon.get(i)->getQuanLyCauHoi()->size();
                 }
                 
                 cout << "Tong so sinh vien: " << tongSinhVien << endl;
@@ -512,7 +508,7 @@ void menuLamBaiThi() {
     printHeader("LAM BAI THI");
     
     // Display available subjects
-    DynamicArray<MonHoc> danhSachMon;
+    DynamicArray<MonHoc*> danhSachMon;
     quanLyMonHoc->danhSach(danhSachMon);
     if (danhSachMon.size() == 0) {
         cout << "Khong co mon hoc nao de thi!\n";
@@ -522,8 +518,8 @@ void menuLamBaiThi() {
     
     cout << "Chon mon hoc:\n";
     for (int i = 0; i < danhSachMon.size(); i++) {
-        cout << (i + 1) << ". " << danhSachMon.get(i).getTenMon() 
-             << " (" << danhSachMon.get(i).getQuanLyCauHoi()->size() << " cau hoi)" << endl;
+        cout << (i + 1) << ". " << danhSachMon.get(i)->getTenMon() 
+             << " (" << danhSachMon.get(i)->getQuanLyCauHoi()->size() << " cau hoi)" << endl;
     }
     
     int monChoice;
@@ -536,7 +532,7 @@ void menuLamBaiThi() {
         return;
     }
     
-    MonHoc& monThi = danhSachMon.get(monChoice - 1);
+    MonHoc& monThi = *danhSachMon.get(monChoice - 1);
     
     int soCauHoi;
     cout << "So cau hoi muon thi (toi da " << monThi.getQuanLyCauHoi()->size() << "): ";
@@ -549,7 +545,7 @@ void menuLamBaiThi() {
     }
     
     // Get random questions
-    DynamicArray<CauHoi> dsCauHoi = monThi.getQuanLyCauHoi()->layNgauNhien(soCauHoi);
+    DynamicArray<CauHoi*> dsCauHoi = monThi.getQuanLyCauHoi()->layNgauNhien(soCauHoi);
     
     printHeader("BAI THI: " + monThi.getTenMon());
     cout << "Sinh vien: " << currentStudent->getHoTen() << endl;
@@ -559,7 +555,7 @@ void menuLamBaiThi() {
     
     int diem = 0;
     for (int i = 0; i < dsCauHoi.size(); i++) {
-        CauHoi& ch = dsCauHoi.get(i);
+        CauHoi& ch = *dsCauHoi.get(i);
         cout << "\nCau " << (i + 1) << ": " << ch.getNoiDung() << endl;
         cout << "A. " << ch.getLuaChonA() << endl;
         cout << "B. " << ch.getLuaChonB() << endl;
@@ -636,19 +632,19 @@ void initializeSystem() {
     cout << "Loading questions for each subject...\n";
     
     // Load questions for each subject
-    DynamicArray<MonHoc> danhSachMon;
+    DynamicArray<MonHoc*> danhSachMon;
     quanLyMonHoc->danhSach(danhSachMon);
     for (int i = 0; i < danhSachMon.size(); i++) {
-        danhSachMon.get(i).getQuanLyCauHoi()->loadFromFile();
+        danhSachMon.get(i)->getQuanLyCauHoi()->loadFromFile();
     }
 
     cout << "Loading students for each class...\n";
     
     // Load students for each class
-    DynamicArray<Lop> danhSachLop;
+    DynamicArray<Lop*> danhSachLop;
     quanLyLop->danhSach(danhSachLop);
     for (int i = 0; i < danhSachLop.size(); i++) {
-        danhSachLop.get(i).getQuanLySinhVien()->loadFromFile();
+        danhSachLop.get(i)->getQuanLySinhVien()->loadFromFile();
     }
 }
 

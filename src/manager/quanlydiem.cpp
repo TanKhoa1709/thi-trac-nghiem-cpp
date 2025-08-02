@@ -16,12 +16,14 @@ QuanLyDiem::~QuanLyDiem() {
 }
 
 // Get all scores as dynamic array
-void QuanLyDiem::danhSach(DynamicArray<DiemThi>& result) {
+void QuanLyDiem::danhSach(DynamicArray<DiemThi*>& result) {
     // Clear the result array before adding
     result.clear();
     
     for (int i = 0; i < danhSachDiem.size(); i++) {
-        result.add(danhSachDiem.get(i));
+        // result.add(&danhSachDiem.get(i));
+        DiemThi* score = &danhSachDiem.get(i);
+        result.add(score);
     }
 }
 

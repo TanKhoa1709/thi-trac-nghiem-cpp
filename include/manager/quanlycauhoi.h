@@ -20,7 +20,7 @@ public:
     ~QuanLyCauHoi();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<CauHoi>& result);
+    void danhSach(DynamicArray<CauHoi*>& result);
     CauHoi* tim(int maCauHoi);
     bool them(CauHoi& cauHoi);
     bool sua(CauHoi& cauHoi);
@@ -30,7 +30,7 @@ public:
     int taoMaCauHoiNgauNhien();
     
     // Random question selection
-    DynamicArray<CauHoi> layNgauNhien(int soLuong);
+    DynamicArray<CauHoi*> layNgauNhien(int soLuong);
     
     // Data persistence data/cauhoi/cauhoi_<maMon>.txt
     void saveToFile();

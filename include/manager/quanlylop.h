@@ -19,7 +19,7 @@ public:
     ~QuanLyLop();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<Lop>& result);
+    void danhSach(DynamicArray<Lop*>& result);
     Lop* tim(const std::string& maLop);
     bool them(Lop& lop);
     bool sua(Lop& lop);

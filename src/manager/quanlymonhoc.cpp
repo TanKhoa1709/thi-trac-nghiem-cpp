@@ -15,12 +15,14 @@ QuanLyMonHoc::~QuanLyMonHoc() {
 }
 
 // Get all subjects as dynamic array
-void QuanLyMonHoc::danhSach(DynamicArray<MonHoc>& result) {
+void QuanLyMonHoc::danhSach(DynamicArray<MonHoc*>& result) {
     // Clear the result array before adding
     result.clear();
     
     for (int i = 0; i < danhSachMonHoc.size(); i++) {
-      result.add(danhSachMonHoc.get(i));
+        // result.add(&danhSachMonHoc.get(i));
+        MonHoc* monHoc = &danhSachMonHoc.get(i);
+        result.add(monHoc);
     }
 }
 
