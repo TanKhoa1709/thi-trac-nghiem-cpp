@@ -11,8 +11,7 @@
  */
 class QuanLyLop {
 private:
-    static const std::string DATA_FILE_PATH;           // "data/lop.txt"
-    DynamicArray<Lop*> danhSachLop;                    // Mảng con trỏ lớp học
+    DynamicArray<Lop> danhSachLop;                    // Mảng con trỏ lớp học
 
 public:
     // Constructors & Destructor
@@ -20,10 +19,10 @@ public:
     ~QuanLyLop();
 
     // Basic CRUD operations
-    DynamicArray<Lop*> danhSach();
+    DynamicArray<Lop> danhSach();
     Lop* tim(const std::string& maLop);
-    bool them(Lop* lop);
-    bool sua(Lop* lop);
+    bool them(Lop& lop);
+    bool sua(Lop& lop);
     bool xoa(const std::string& maLop);
     
     // Data persistence data/lop.txt
@@ -31,7 +30,7 @@ public:
     void loadFromFile();
 
     // Utility methods
-    int size() { return danhSachLop.getSize(); }
+    int size() { return danhSachLop.size(); }
     bool isEmpty() { return danhSachLop.isEmpty(); }
 };
 

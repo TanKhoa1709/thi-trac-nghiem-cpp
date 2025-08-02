@@ -1,234 +1,155 @@
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
 
-#include <memory>
-#include <functional>
-#include <vector>
 #include <stdexcept>
-#include <algorithm>
+#include <functional>
 
-/**
- * @brief Generic Binary Search Tree Node
- */
-template<typename T>
-class TreeNode {
-public:
-    T data;
-    std::shared_ptr<TreeNode<T>> left;
-    std::shared_ptr<TreeNode<T>> right;
 
-    TreeNode(const T& value) : data(value), left(nullptr), right(nullptr) {}
-    ~TreeNode() = default;
+template <typename T>
+struct TreeNode {
+  int size;  // Size of the subtree rooted at this node
+  T data;
+  TreeNode* left;
+  TreeNode* right;
+  TreeNode(T& value) : data(value), left(nullptr), right(nullptr), size(1) {}
 };
 
-/**
- * @brief Generic Binary Search Tree
- * Simple binary search tree with standard operations
- */
-template<typename T>
+template <typename T>
 class BinarySearchTree {
-private:
-    std::shared_ptr<TreeNode<T>> root;
-    int nodeCount;
-    std::function<bool(const T&, const T&)> compareLess; // Returns true if first < second
+ private:
+  TreeNode<T>* root;
 
-    // Helper methods
-    std::shared_ptr<TreeNode<T>> insertNode(std::shared_ptr<TreeNode<T>> node, const T& value) {
-        if (node == nullptr) {
-            nodeCount++;
-            return std::make_shared<TreeNode<T>>(value);
-        }
-        
-        if (compareLess(value, node->data)) {
-            node->left = insertNode(node->left, value);
-        } else if (compareLess(node->data, value)) {
-            node->right = insertNode(node->right, value);
-        }
-        // If equal, don't insert (no duplicates)
-        
-        return node;
-    }
+  int getSize(TreeNode<T>* node) { return node ? node->size : 0; }
 
-    std::shared_ptr<TreeNode<T>> removeNode(std::shared_ptr<TreeNode<T>> node, const T& value) {
-        if (node == nullptr) {
-            return node;
-        }
-        
-        if (compareLess(value, node->data)) {
-            node->left = removeNode(node->left, value);
-        } else if (compareLess(node->data, value)) {
-            node->right = removeNode(node->right, value);
-        } else {
-            // Node to be deleted found
-            nodeCount--;
-            
-            if (node->left == nullptr) {
-                return node->right;
-            } else if (node->right == nullptr) {
-                return node->left;
-            }
-            
-            // Node with two children
-            std::shared_ptr<TreeNode<T>> minRight = findMinNode(node->right);
-            node->data = minRight->data;
-            node->right = removeNode(node->right, minRight->data);
-            nodeCount++; // Compensate for the decrement above
-        }
-        
-        return node;
-    }
+  void updateSize(TreeNode<T>* node) {
+    if (node) node->size = 1 + getSize(node->left) + getSize(node->right);
+  }
 
-    std::shared_ptr<TreeNode<T>> findMinNode(std::shared_ptr<TreeNode<T>> node) {
-        while (node->left != nullptr) {
-            node = node->left;
-        }
-        return node;
-    }
-
-    TreeNode<T>* searchNode(std::shared_ptr<TreeNode<T>> node, const T& value) {
-        if (node == nullptr) {
-            return nullptr;
-        }
-        
-        if (compareLess(value, node->data)) {
-            return searchNode(node->left, value);
-        } else if (compareLess(node->data, value)) {
-            return searchNode(node->right, value);
-        } else {
-            return node.get();
-        }
-    }
-
-    void inOrderTraversal(std::shared_ptr<TreeNode<T>> node, std::vector<T>& result) const {
-        if (node != nullptr) {
-            inOrderTraversal(node->left, result);
-            result.push_back(node->data);
-            inOrderTraversal(node->right, result);
-        }
-    }
-
-    void preOrderTraversal(std::shared_ptr<TreeNode<T>> node, std::vector<T>& result) const {
-        if (node != nullptr) {
-            result.push_back(node->data);
-            preOrderTraversal(node->left, result);
-            preOrderTraversal(node->right, result);
-        }
-    }
-
-    void postOrderTraversal(std::shared_ptr<TreeNode<T>> node, std::vector<T>& result) const {
-        if (node != nullptr) {
-            postOrderTraversal(node->left, result);
-            postOrderTraversal(node->right, result);
-            result.push_back(node->data);
-        }
-    }
-
-    void destroyTree(std::shared_ptr<TreeNode<T>> node) {
-        if (node != nullptr) {
-            destroyTree(node->left);
-            destroyTree(node->right);
-            node.reset();
-        }
-    }
-
-    int calculateHeight(std::shared_ptr<TreeNode<T>> node) const {
-        if (node == nullptr) {
-            return -1;
-        }
-        
-        int leftHeight = calculateHeight(node->left);
-        int rightHeight = calculateHeight(node->right);
-        
-        return 1 + std::max(leftHeight, rightHeight);
-    }
-
-public:
-    BinarySearchTree() : root(nullptr), nodeCount(0) {
-        compareLess = [](const T& a, const T& b) { return a < b; };
-    }
-
-    BinarySearchTree(std::function<bool(const T&, const T&)> compareFunc) 
-        : root(nullptr), nodeCount(0), compareLess(compareFunc) {
-    }
-
-    ~BinarySearchTree() {
-        clear();
-    }
-
-    // Tree operations
-    bool insert(const T& value) {
-        int oldCount = nodeCount;
-        root = insertNode(root, value);
-        return nodeCount > oldCount;
-    }
-
-    bool remove(const T& value) {
-        int oldCount = nodeCount;
-        root = removeNode(root, value);
-        return nodeCount < oldCount;
-    }
-
-    T* search(const T& value) {
-        TreeNode<T>* node = searchNode(root, value);
-        return node ? &(node->data) : nullptr;
+  TreeNode<T>* getKth(TreeNode<T>* node, int k) {
+    if (node == nullptr || k < 0 || k >= getSize(node)) {
+      return nullptr;
     }
     
-    // Properties
-    int size() const { return nodeCount; }
-    bool isEmpty() const { return root == nullptr; }
-    
-    void clear() {
-        destroyTree(root);
-        root = nullptr;
-        nodeCount = 0;
+    int leftSize = getSize(node->left);
+
+    if (k < leftSize) {
+      return getKth(node->left, k);
+    } else if (k == leftSize) {
+      return node;
+    } else {
+      return getKth(node->right, k - leftSize - 1);
     }
-    
-    // Traversal methods
-    std::vector<T> inOrder() const {
-        std::vector<T> result;
-        inOrderTraversal(root, result);
-        return result;
+  }
+
+  void insertHelper(TreeNode<T>*& node, T& value) {
+    if (node == nullptr) {
+      node = new TreeNode<T>(value);
+    } else if (value < node->data) {
+      insertHelper(node->left, value);
+    } else if (value > node->data) {
+      insertHelper(node->right, value);
     }
 
-    std::vector<T> preOrder() const {
-        std::vector<T> result;
-        preOrderTraversal(root, result);
-        return result;
+    updateSize(node);
+  }
+
+  TreeNode<T>* removeHelper(TreeNode<T>* node, T& value) {
+    if (node == nullptr) return node;
+
+    if (value < node->data) {
+      node->left = removeHelper(node->left, value);
+    } else if (value > node->data) {
+      node->right = removeHelper(node->right, value);
+    } else {
+      if (node->left == nullptr) {
+        TreeNode<T>* temp = node->right;
+        delete node;
+        return temp;
+      } else if (node->right == nullptr) {
+        TreeNode<T>* temp = node->left;
+        delete node;
+        return temp;
+      }
+
+      TreeNode<T>* temp = findMin(node->right);
+      node->data = temp->data;
+      node->right = removeHelper(node->right, temp->data);
     }
 
-    std::vector<T> postOrder() const {
-        std::vector<T> result;
-        postOrderTraversal(root, result);
-        return result;
+    updateSize(node);
+    return node;
+  }
+
+  TreeNode<T>* findMin(TreeNode<T>* node) {
+    while (node->left != nullptr) {
+      node = node->left;
     }
-    
-    // Utility methods
-    bool contains(const T& value) const {
-        return search(value) != nullptr;
+    return node;
+  }
+
+  TreeNode<T>* findNode(TreeNode<T>* node, T& value) {
+    if (node == nullptr || node->data == value) {
+      return node;
+    }
+    if (value < node->data) {
+      return findNode(node->left, value);
+    }
+    return findNode(node->right, value);
+  }
+
+  void clearHelper(TreeNode<T>* node) {
+    if (node != nullptr) {
+      clearHelper(node->left);
+      clearHelper(node->right);
+      delete node;
+    }
+  }
+
+  void inOrderHelper(TreeNode<T>* node, std::function<void(T&)> callback) {
+    if (node != nullptr) {
+      inOrderHelper(node->left, callback);   // Visit left subtree
+      callback(node->data);                  // Visit current node
+      inOrderHelper(node->right, callback);  // Visit right subtree
+    }
+  }
+
+ public:
+  BinarySearchTree() : root(nullptr) {}
+
+  ~BinarySearchTree() { clear(); }
+
+  void add(T& value) {
+    insertHelper(root, value);
+  }
+
+  void remove(T& value) { root = removeHelper(root, value); }
+
+  T* find(T& value) {
+    TreeNode<T>* node = findNode(root, value);
+    return node ? &node->data : nullptr;
+  }
+
+  int size() { return getSize(root); }
+
+  bool isEmpty() { return root == nullptr; }
+
+  void clear() {
+    clearHelper(root);
+    root = nullptr;
+  }
+
+  T* getKth(int k) {
+    if (k < 0 || k >= size()) {
+      throw std::out_of_range("Index out of bounds");
     }
 
-    T findMin() const {
-        if (isEmpty()) {
-            throw std::runtime_error("Tree is empty");
-        }
-        std::shared_ptr<TreeNode<T>> node = findMinNode(root);
-        return node->data;
-    }
+    TreeNode<T>* node = getKth(root, k);
+    return node ? &node->data : nullptr;
+  }
 
-    T findMax() const {
-        if (isEmpty()) {
-            throw std::runtime_error("Tree is empty");
-        }
-        std::shared_ptr<TreeNode<T>> node = root;
-        while (node->right != nullptr) {
-            node = node->right;
-        }
-        return node->data;
-    }
-
-    int height() const {
-        return calculateHeight(root);
-    }
+   void inOrderTraversal(std::function<void(T&)> callback) {
+    inOrderHelper(root, callback);
+  }
 };
 
-#endif // BINARY_TREE_H
+#endif  // BINARY_TREE_H

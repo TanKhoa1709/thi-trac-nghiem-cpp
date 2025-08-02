@@ -3,106 +3,83 @@
 
 #include <stdexcept>
 
-template<typename T>
+template <typename T>
 class DynamicArray {
-private:
-    T* data;
-    size_t size;
-    size_t capacity;
-    
-    void resize() {
-        capacity = capacity == 0 ? 1 : capacity * 2;
-        T* newData = new T[capacity];
-        
-        for (size_t i = 0; i < size; ++i) {
-            newData[i] = data[i];
-        }
-        
-        delete[] data;
-        data = newData;
-    }
+ private:
+  T *data;
+  int capacity;
+  int current_size;
 
-public:
-    // Constructor
-    DynamicArray() : data(nullptr), size(0), capacity(0) {}
-    
-    // Destructor
-    ~DynamicArray() {
-        delete[] data;
+  void resize() {
+    capacity *= 2;
+    T *temp = new T[capacity];
+    for (int i = 0; i < current_size; i++) {
+      temp[i] = data[i];
     }
-    
-    // Copy constructor
-    DynamicArray(const DynamicArray& other) : size(other.size), capacity(other.capacity) {
-        data = new T[capacity];
-        for (size_t i = 0; i < size; ++i) {
-            data[i] = other.data[i];
-        }
-    }
-    
-    // Assignment operator
-    DynamicArray& operator=(const DynamicArray& other) {
-        if (this != &other) {
-            delete[] data;
-            size = other.size;
-            capacity = other.capacity;
-            data = new T[capacity];
-            for (size_t i = 0; i < size; ++i) {
-                data[i] = other.data[i];
-            }
-        }
-        return *this;
-    }
-    
-    // Add element to end
-    void push_back(const T& value) {
-        if (size >= capacity) {
-            resize();
-        }
-        data[size++] = value;
-    }
-    
-    // Remove last element
-    void pop_back() {
-        if (size > 0) {
-            --size;
-        }
-    }
-    
-    T get(size_t index) {
-        if (index >= size) {
-            throw std::out_of_range("Index out of range");
-        }
-        return data[index];
-    }
+    delete[] data;
+    data = temp;
+  }
 
-    void set(size_t index, const T& value) {
-        if (index >= size) {
-            throw std::out_of_range("Index out of range");
+ public:
+  DynamicArray(int initial_capacity = 10)
+      : capacity(initial_capacity), current_size(0) {
+    data = new T[capacity];
+  }
+
+  ~DynamicArray() { delete[] data; }
+
+  void add(T &value) {
+    if (current_size >= capacity) {
+      resize();
+    }
+    data[current_size++] = value;
+  }
+
+  void remove(T &value) {
+    for (int i = 0; i < current_size; i++) {
+      if (data[i] == value) {
+        data[i] = T(); // Reset the value
+
+        // Shift elements left
+        for (int j = i; j < current_size - 1; j++) {
+          data[j] = data[j + 1];
         }
-        data[index] = value;
+        current_size--;
+        break;
+      }
     }
-    
-    // Capacity methods
-    size_t getSize() const {
-        return size;
+  }
+
+  T& get(int index) {
+    if (index < 0 || index >= current_size) {
+      throw std::out_of_range("Index out of bounds");
     }
-    
-    size_t getCapacity() const {
-        return capacity;
+    return data[index];
+  }
+
+  void set(int index, T &value) {
+    if (index < 0 || index >= current_size) {
+      throw std::out_of_range("Index out of bounds");
     }
-    
-    bool empty() const {
-        return size == 0;
+    data[index] = value;
+  }
+
+  int size() { return current_size; }
+
+  bool isEmpty() { return current_size == 0; }
+
+  void clear() {
+      for (int i = 0; i < current_size; i++) {
+          data[i] = T();  // Reset the value
+      }
+      current_size = 0;
+   }
+
+  void popBack() {
+    if (current_size > 0) {
+      current_size--;
     }
-    
-    bool isEmpty() const {
-        return size == 0;
-    }
-    
-    // Clear all elements
-    void clear() {
-        size = 0;
-    }
+  }
 };
 
-#endif // DYNAMIC_ARRAY_H
+#endif  // DYNAMIC_ARRAY_H

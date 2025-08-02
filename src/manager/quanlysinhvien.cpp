@@ -1,34 +1,28 @@
-#include "manager/quanlysinhvien.h"
+#include "../../include/manager/quanlysinhvien.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
+#include <vector>
 
 // Constructor
 QuanLySinhVien::QuanLySinhVien(const std::string& maLop) 
     : maLop(maLop) {
+    danhSachSinhVien = LinkedList<SinhVien>();
+
     loadFromFile();
 }
 
 // Destructor
 QuanLySinhVien::~QuanLySinhVien() {
     saveToFile();
-    
-    // Clean up all student pointers
-    auto current = danhSachSinhVien.first();
-    while (current != nullptr) {
-        SinhVien* student = *current;
-        danhSachSinhVien.removeFirst();
-        delete student;
-        current = danhSachSinhVien.first();
-    }
+    danhSachSinhVien.clear();
 }
 
 // Get all students as dynamic array
-DynamicArray<SinhVien*> QuanLySinhVien::danhSach() {
-    DynamicArray<SinhVien*> result;
+DynamicArray<SinhVien> QuanLySinhVien::danhSach() {
+    DynamicArray<SinhVien> result;
     
     for (int i = 0; i < danhSachSinhVien.size(); i++) {
-        result.push_back(danhSachSinhVien.get(i));
+        result.add(danhSachSinhVien.get(i));
     }
     
     return result;
@@ -38,46 +32,46 @@ DynamicArray<SinhVien*> QuanLySinhVien::danhSach() {
 SinhVien* QuanLySinhVien::tim(const std::string& maSinhVien) {
     // Manually iterate through the list to compare actual objects
     for (int i = 0; i < danhSachSinhVien.size(); i++) {
-        SinhVien* student = danhSachSinhVien.get(i);
-        if (student && student->getMaSinhVien() == maSinhVien) {
-            return student;
+        if (danhSachSinhVien.get(i).getMaSinhVien() == maSinhVien) {
+            return &danhSachSinhVien.get(i);
         }
     }
     return nullptr;
 }
 
 // Add new student
-bool QuanLySinhVien::them(SinhVien* sinhVien) {
-    if (!sinhVien || !sinhVien->validate()) {
+bool QuanLySinhVien::them(SinhVien& sinhVien) {
+    if (!sinhVien.validate()) {
         return false;
     }
     
     // Check if student ID already exists
-    if (tim(sinhVien->getMaSinhVien()) != nullptr) {
+    if (tim(sinhVien.getMaSinhVien()) != nullptr) {
         return false;
     }
     
-    return danhSachSinhVien.add(sinhVien);
+    danhSachSinhVien.add(sinhVien);
+    return true;
 }
 
 // Update existing student
-bool QuanLySinhVien::sua(SinhVien* sinhVien) {
-    if (!sinhVien || !sinhVien->validate()) {
+bool QuanLySinhVien::sua(SinhVien& sinhVien) {
+    if (!sinhVien.validate()) {
         return false;
     }
     
     // Find existing student
-    SinhVien* existing = tim(sinhVien->getMaSinhVien());
+    SinhVien* existing = tim(sinhVien.getMaSinhVien());
     if (!existing) {
         return false; // Student doesn't exist
     }
     
     // Update the existing student's data (ID cannot be changed)
-    existing->setHo(sinhVien->getHo());
-    existing->setTen(sinhVien->getTen());
-    existing->setPhai(sinhVien->getPhai());
-    existing->setPassword(sinhVien->getPassword());
-    
+    existing->setHo(sinhVien.getHo());
+    existing->setTen(sinhVien.getTen());
+    existing->setPhai(sinhVien.getPhai());
+    existing->setPassword(sinhVien.getPassword());
+
     return true;
 }
 
@@ -88,12 +82,8 @@ bool QuanLySinhVien::xoa(const std::string& maSinhVien) {
         return false;
     }
     
-    bool removed = danhSachSinhVien.remove(student);
-    if (removed) {
-        delete student;
-    }
-    
-    return removed;
+    danhSachSinhVien.remove(*student);
+    return true;
 }
 
 // Save to file
@@ -109,14 +99,12 @@ void QuanLySinhVien::saveToFile() {
     file << danhSachSinhVien.size() << std::endl;
     
     for (int i = 0; i < danhSachSinhVien.size(); i++) {
-        SinhVien* student = danhSachSinhVien.get(i);
-        if (student) {
-            file << student->getMaSinhVien() << "|"
-                 << student->getHo() << "|"
-                 << student->getTen() << "|"
-                 << (student->getPhai() ? "1" : "0") << "|"
-                 << student->getPassword() << std::endl;
-        }
+        SinhVien student = danhSachSinhVien.get(i);
+        file << student.getMaSinhVien() << "|"
+             << student.getHo() << "|"
+             << student.getTen() << "|"
+             << (student.getPhai() ? "1" : "0") << "|"
+             << student.getPassword() << std::endl;
     }
     
     file.close();
@@ -154,7 +142,7 @@ void QuanLySinhVien::loadFromFile() {
             bool phai = (tokens[3] == "1");
             std::string password = tokens[4];
             
-            SinhVien* student = new SinhVien(maSV, ho, ten, phai, password);
+            SinhVien student(maSV, ho, ten, phai, password);
             danhSachSinhVien.add(student);
         }
     }

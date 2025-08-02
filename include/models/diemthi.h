@@ -32,11 +32,11 @@ public:
     bool validate() const;
     
     // Operators for LinkedList operations
-    bool operator==(const DiemThi& other) const {
+    bool operator==(DiemThi& other) {
         return maMonHoc == other.maMonHoc;
     }
-    
-    bool operator!=(const DiemThi& other) const {
+
+    bool operator!=(DiemThi& other) {
         return !(*this == other);
     }
 };

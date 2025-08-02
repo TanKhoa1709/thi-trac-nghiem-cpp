@@ -46,9 +46,9 @@ public:
     bool kiemTraDapAn(char dapAnChon) const;
 
     // Operators for BST operations
-    bool operator<(const CauHoi& other) const { return maCauHoi < other.maCauHoi; }
-    bool operator==(const CauHoi& other) const { return maCauHoi == other.maCauHoi; }
-    bool operator>(const CauHoi& other) const { return maCauHoi > other.maCauHoi; }
+    bool operator<(CauHoi& other) { return maCauHoi < other.maCauHoi; }
+    bool operator==(CauHoi& other) { return maCauHoi == other.maCauHoi; }
+    bool operator>(CauHoi& other) { return maCauHoi > other.maCauHoi; }
 };
 
 #endif // CAUHOI_H

@@ -1,7 +1,6 @@
 #ifndef QUANLYMONHOC_H
 #define QUANLYMONHOC_H
 
-#include <string>
 #include "../models/monhoc.h"
 #include "../utils/DynamicArray.h"
 
@@ -11,8 +10,7 @@
  */
 class QuanLyMonHoc {
 private:
-    static const std::string DATA_FILE_PATH;           // "data/monhoc.txt"
-    DynamicArray<MonHoc*> danhSachMonHoc;              // Danh sách tuyến tính môn học
+    DynamicArray<MonHoc> danhSachMonHoc;              // Danh sách tuyến tính môn học
 
 public:
     // Constructors & Destructor
@@ -20,18 +18,18 @@ public:
     ~QuanLyMonHoc();
 
     // Basic CRUD operations
-    DynamicArray<MonHoc*> danhSach();
+    DynamicArray<MonHoc> danhSach();
     MonHoc* tim(const char* maMon);
-    bool them(MonHoc* monHoc);
-    bool sua(MonHoc* monHoc);
+    bool them(MonHoc& monHoc);
+    bool sua(MonHoc& monHoc);
     bool xoa(const char* maMon);
-    
+
     // Data persistence data/monhoc.txt
     void saveToFile();
     void loadFromFile();
 
     // Utility methods
-    int size() { return danhSachMonHoc.getSize(); }
+    int size() { return danhSachMonHoc.size(); }
     bool isEmpty() { return danhSachMonHoc.isEmpty(); }
 };
 

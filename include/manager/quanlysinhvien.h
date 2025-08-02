@@ -13,7 +13,7 @@
 class QuanLySinhVien {
 private:
     std::string maLop;                                 // Mã lớp học
-    LinkedList<SinhVien*> danhSachSinhVien;            // Danh sách liên kết sinh viên
+    LinkedList<SinhVien> danhSachSinhVien;            // Danh sách liên kết sinh viên
 
 public:
     // Constructors & Destructor
@@ -21,12 +21,12 @@ public:
     ~QuanLySinhVien();
 
     // Basic CRUD operations
-    DynamicArray<SinhVien*> danhSach();
+    DynamicArray<SinhVien> danhSach();
     SinhVien* tim(const std::string& maSinhVien);
-    bool them(SinhVien* sinhVien);
-    bool sua(SinhVien* sinhVien);
+    bool them(SinhVien& sinhVien);
+    bool sua(SinhVien& sinhVien);
     bool xoa(const std::string& maSinhVien);
-    
+
     // Data persistence data/sinhvien/sinhvien_<maLop>.txt
     void saveToFile();
     void loadFromFile();

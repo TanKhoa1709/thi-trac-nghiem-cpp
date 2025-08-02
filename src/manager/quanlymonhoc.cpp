@@ -1,31 +1,27 @@
-#include "manager/quanlymonhoc.h"
+#include "../../include/manager/quanlymonhoc.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <cstring>
 
 // Constructor
 QuanLyMonHoc::QuanLyMonHoc() {
+    danhSachMonHoc = DynamicArray<MonHoc>();
+
     loadFromFile();
 }
 
 // Destructor
 QuanLyMonHoc::~QuanLyMonHoc() {
     saveToFile();
-    
-    // Clean up all subject pointers
-    for (size_t i = 0; i < danhSachMonHoc.getSize(); i++) {
-        delete danhSachMonHoc.get(i);
-    }
     danhSachMonHoc.clear();
 }
 
 // Get all subjects as dynamic array
-DynamicArray<MonHoc*> QuanLyMonHoc::danhSach() {
-    DynamicArray<MonHoc*> result;
+DynamicArray<MonHoc> QuanLyMonHoc::danhSach() {
+    DynamicArray<MonHoc> result;
     
-    for (size_t i = 0; i < danhSachMonHoc.getSize(); i++) {
-        result.push_back(danhSachMonHoc.get(i));
+    for (int i = 0; i < danhSachMonHoc.size(); i++) {
+        result.add(danhSachMonHoc.get(i));
     }
     
     return result;
@@ -33,64 +29,56 @@ DynamicArray<MonHoc*> QuanLyMonHoc::danhSach() {
 
 // Find subject by code
 MonHoc* QuanLyMonHoc::tim(const char* maMon) {
-    for (size_t i = 0; i < danhSachMonHoc.getSize(); i++) {
-        if (std::strcmp(danhSachMonHoc.get(i)->getMaMon(), maMon) == 0) {
-            return danhSachMonHoc.get(i);
+    for (int i = 0; i < danhSachMonHoc.size(); i++) {
+        if (std::strcmp(danhSachMonHoc.get(i).getMaMon(), maMon) == 0) {
+            return &danhSachMonHoc.get(i);
         }
     }
     return nullptr;
 }
 
 // Add new subject
-bool QuanLyMonHoc::them(MonHoc* monHoc) {
-    if (!monHoc || !monHoc->validate()) {
+bool QuanLyMonHoc::them(MonHoc& monHoc) {
+    if (!monHoc.validate()) {
         return false;
     }
     
     // Check if subject code already exists
-    if (tim(monHoc->getMaMon()) != nullptr) {
+    if (tim(monHoc.getMaMon()) != nullptr) {
         return false;
     }
     
-    danhSachMonHoc.push_back(monHoc);
+    danhSachMonHoc.add(monHoc);
     return true;
 }
 
 // Update existing subject
-bool QuanLyMonHoc::sua(MonHoc* monHoc) {
-    if (!monHoc || !monHoc->validate()) {
+bool QuanLyMonHoc::sua(MonHoc& monHoc) {
+    if (!monHoc.validate()) {
         return false;
     }
     
     // Find existing subject
-    MonHoc* existing = tim(monHoc->getMaMon());
+    MonHoc* existing = tim(monHoc.getMaMon());
     if (!existing) {
         return false; // Subject doesn't exist
     }
     
     // Update the existing subject's data (only name can be updated, not the code)
-    existing->setTenMon(monHoc->getTenMon());
-    
+    existing->setTenMon(monHoc.getTenMon());
+
     return true;
 }
 
 // Remove subject by code
 bool QuanLyMonHoc::xoa(const char* maMon) {
-    for (size_t i = 0; i < danhSachMonHoc.getSize(); i++) {
-        if (std::strcmp(danhSachMonHoc.get(i)->getMaMon(), maMon) == 0) {
-            MonHoc* subjectToDelete = danhSachMonHoc.get(i);
-            
-            // Shift elements to remove the subject
-            for (size_t j = i; j < danhSachMonHoc.getSize() - 1; j++) {
-                danhSachMonHoc.set(j, danhSachMonHoc.get(j + 1));
-            }
-            danhSachMonHoc.pop_back();
-            
-            delete subjectToDelete;
-            return true;
-        }
+    MonHoc* subject = tim(maMon);
+    if (!subject) {
+        return false;
     }
-    return false;
+
+    danhSachMonHoc.remove(*subject);
+    return true;
 }
 
 // Save to file
@@ -102,11 +90,11 @@ void QuanLyMonHoc::saveToFile() {
         return;
     }
     
-    file << danhSachMonHoc.getSize() << std::endl;
-    
-    for (size_t i = 0; i < danhSachMonHoc.getSize(); i++) {
-        MonHoc* monHoc = danhSachMonHoc.get(i);
-        file << monHoc->getMaMon() << "|" << monHoc->getTenMon() << std::endl;
+    file << danhSachMonHoc.size() << std::endl;
+
+    for (size_t i = 0; i < danhSachMonHoc.size(); i++) {
+        MonHoc monHoc = danhSachMonHoc.get(i);
+        file << monHoc.getMaMon() << "|" << monHoc.getTenMon() << std::endl;
     }
     
     file.close();
@@ -132,8 +120,8 @@ void QuanLyMonHoc::loadFromFile() {
         std::string maMon, tenMon;
         
         if (std::getline(ss, maMon, '|') && std::getline(ss, tenMon)) {
-            MonHoc* monHoc = new MonHoc(maMon.c_str(), tenMon);
-            danhSachMonHoc.push_back(monHoc);
+            MonHoc monHoc(maMon.c_str(), tenMon);
+            danhSachMonHoc.add(monHoc);
         }
     }
     

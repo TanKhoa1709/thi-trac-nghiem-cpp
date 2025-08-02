@@ -1,9 +1,10 @@
-#include "manager/quanlycauhoi.h"
-#include <random>
+#include "../../include/manager/quanlycauhoi.h"
 #include <fstream>
 #include <sstream>
-#include <algorithm>
 #include <iostream>
+#include <random>
+#include <algorithm>
+#include <cstring>
 
 // Constructor
 QuanLyCauHoi::QuanLyCauHoi(const char* maMon) {
@@ -11,7 +12,7 @@ QuanLyCauHoi::QuanLyCauHoi(const char* maMon) {
     this->maMon[15] = '\0';
     
     // Set up comparison function for BST (compare by question ID)
-    cayQuanLyCauHoi = BinarySearchTree<CauHoi*>();
+    cayQuanLyCauHoi = BinarySearchTree<CauHoi>();
     
     loadFromFile();
 }
@@ -20,71 +21,63 @@ QuanLyCauHoi::QuanLyCauHoi(const char* maMon) {
 QuanLyCauHoi::~QuanLyCauHoi() {
     saveToFile();
     
-    // Clean up all question pointers
-    auto allQuestions = cayQuanLyCauHoi.inOrder();
-    for (CauHoi* question : allQuestions) {
-        delete question;
-    }
     cayQuanLyCauHoi.clear();
 }
 
 // Get all questions as dynamic array
-DynamicArray<CauHoi*> QuanLyCauHoi::danhSach() {
-    DynamicArray<CauHoi*> result;
-    auto questions = cayQuanLyCauHoi.inOrder();
-    
-    for (CauHoi* question : questions) {
-        result.push_back(question);
-    }
-    
+DynamicArray<CauHoi> QuanLyCauHoi::danhSach() {
+    DynamicArray<CauHoi> result;
+
+    cayQuanLyCauHoi.inOrderTraversal([&result](CauHoi& cauHoi) {
+        result.add(cauHoi);
+    });
+
     return result;
 }
 
 // Find question by ID
 CauHoi* QuanLyCauHoi::tim(int maCauHoi) {
-    for (CauHoi* question : cayQuanLyCauHoi.inOrder()) {
-        if (question->getMaCauHoi() == maCauHoi) {
-            return question;
-        }
-    }
-
-    return nullptr; // Not found
+    // Create a temporary question with the ID to search for
+    CauHoi query;
+    query.setMaCauHoi(maCauHoi);
+    return cayQuanLyCauHoi.find(query);
 }
 
 // Add new question
-bool QuanLyCauHoi::them(CauHoi* cauHoi) {
-    if (!cauHoi || !cauHoi->validate()) {
+bool QuanLyCauHoi::them(CauHoi& cauHoi) {
+    if (!cauHoi.validate()) {
         return false;
     }
     
     // Check if question ID already exists
-    if (tim(cauHoi->getMaCauHoi()) != nullptr) {
+    if (tim(cauHoi.getMaCauHoi()) != nullptr) {
         return false;
     }
     
-    return cayQuanLyCauHoi.insert(cauHoi);
+    cayQuanLyCauHoi.add(cauHoi);
+    return true;
 }
 
 // Update existing question
-bool QuanLyCauHoi::sua(CauHoi* cauHoi) {
-    if (!cauHoi || !cauHoi->validate()) {
+bool QuanLyCauHoi::sua(CauHoi& cauHoi) {
+    if (!cauHoi.validate()) {
         return false;
     }
     
     // Find existing question
-    CauHoi* existing = tim(cauHoi->getMaCauHoi());
+    CauHoi* existing = tim(cauHoi.getMaCauHoi());
     if (!existing) {
         return false; // Question doesn't exist
     }
     
-    // Update the existing question's data
-    existing->setNoiDung(cauHoi->getNoiDung());
-    existing->setLuaChonA(cauHoi->getLuaChonA());
-    existing->setLuaChonB(cauHoi->getLuaChonB());
-    existing->setLuaChonC(cauHoi->getLuaChonC());
-    existing->setLuaChonD(cauHoi->getLuaChonD());
-    existing->setDapAnDung(cauHoi->getDapAnDung());
-    
+    // Update the existing question's data (ID cannot be changed)
+    existing->setNoiDung(cauHoi.getNoiDung());
+    existing->setLuaChonA(cauHoi.getLuaChonA());
+    existing->setLuaChonB(cauHoi.getLuaChonB());
+    existing->setLuaChonC(cauHoi.getLuaChonC());
+    existing->setLuaChonD(cauHoi.getLuaChonD());
+    existing->setDapAnDung(cauHoi.getDapAnDung());
+
     return true;
 }
 
@@ -95,53 +88,55 @@ bool QuanLyCauHoi::xoa(int maCauHoi) {
         return false;
     }
     
-    // TODO: Check if question is used in any exam
-    if (kiemTraCauHoiDaSuDung(maCauHoi)) {
-        return false;
-    }
-    
-    bool removed = cayQuanLyCauHoi.remove(question);
-    if (removed) {
-        delete question;
-    }
-    
-    return removed;
+    cayQuanLyCauHoi.remove(*question);
+    return true;
 }
 
 // Generate random unique question ID
 int QuanLyCauHoi::taoMaCauHoiNgauNhien() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(1000, 999999);
+    std::uniform_int_distribution<> dis(1000, 999999);
     
     int newId;
     do {
         newId = dis(gen);
-    } while (tim(newId) != nullptr);
+    } while (tim(newId) != nullptr); // Ensure uniqueness
     
     return newId;
 }
 
 // Get random questions
-DynamicArray<CauHoi*> QuanLyCauHoi::layNgauNhien(int soLuong) {
-    DynamicArray<CauHoi*> result;
-    auto allQuestions = cayQuanLyCauHoi.inOrder();
+DynamicArray<CauHoi> QuanLyCauHoi::layNgauNhien(int soLuong) {
+    DynamicArray<CauHoi> allQuestions = danhSach();
+    DynamicArray<CauHoi> result;
     
-    if (soLuong >= static_cast<int>(allQuestions.size())) {
-        // Return all questions if requested more than available
-        for (CauHoi* question : allQuestions) {
-            result.push_back(question);
-        }
-        return result;
+    if (soLuong >= allQuestions.size()) {
+        return allQuestions; // Return all if requested more than available
     }
     
-    // Shuffle and take first soLuong questions
+    // Create indices array and shuffle
+    DynamicArray<int> indices;
+    for (int i = 0; i < allQuestions.size(); i++) {
+        indices.add(i);
+    }
+    
+    // Simple shuffle algorithm
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::shuffle(allQuestions.begin(), allQuestions.end(), gen);
+    for (int i = indices.size() - 1; i > 0; i--) {
+        std::uniform_int_distribution<> dis(0, i);
+        int j = dis(gen);
+        
+        // Swap indices[i] and indices[j]
+        int temp = indices.get(i);
+        indices.set(i, indices.get(j));
+        indices.set(j, temp);
+    }
     
+    // Take first soLuong questions
     for (int i = 0; i < soLuong; i++) {
-        result.push_back(allQuestions[i]);
+        result.add(allQuestions.get(indices.get(i)));
     }
     
     return result;
@@ -157,17 +152,18 @@ void QuanLyCauHoi::saveToFile() {
         return;
     }
     
-    auto questions = cayQuanLyCauHoi.inOrder();
-    file << questions.size() << std::endl;
+    DynamicArray<CauHoi> allQuestions = danhSach();
+    file << allQuestions.size() << std::endl;
     
-    for (CauHoi* question : questions) {
-        file << question->getMaCauHoi() << "|"
-             << question->getNoiDung() << "|"
-             << question->getLuaChonA() << "|"
-             << question->getLuaChonB() << "|"
-             << question->getLuaChonC() << "|"
-             << question->getLuaChonD() << "|"
-             << question->getDapAnDung() << std::endl;
+    for (int i = 0; i < allQuestions.size(); i++) {
+        CauHoi question = allQuestions.get(i);
+        file << question.getMaCauHoi() << "|"
+             << question.getNoiDung() << "|"
+             << question.getLuaChonA() << "|"
+             << question.getLuaChonB() << "|"
+             << question.getLuaChonC() << "|"
+             << question.getLuaChonD() << "|"
+             << question.getDapAnDung() << std::endl;
     }
     
     file.close();
@@ -199,12 +195,16 @@ void QuanLyCauHoi::loadFromFile() {
         }
         
         if (tokens.size() == 7) {
-            int id = std::stoi(tokens[0]);
-            char answer = tokens[6].empty() ? 'A' : tokens[6][0];
+            int maCauHoi = std::stoi(tokens[0]);
+            std::string noiDung = tokens[1];
+            std::string luaChonA = tokens[2];
+            std::string luaChonB = tokens[3];
+            std::string luaChonC = tokens[4];
+            std::string luaChonD = tokens[5];
+            char dapAnDung = tokens[6][0];
             
-            CauHoi* question = new CauHoi(id, tokens[1], tokens[2], 
-                                         tokens[3], tokens[4], tokens[5], answer);
-            cayQuanLyCauHoi.insert(question);
+            CauHoi question(maCauHoi, noiDung, luaChonA, luaChonB, luaChonC, luaChonD, dapAnDung);
+            cayQuanLyCauHoi.add(question);
         }
     }
     
@@ -213,7 +213,7 @@ void QuanLyCauHoi::loadFromFile() {
 
 // Check if question is used in exams (placeholder implementation)
 bool QuanLyCauHoi::kiemTraCauHoiDaSuDung(int maCauHoi) {
-    // TODO: Implement check against exam records
-    // For now, return false to allow deletion
+    // TODO: Implement logic to check if question is used in any exam
+    // For now, return false (allowing deletion)
     return false;
 }

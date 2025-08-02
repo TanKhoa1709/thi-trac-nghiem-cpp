@@ -48,11 +48,11 @@ public:
     std::string getPhaiBangChu() const { return phai ? "Nam" : "Nữ"; }
     
     // Operators for LinkedList operations
-    bool operator==(const SinhVien& other) const {
+    bool operator==(SinhVien& other) {
         return maSinhVien == other.maSinhVien;
     }
     
-    bool operator!=(const SinhVien& other) const {
+    bool operator!=(SinhVien& other) {
         return !(*this == other);
     }
 };

@@ -1,2 +1,2 @@
 1
-CTDL|5|A,B
+CTDL|0|D,D

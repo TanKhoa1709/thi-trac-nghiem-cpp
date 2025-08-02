@@ -13,7 +13,7 @@
 class QuanLyDiem {
 private:
     std::string maSinhVien;                    // Mã sinh viên
-    LinkedList<DiemThi*> danhSachDiem;         // Danh sách liên kết điểm thi
+    LinkedList<DiemThi> danhSachDiem;         // Danh sách liên kết điểm thi
 
 public:
     // Constructors & Destructor
@@ -21,12 +21,12 @@ public:
     ~QuanLyDiem();
 
     // Basic CRUD operations
-    DynamicArray<DiemThi*> danhSach();
+    DynamicArray<DiemThi> danhSach();
     DiemThi* tim(const std::string& maMonHoc);
-    bool them(DiemThi* diem);
-    bool sua(DiemThi* diem);
+    bool them(DiemThi& diem);
+    bool sua(DiemThi& diem);
     bool xoa(const std::string& maMonHoc);
-    
+
     // Statistics and analysis
     double tinhDiemTrungBinh();
     int demSoMonDau();

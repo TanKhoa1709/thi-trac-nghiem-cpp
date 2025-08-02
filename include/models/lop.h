@@ -35,8 +35,8 @@ public:
     bool validate() const;
     
     // Operators for array operations
-    bool operator==(const Lop& other) const { return maLop == other.maLop; }
-    bool operator!=(const Lop& other) const { return !(*this == other); }
+    bool operator==(Lop& other) { return maLop == other.maLop; }
+    bool operator!=(Lop& other) { return !(*this == other); }
 };
 
 #endif // LOP_H

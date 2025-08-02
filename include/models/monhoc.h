@@ -36,10 +36,10 @@ public:
     bool validate() const;
     
     // Operators for linear list operations
-    bool operator==(const MonHoc& other) const { 
+    bool operator==(MonHoc& other) { 
         return std::strcmp(maMon, other.maMon) == 0; 
     }
-    bool operator!=(const MonHoc& other) const { 
+    bool operator!=(MonHoc& other) { 
         return !(*this == other); 
     }
 };
