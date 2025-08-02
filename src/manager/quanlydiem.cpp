@@ -1,14 +1,12 @@
-#include "manager/quanlydiem.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "manager/quanlydiem.h"
+#include "utils/LinkedList.h"
 
 // Constructor
 QuanLyDiem::QuanLyDiem(const std::string& maSinhVien) 
     : maSinhVien(maSinhVien) {
-    danhSachDiem = DynamicArray<DiemThi>();
-    
-    loadFromFile();
 }
 
 // Destructor
@@ -18,14 +16,13 @@ QuanLyDiem::~QuanLyDiem() {
 }
 
 // Get all scores as dynamic array
-DynamicArray<DiemThi> QuanLyDiem::danhSach() {
-    DynamicArray<DiemThi> result;
+void QuanLyDiem::danhSach(DynamicArray<DiemThi>& result) {
+    // Clear the result array before adding
+    result.clear();
     
     for (int i = 0; i < danhSachDiem.size(); i++) {
         result.add(danhSachDiem.get(i));
     }
-    
-    return result;
 }
 
 // Find score by subject code
@@ -93,7 +90,7 @@ double QuanLyDiem::tinhDiemTrungBinh() {
     int count = 0;
     
     for (int i = 0; i < danhSachDiem.size(); i++) {
-        DiemThi score = danhSachDiem.get(i);
+        DiemThi& score = danhSachDiem.get(i);
         total += score.getDiem();
         count++;
     }
@@ -106,7 +103,7 @@ int QuanLyDiem::demSoMonDau() {
     int count = 0;
     
     for (int i = 0; i < danhSachDiem.size(); i++) {
-        DiemThi score = danhSachDiem.get(i);
+        DiemThi& score = danhSachDiem.get(i);
         if (score.getDiem() >= 5.0) {
             count++;
         }
@@ -120,7 +117,7 @@ int QuanLyDiem::demSoMonRot() {
     int count = 0;
     
     for (int i = 0; i < danhSachDiem.size(); i++) {
-        DiemThi score = danhSachDiem.get(i);
+        DiemThi& score = danhSachDiem.get(i);
         if (score.getDiem() < 5.0) {
             count++;
         }
@@ -140,14 +137,13 @@ void QuanLyDiem::saveToFile() {
     std::ofstream file(filename);
     
     if (!file.is_open()) {
-        std::cerr << "Cannot open file for writing: " << filename << std::endl;
-        return;
+        throw std::runtime_error("Cannot open file for writing: " + filename);
     }
     
     file << danhSachDiem.size() << std::endl;
     
     for (int i = 0; i < danhSachDiem.size(); i++) {
-        DiemThi score = danhSachDiem.get(i);
+        DiemThi& score = danhSachDiem.get(i);
         file << score.getMaMonHoc() << "|"
              << score.getDiem() << "|"
              << score.getChiTietBaiThi() << std::endl;
@@ -162,12 +158,12 @@ void QuanLyDiem::loadFromFile() {
     std::ifstream file(filename);
     
     if (!file.is_open()) {
-        return; // File doesn't exist yet, that's okay
+        throw std::runtime_error("Cannot open file for reading: " + filename);
     }
     
     int count;
     file >> count;
-    file.ignore(); // Ignore newline after count
+    file.ignore();
     
     for (int i = 0; i < count; i++) {
         std::string line;
@@ -182,12 +178,12 @@ void QuanLyDiem::loadFromFile() {
         }
         
         if (tokens.size() >= 2) {
-            std::string subjectCode = tokens[0];
-            double score = std::stod(tokens[1]);
-            std::string details = tokens.size() > 2 ? tokens[2] : "";
+            std::string subjectCode = tokens.get(0);
+            double score = std::stod(tokens.get(1));
+            std::string details = tokens.size() > 2 ? tokens.get(2) : "";
 
-            DiemThi examScore(subjectCode, score, details);
-            danhSachDiem.add(examScore);
+            DiemThi* examScore = new DiemThi(subjectCode, score, details);
+            danhSachDiem.add(*examScore);
         }
     }
     

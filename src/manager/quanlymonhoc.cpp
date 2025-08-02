@@ -2,12 +2,10 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <iostream>
 
 // Constructor
 QuanLyMonHoc::QuanLyMonHoc() {
-    danhSachMonHoc = DynamicArray<MonHoc>();
-
-    loadFromFile();
 }
 
 // Destructor
@@ -17,14 +15,13 @@ QuanLyMonHoc::~QuanLyMonHoc() {
 }
 
 // Get all subjects as dynamic array
-DynamicArray<MonHoc> QuanLyMonHoc::danhSach() {
-    DynamicArray<MonHoc> result;
+void QuanLyMonHoc::danhSach(DynamicArray<MonHoc>& result) {
+    // Clear the result array before adding
+    result.clear();
     
     for (int i = 0; i < danhSachMonHoc.size(); i++) {
-        result.add(danhSachMonHoc.get(i));
+      result.add(danhSachMonHoc.get(i));
     }
-    
-    return result;
 }
 
 // Find subject by code
@@ -86,14 +83,13 @@ void QuanLyMonHoc::saveToFile() {
     std::ofstream file("data/monhoc.txt");
     
     if (!file.is_open()) {
-        std::cerr << "Cannot open file for writing: " << "data/monhoc.txt" << std::endl;
-        return;
+        throw std::runtime_error("Cannot open file for writing: data/monhoc.txt");
     }
     
     file << danhSachMonHoc.size() << std::endl;
 
     for (size_t i = 0; i < danhSachMonHoc.size(); i++) {
-        MonHoc monHoc = danhSachMonHoc.get(i);
+        MonHoc& monHoc = danhSachMonHoc.get(i);
         file << monHoc.getMaMon() << "|" << monHoc.getTenMon() << std::endl;
     }
     
@@ -105,12 +101,12 @@ void QuanLyMonHoc::loadFromFile() {
     std::ifstream file("data/monhoc.txt");
     
     if (!file.is_open()) {
-        return; // File doesn't exist yet, that's okay
+        throw std::runtime_error("Cannot open file for reading: data/monhoc.txt");
     }
     
     int count;
     file >> count;
-    file.ignore(); // Ignore newline after count
+    file.ignore();
     
     for (int i = 0; i < count; i++) {
         std::string line;
@@ -120,8 +116,9 @@ void QuanLyMonHoc::loadFromFile() {
         std::string maMon, tenMon;
         
         if (std::getline(ss, maMon, '|') && std::getline(ss, tenMon)) {
-            MonHoc monHoc(maMon.c_str(), tenMon);
-            danhSachMonHoc.add(monHoc);
+            MonHoc* monHoc = new MonHoc(maMon.c_str(), tenMon);
+            danhSachMonHoc.add(*monHoc);
+            std::cout << "Loaded subject: " << maMon << " - " << tenMon << std::endl;
         }
     }
     

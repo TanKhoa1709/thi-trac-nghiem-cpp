@@ -1,6 +1,7 @@
 #include "models/monhoc.h"
 #include "manager/quanlycauhoi.h"
 #include <cstring>
+#include <iostream>
 
 // Default constructor
 MonHoc::MonHoc() : tenMon(""), quanLyCauHoi(nullptr) {
@@ -14,8 +15,10 @@ MonHoc::MonHoc(const char* ma, const std::string& ten)
     quanLyCauHoi = new QuanLyCauHoi(ma);
 }
 
+
 // Destructor
 MonHoc::~MonHoc() {
+  std::cout << "Destroying MonHoc: " << maMon << std::endl;
     delete quanLyCauHoi;
     quanLyCauHoi = nullptr;
 }

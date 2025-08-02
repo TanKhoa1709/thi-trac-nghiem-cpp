@@ -6,9 +6,6 @@
 // Constructor
 QuanLySinhVien::QuanLySinhVien(const std::string& maLop) 
     : maLop(maLop) {
-    danhSachSinhVien = LinkedList<SinhVien>();
-
-    loadFromFile();
 }
 
 // Destructor
@@ -18,14 +15,13 @@ QuanLySinhVien::~QuanLySinhVien() {
 }
 
 // Get all students as dynamic array
-DynamicArray<SinhVien> QuanLySinhVien::danhSach() {
-    DynamicArray<SinhVien> result;
+void QuanLySinhVien::danhSach(DynamicArray<SinhVien>& result) {
+    // Clear the result array before adding
+    result.clear();
     
     for (int i = 0; i < danhSachSinhVien.size(); i++) {
         result.add(danhSachSinhVien.get(i));
     }
-    
-    return result;
 }
 
 // Find student by ID
@@ -92,14 +88,13 @@ void QuanLySinhVien::saveToFile() {
     std::ofstream file(filename);
     
     if (!file.is_open()) {
-        std::cerr << "Cannot open file for writing: " << filename << std::endl;
-        return;
+        throw std::runtime_error("Cannot open file for writing: " + filename);
     }
     
     file << danhSachSinhVien.size() << std::endl;
     
     for (int i = 0; i < danhSachSinhVien.size(); i++) {
-        SinhVien student = danhSachSinhVien.get(i);
+        SinhVien& student = danhSachSinhVien.get(i);
         file << student.getMaSinhVien() << "|"
              << student.getHo() << "|"
              << student.getTen() << "|"
@@ -116,7 +111,7 @@ void QuanLySinhVien::loadFromFile() {
     std::ifstream file(filename);
     
     if (!file.is_open()) {
-        return; // File doesn't exist yet, that's okay
+        throw std::runtime_error("Cannot open file for reading: " + filename);
     }
     
     int count;
@@ -142,8 +137,8 @@ void QuanLySinhVien::loadFromFile() {
             bool phai = (tokens[3] == "1");
             std::string password = tokens[4];
             
-            SinhVien student(maSV, ho, ten, phai, password);
-            danhSachSinhVien.add(student);
+            SinhVien* student = new SinhVien(maSV, ho, ten, phai, password);
+            danhSachSinhVien.add(*student);
         }
     }
     

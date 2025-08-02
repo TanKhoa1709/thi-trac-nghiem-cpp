@@ -4,9 +4,6 @@
 
 // Constructor
 QuanLyLop::QuanLyLop() {
-    danhSachLop = DynamicArray<Lop>(); 
-
-    loadFromFile();
 }
 
 // Destructor
@@ -17,14 +14,13 @@ QuanLyLop::~QuanLyLop() {
 }
 
 // Get all classes as dynamic array
-DynamicArray<Lop> QuanLyLop::danhSach() {
-    DynamicArray<Lop> result;
-    
+void QuanLyLop::danhSach(DynamicArray<Lop>& result) {
+    // Clear the result array before adding
+    result.clear();
+
     for (int i = 0; i < danhSachLop.size(); i++) {
         result.add(danhSachLop.get(i));
     }
-    
-    return result;
 }
 
 // Find class by code
@@ -86,14 +82,13 @@ void QuanLyLop::saveToFile() {
     std::ofstream file("data/lop.txt");
     
     if (!file.is_open()) {
-        std::cerr << "Cannot open file for writing: " << "data/lop.txt" << std::endl;
-        return;
+        throw std::runtime_error("Cannot open file for writing: data/lop.txt");
     }
     
     file << danhSachLop.size() << std::endl;
     
     for (size_t i = 0; i < danhSachLop.size(); i++) {
-        Lop lop = danhSachLop.get(i);
+        Lop& lop = danhSachLop.get(i);
         file << lop.getMaLop() << "|" << lop.getTenLop() << std::endl;
     }
     
@@ -105,12 +100,12 @@ void QuanLyLop::loadFromFile() {
     std::ifstream file("data/lop.txt");
     
     if (!file.is_open()) {
-        return; // File doesn't exist yet, that's okay
+        throw std::runtime_error("Cannot open file for reading: data/lop.txt");
     }
     
     int count;
     file >> count;
-    file.ignore(); // Ignore newline after count
+    file.ignore();
     
     for (int i = 0; i < count; i++) {
         std::string line;
@@ -120,8 +115,8 @@ void QuanLyLop::loadFromFile() {
         std::string maLop, tenLop;
         
         if (std::getline(ss, maLop, '|') && std::getline(ss, tenLop)) {
-            Lop lop(maLop, tenLop);
-            danhSachLop.add(lop);
+            Lop* lop = new Lop(maLop, tenLop);
+            danhSachLop.add(*lop);
         }
     }
     

@@ -1,6 +1,8 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <stdexcept>
+
 template <typename T>
 struct ListNode {
   T data;

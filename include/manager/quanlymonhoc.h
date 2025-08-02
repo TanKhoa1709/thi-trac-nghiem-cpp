@@ -1,8 +1,8 @@
 #ifndef QUANLYMONHOC_H
 #define QUANLYMONHOC_H
 
-#include "models/monhoc.h"
-#include "utils/DynamicArray.h"
+#include "../models/monhoc.h"
+#include "../utils/DynamicArray.h"
 
 /**
  * @brief Quản lý môn học - Danh sách tuyến tính
@@ -18,7 +18,7 @@ public:
     ~QuanLyMonHoc();
 
     // Basic CRUD operations
-    DynamicArray<MonHoc> danhSach();
+    void danhSach(DynamicArray<MonHoc>& result);
     MonHoc* tim(const char* maMon);
     bool them(MonHoc& monHoc);
     bool sua(MonHoc& monHoc);

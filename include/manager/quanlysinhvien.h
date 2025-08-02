@@ -2,9 +2,9 @@
 #define QUANLYSINHVIEN_H
 
 #include <string>
-#include "models/sinhvien.h"
-#include "utils/LinkedList.h"
-#include "utils/DynamicArray.h"
+#include "../models/sinhvien.h"
+#include "../utils/LinkedList.h"
+#include "../utils/DynamicArray.h"
 
 /**
  * @brief Quản lý sinh viên - Danh sách liên kết
@@ -21,7 +21,7 @@ public:
     ~QuanLySinhVien();
 
     // Basic CRUD operations
-    DynamicArray<SinhVien> danhSach();
+    void danhSach(DynamicArray<SinhVien>& result);
     SinhVien* tim(const std::string& maSinhVien);
     bool them(SinhVien& sinhVien);
     bool sua(SinhVien& sinhVien);

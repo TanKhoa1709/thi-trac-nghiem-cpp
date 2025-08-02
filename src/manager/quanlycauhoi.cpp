@@ -4,16 +4,13 @@
 #include <random>
 #include <algorithm>
 #include <cstring>
+#include <iostream>
 
 // Constructor
-QuanLyCauHoi::QuanLyCauHoi(const char* maMon) {
-    std::strncpy(this->maMon, maMon, 15);
-    this->maMon[15] = '\0';
-    
-    // Set up comparison function for BST (compare by question ID)
-    cayQuanLyCauHoi = BinarySearchTree<CauHoi>();
-    
-    loadFromFile();
+QuanLyCauHoi::QuanLyCauHoi(const char* ma) {
+    // Copy at most 15 characters to leave space for null-terminator
+    std::strncpy(this->maMon, ma, sizeof(this->maMon) - 1);
+    this->maMon[15] = '\0';  // Ensure null-termination
 }
 
 // Destructor
@@ -24,14 +21,14 @@ QuanLyCauHoi::~QuanLyCauHoi() {
 }
 
 // Get all questions as dynamic array
-DynamicArray<CauHoi> QuanLyCauHoi::danhSach() {
-    DynamicArray<CauHoi> result;
-
+void QuanLyCauHoi::danhSach(DynamicArray<CauHoi>& result) {
+    // Clear the result array before adding
+    result.clear();
+    
+    // Use in-order traversal to get questions in sorted order
     cayQuanLyCauHoi.inOrderTraversal([&result](CauHoi& cauHoi) {
         result.add(cauHoi);
     });
-
-    return result;
 }
 
 // Find question by ID
@@ -107,7 +104,8 @@ int QuanLyCauHoi::taoMaCauHoiNgauNhien() {
 
 // Get random questions
 DynamicArray<CauHoi> QuanLyCauHoi::layNgauNhien(int soLuong) {
-    DynamicArray<CauHoi> allQuestions = danhSach();
+    DynamicArray<CauHoi> allQuestions;
+    danhSach(allQuestions);
     DynamicArray<CauHoi> result;
     
     if (soLuong >= allQuestions.size()) {
@@ -143,15 +141,16 @@ DynamicArray<CauHoi> QuanLyCauHoi::layNgauNhien(int soLuong) {
 
 // Save to file
 void QuanLyCauHoi::saveToFile() {
-    std::string filename = "data/cauhoi/cauhoi_" + std::string(maMon) + ".txt";
+    std::string maMonStr(this->maMon);
+    std::string filename = "data/cauhoi/cauhoi_" + maMonStr + ".txt";
     std::ofstream file(filename);
     
     if (!file.is_open()) {
-        std::cerr << "Cannot open file for writing: " << filename << std::endl;
-        return;
+        throw std::runtime_error("Cannot open file for writing: " + filename);
     }
     
-    DynamicArray<CauHoi> allQuestions = danhSach();
+    DynamicArray<CauHoi> allQuestions;
+    danhSach(allQuestions);
     file << allQuestions.size() << std::endl;
     
     for (int i = 0; i < allQuestions.size(); i++) {
@@ -170,16 +169,17 @@ void QuanLyCauHoi::saveToFile() {
 
 // Load from file
 void QuanLyCauHoi::loadFromFile() {
-    std::string filename = "data/cauhoi/cauhoi_" + std::string(maMon) + ".txt";
+    std::string filename = "data/cauhoi/cauhoi_" + std::string(this->maMon) + ".txt";
     std::ifstream file(filename);
+
     
     if (!file.is_open()) {
-        return; // File doesn't exist yet, that's okay
+        throw std::runtime_error("Cannot open file for reading: " + filename);
     }
     
     int count;
     file >> count;
-    file.ignore(); // Ignore newline after count
+    file.ignore();
     
     for (int i = 0; i < count; i++) {
         std::string line;
@@ -202,8 +202,8 @@ void QuanLyCauHoi::loadFromFile() {
             std::string luaChonD = tokens[5];
             char dapAnDung = tokens[6][0];
             
-            CauHoi question(maCauHoi, noiDung, luaChonA, luaChonB, luaChonC, luaChonD, dapAnDung);
-            cayQuanLyCauHoi.add(question);
+            CauHoi* question = new CauHoi(maCauHoi, noiDung, luaChonA, luaChonB, luaChonC, luaChonD, dapAnDung);
+            cayQuanLyCauHoi.add(*question);
         }
     }
     

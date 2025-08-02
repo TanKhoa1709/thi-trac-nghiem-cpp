@@ -2,8 +2,8 @@
 #define QUANLYLOP_H
 
 #include <string>
-#include "models/lop.h"
-#include "utils/DynamicArray.h"
+#include "../models/lop.h"
+#include "../utils/DynamicArray.h"
 
 /**
  * @brief Quản lý danh sách lớp - Mảng con trỏ
@@ -19,7 +19,7 @@ public:
     ~QuanLyLop();
 
     // Basic CRUD operations
-    DynamicArray<Lop> danhSach();
+    void danhSach(DynamicArray<Lop>& result);
     Lop* tim(const std::string& maLop);
     bool them(Lop& lop);
     bool sua(Lop& lop);
