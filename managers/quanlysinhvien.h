@@ -10,22 +10,23 @@
  * @brief Quản lý sinh viên - Danh sách liên kết
  * Quản lý danh sách sinh viên trong một lớp học
  */
-class QuanLySinhVien {
+class QuanLySinhVien
+{
 private:
-    std::string maLop;                                 // Mã lớp học
-    LinkedList<SinhVien> danhSachSinhVien;            // Danh sách liên kết sinh viên
+    std::string maLop;                     // Mã lớp học
+    LinkedList<SinhVien> danhSachSinhVien; // Danh sách liên kết sinh viên
 
 public:
     // Constructors & Destructor
-    explicit QuanLySinhVien(const std::string& maLop);
+    explicit QuanLySinhVien(const std::string &maLop);
     ~QuanLySinhVien();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<SinhVien*>& result);
-    SinhVien* tim(const std::string& maSinhVien);
-    bool them(SinhVien& sinhVien);
-    bool sua(SinhVien& sinhVien);
-    bool xoa(const std::string& maSinhVien);
+    void danhSach(DynamicArray<SinhVien *> &result);
+    SinhVien *tim(const std::string &maSinhVien);
+    bool them(SinhVien &sinhVien);
+    bool sua(SinhVien &sinhVien);
+    bool xoa(const std::string &maSinhVien);
 
     // Data persistence data/sinhvien/sinhvien_<maLop>.txt
     void saveToFile();

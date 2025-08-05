@@ -30,8 +30,8 @@ public:
     ~StudentDashboard();
 
     // Set current student and controllers
-    void setCurrentStudent(SinhVien* student);
-    void setSubjectManager(QuanLyMonHoc* manager);
+    void setCurrentStudent(SinhVien *student);
+    void setSubjectManager(QuanLyMonHoc *manager);
 
 public slots:
     void refreshScores();
@@ -39,7 +39,7 @@ public slots:
 
 signals:
     void logoutRequested();
-    void examRequested(MonHoc* subject, int numQuestions);
+    void examRequested(MonHoc *subject, int numQuestions);
 
 private slots:
     void startExam();
@@ -49,34 +49,34 @@ private slots:
 
 private:
     // UI Components
-    QLabel* welcomeLabel;
-    QLabel* studentInfoLabel;
-    
+    QLabel *welcomeLabel;
+    QLabel *studentInfoLabel;
+
     // Exam section
-    QGroupBox* examGroup;
-    QPushButton* takeExamButton;
-    QPushButton* viewProfileButton;
-    
+    QGroupBox *examGroup;
+    QPushButton *takeExamButton;
+    QPushButton *viewProfileButton;
+
     // Scores section
-    QGroupBox* scoresGroup;
-    QTableWidget* scoresTable;
-    QPushButton* viewDetailButton;
-    QLabel* statisticsLabel;
-    
+    QGroupBox *scoresGroup;
+    QTableWidget *scoresTable;
+    QPushButton *viewDetailButton;
+    QLabel *statisticsLabel;
+
     // Logout button
-    QPushButton* logoutButton;
-    
+    QPushButton *logoutButton;
+
     // Current state
-    SinhVien* currentStudent;
-    QuanLyMonHoc* subjectManager;
-    ExamWidget* examDialog;
-    
+    SinhVien *currentStudent;
+    QuanLyMonHoc *subjectManager;
+    ExamWidget *examDialog;
+
     // Setup methods
     void setupUI();
     void setupConnections();
     void updateStudentInfo();
     void updateStatistics();
-    
+
     // Helper methods
     QString formatGrade(double score);
     QString getPassFailStatus(double score);

@@ -12,8 +12,9 @@
 #include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
+namespace Ui
+{
+    class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -37,40 +38,40 @@ public:
 
 private slots:
     void handleLoginRequest();
-    void handleLoginSuccess(QString userType, SinhVien* student = nullptr);
+    void handleLoginSuccess(QString userType, SinhVien *student = nullptr);
     void handleLoginFailed(QString errorMessage);
     void handleLogout();
-    void handleExamRequest(MonHoc* subject, int numQuestions);
+    void handleExamRequest(MonHoc *subject, int numQuestions);
     void handleExamCompleted(double score);
     void handleExamCancelled();
 
 private:
     Ui::MainWindow *ui;
-    QStackedWidget* centralStack;
-    
+    QStackedWidget *centralStack;
+
     // Login UI components
-    QWidget* loginWidget;
-    QLineEdit* usernameEdit;
-    QLineEdit* passwordEdit;
-    QComboBox* userTypeCombo;
-    QPushButton* loginButton;
-    
+    QWidget *loginWidget;
+    QLineEdit *usernameEdit;
+    QLineEdit *passwordEdit;
+    QComboBox *userTypeCombo;
+    QPushButton *loginButton;
+
     // Dashboard widgets
-    TeacherDashboard* teacherDashboard;
-    StudentDashboard* studentDashboard;
-    
+    TeacherDashboard *teacherDashboard;
+    StudentDashboard *studentDashboard;
+
     // Exam dialog
-    ExamWidget* examDialog;
-    
+    ExamWidget *examDialog;
+
     // Controllers
-    AuthController* authController;
-    QuanLyLop* classManager;
-    QuanLyMonHoc* subjectManager;
-    
+    AuthController *authController;
+    QuanLyLop *classManager;
+    QuanLyMonHoc *subjectManager;
+
     // Session state
     bool isTeacher;
-    SinhVien* currentStudent;
-    
+    SinhVien *currentStudent;
+
     // Setup methods
     void initializeControllers();
     void setupUI();

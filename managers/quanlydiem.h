@@ -10,22 +10,23 @@
  * @brief Quản lý điểm thi - Danh sách liên kết đơn
  * Lưu trữ điểm thi của một sinh viên theo từng môn học
  */
-class QuanLyDiem {
+class QuanLyDiem
+{
 private:
-    std::string maSinhVien;                    // Mã sinh viên
-    LinkedList<DiemThi> quanLyDiem;         // Danh sách liên kết điểm thi
+    std::string maSinhVien;         // Mã sinh viên
+    LinkedList<DiemThi> quanLyDiem; // Danh sách liên kết điểm thi
 
 public:
     // Constructors & Destructor
-    explicit QuanLyDiem(const std::string& maSinhVien);
+    explicit QuanLyDiem(const std::string &maSinhVien);
     ~QuanLyDiem();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<DiemThi*>& result);
-    DiemThi* tim(const char* maMon);
-    bool them(DiemThi& diem);
-    bool sua(DiemThi& diem);
-    bool xoa(const char* maMon);
+    void danhSach(DynamicArray<DiemThi *> &result);
+    DiemThi *tim(const char *maMon);
+    bool them(DiemThi &diem);
+    bool sua(DiemThi &diem);
+    bool xoa(const char *maMon);
 
     // Statistics and analysis
     double tinhDiemTrungBinh();
@@ -36,7 +37,7 @@ public:
     // Data persistence data/diemthi/diemthi_<maSinhVien>.txt
     void saveToFile();
     void loadFromFile();
-    
+
     // Utility methods
     int size() { return quanLyDiem.size(); }
     bool isEmpty() { return quanLyDiem.isEmpty(); }

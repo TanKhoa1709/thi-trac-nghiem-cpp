@@ -41,8 +41,8 @@ public:
     ~TeacherDashboard();
 
     // Set controllers
-    void setClassManager(QuanLyLop* manager);
-    void setSubjectManager(QuanLyMonHoc* manager);
+    void setClassManager(QuanLyLop *manager);
+    void setSubjectManager(QuanLyMonHoc *manager);
 
 public slots:
     void refreshAllData();
@@ -57,78 +57,78 @@ private slots:
     void addNewClass();
     void editClass();
     void deleteClass();
-    
+
     // Student management
     void refreshStudentList();
     void addNewStudent();
     void editStudent();
     void deleteStudent();
-    
+
     // Subject management
     void refreshSubjectList();
     void addNewSubject();
     void editSubject();
     void deleteSubject();
     void manageQuestions();
-    
+
     // Question management
     void refreshQuestionList();
     void onSubjectChangedForQuestions();
     void addNewQuestion();
     void editQuestion();
     void deleteQuestion();
-    
+
     // Report management
     void generateExamScoreReport();
     void exportReport();
 
 private:
     // UI Components
-    QTabWidget* mainTabs;
-    
+    QTabWidget *mainTabs;
+
     // Class Management Tab
-    QWidget* classTab;
-    QTableWidget* classTable;
-    QTableWidget* studentTable;
-    QPushButton* addClassButton;
-    QPushButton* editClassButton;
-    QPushButton* deleteClassButton;
-    QPushButton* addStudentButton;
-    QPushButton* editStudentButton;
-    QPushButton* deleteStudentButton;
-    
+    QWidget *classTab;
+    QTableWidget *classTable;
+    QTableWidget *studentTable;
+    QPushButton *addClassButton;
+    QPushButton *editClassButton;
+    QPushButton *deleteClassButton;
+    QPushButton *addStudentButton;
+    QPushButton *editStudentButton;
+    QPushButton *deleteStudentButton;
+
     // Subject Management Tab
-    QWidget* subjectTab;
-    QTableWidget* subjectTable;
-    QPushButton* addSubjectButton;
-    QPushButton* editSubjectButton;
-    QPushButton* deleteSubjectButton;
-    QPushButton* manageQuestionsButton;
-    
+    QWidget *subjectTab;
+    QTableWidget *subjectTable;
+    QPushButton *addSubjectButton;
+    QPushButton *editSubjectButton;
+    QPushButton *deleteSubjectButton;
+    QPushButton *manageQuestionsButton;
+
     // Question Management Tab
-    QWidget* questionTab;
-    QComboBox* subjectComboForQuestions;
-    QTableWidget* questionTable;
-    QPushButton* addQuestionButton;
-    QPushButton* editQuestionButton;
-    QPushButton* deleteQuestionButton;
-    
+    QWidget *questionTab;
+    QComboBox *subjectComboForQuestions;
+    QTableWidget *questionTable;
+    QPushButton *addQuestionButton;
+    QPushButton *editQuestionButton;
+    QPushButton *deleteQuestionButton;
+
     // Reports Tab
-    QWidget* reportsTab;
-    QComboBox* reportClassCombo;
-    QComboBox* reportSubjectCombo;
-    QTableWidget* reportTable;
-    QPushButton* generateReportButton;
-    QPushButton* exportReportButton;
-    
+    QWidget *reportsTab;
+    QComboBox *reportClassCombo;
+    QComboBox *reportSubjectCombo;
+    QTableWidget *reportTable;
+    QPushButton *generateReportButton;
+    QPushButton *exportReportButton;
+
     // Controllers
-    QuanLyLop* classManager;
-    QuanLyMonHoc* subjectManager;
-    
+    QuanLyLop *classManager;
+    QuanLyMonHoc *subjectManager;
+
     // Current selections
     QString currentClassCode;
     QString currentSubjectCode;
-    
+
     // Setup methods
     void setupUI();
     void setupClassTab();
@@ -136,12 +136,12 @@ private:
     void setupQuestionTab();
     void setupReportsTab();
     void setupConnections();
-    
+
     // Helper methods
     void populateSubjectCombo();
     void populateReportCombos();
-    MonHoc* getCurrentSubject();
-    Lop* getCurrentClass();
+    MonHoc *getCurrentSubject();
+    Lop *getCurrentClass();
 };
 
 #endif // TEACHERDASHBOARD_H

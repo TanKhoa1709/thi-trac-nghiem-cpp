@@ -9,28 +9,29 @@
  * @brief Quản lý câu hỏi - Cây nhị phân tìm kiếm
  * Sử dụng BST với khóa là ID câu hỏi để tối ưu tìm kiếm
  */
-class QuanLyCauHoi {
+class QuanLyCauHoi
+{
 private:
-    char maMon[16];                                   // Mã môn học
-    BinarySearchTree<CauHoi> cayQuanLyCauHoi;         // Cây BST quản lý câu hỏi
+    char maMon[16];                           // Mã môn học
+    BinarySearchTree<CauHoi> cayQuanLyCauHoi; // Cây BST quản lý câu hỏi
 
 public:
     // Constructors & Destructor
-    explicit QuanLyCauHoi(const char* maMon);
+    explicit QuanLyCauHoi(const char *maMon);
     ~QuanLyCauHoi();
 
     // Basic CRUD operations
-    void danhSach(DynamicArray<CauHoi*>& result);
-    CauHoi* tim(int maCauHoi);
-    bool them(CauHoi& cauHoi);
-    bool sua(CauHoi& cauHoi);
+    void danhSach(DynamicArray<CauHoi *> &result);
+    CauHoi *tim(int maCauHoi);
+    bool them(CauHoi &cauHoi);
+    bool sua(CauHoi &cauHoi);
     bool xoa(int maCauHoi);
-    
+
     // ID generation - Tự động tạo ngẫu nhiên và duy nhất
     int taoMaCauHoiNgauNhien();
-    
+
     // Random question selection
-    void layNgauNhien(DynamicArray<CauHoi*>& result, int soLuong);
+    void layNgauNhien(DynamicArray<CauHoi *> &result, int soLuong);
 
     // Data persistence data/cauhoi/cauhoi_<maMon>.txt
     void saveToFile();
@@ -39,7 +40,7 @@ public:
     // Utility methods
     int size() { return cayQuanLyCauHoi.size(); }
     bool isEmpty() { return cayQuanLyCauHoi.isEmpty(); }
-    
+
     // Validation
     bool kiemTraCauHoiDaSuDung(int maCauHoi); // TODO
 };

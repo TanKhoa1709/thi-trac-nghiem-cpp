@@ -19,7 +19,8 @@ class MonHoc;
 class CauHoi;
 class SinhVien;
 class DiemThi;
-template<typename T> class DynamicArray;
+template <typename T>
+class DynamicArray;
 
 /**
  * @brief Exam Widget - Modal dialog for taking exams
@@ -34,7 +35,7 @@ public:
     ~ExamWidget();
 
     // Setup exam
-    void startExam(MonHoc* subject, int numQuestions, SinhVien* student);
+    void startExam(MonHoc *subject, int numQuestions, SinhVien *student);
 
 signals:
     void examCompleted(double score);
@@ -49,55 +50,55 @@ private slots:
     void goToQuestion(int questionIndex);
 
 protected:
-    void closeEvent(QCloseEvent* event) override;
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     // UI Components
-    QLabel* titleLabel;
-    QLabel* timerLabel;
-    QProgressBar* progressBar;
-    
+    QLabel *titleLabel;
+    QLabel *timerLabel;
+    QProgressBar *progressBar;
+
     // Question display
-    QScrollArea* questionScrollArea;
-    QLabel* questionNumberLabel;
-    QLabel* questionContentLabel;
-    
+    QScrollArea *questionScrollArea;
+    QLabel *questionNumberLabel;
+    QLabel *questionContentLabel;
+
     // Answer options
-    QButtonGroup* answerGroup;
-    QRadioButton* optionA;
-    QRadioButton* optionB;
-    QRadioButton* optionC;
-    QRadioButton* optionD;
-    
+    QButtonGroup *answerGroup;
+    QRadioButton *optionA;
+    QRadioButton *optionB;
+    QRadioButton *optionC;
+    QRadioButton *optionD;
+
     // Navigation
-    QPushButton* previousButton;
-    QPushButton* nextButton;
-    QPushButton* submitButton;
-    QPushButton* cancelButton;
-    
+    QPushButton *previousButton;
+    QPushButton *nextButton;
+    QPushButton *submitButton;
+    QPushButton *cancelButton;
+
     // Question navigation panel
-    QFrame* navigationPanel;
-    QVBoxLayout* navLayout;
-    
+    QFrame *navigationPanel;
+    QVBoxLayout *navLayout;
+
     // Timer
-    QTimer* examTimer;
+    QTimer *examTimer;
     int timeRemaining; // in seconds
     int totalTime;     // in seconds
-    
+
     // Exam data
-    MonHoc* currentSubject;
-    SinhVien* currentStudent;
-    DynamicArray<CauHoi*>* questions;
-    DynamicArray<char>* studentAnswers;
+    MonHoc *currentSubject;
+    SinhVien *currentStudent;
+    DynamicArray<CauHoi *> *questions;
+    DynamicArray<char> *studentAnswers;
     int currentQuestionIndex;
     int totalQuestions;
-    
+
     // Setup methods
     void setupUI();
     void setupConnections();
     void setupTimer(int minutes = 60);
     void createNavigationPanel();
-    
+
     // Exam logic
     void loadQuestion(int index);
     void saveCurrentAnswer();
@@ -105,7 +106,7 @@ private:
     double calculateScore();
     void updateQuestionNavigation();
     void updateProgress();
-    
+
     // Helper methods
     QString formatTime(int seconds);
     char getSelectedAnswer();
