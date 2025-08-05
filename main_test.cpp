@@ -8,18 +8,21 @@
 
 
 // Include manager classes
-#include "include/manager/quanlylop.h"
-#include "include/manager/quanlymonhoc.h"
-#include "include/manager/quanlycauhoi.h"
-#include "include/manager/quanlysinhvien.h"
-#include "include/manager/quanlydiem.h"
+#include "managers/quanlylop.h"
+#include "managers/quanlymonhoc.h"
+#include "managers/quanlycauhoi.h"
+#include "managers/quanlysinhvien.h"
+#include "managers/quanlydiem.h"
 
 // Include model classes
-#include "include/models/lop.h"
-#include "include/models/monhoc.h"
-#include "include/models/cauhoi.h"
-#include "include/models/sinhvien.h"
-#include "include/models/diemthi.h"
+#include "models/lop.h"
+#include "models/monhoc.h"
+#include "models/cauhoi.h"
+#include "models/sinhvien.h"
+#include "models/diemthi.h"
+
+// Include utility classes
+#include "utils/DynamicArray.h"
 
 using namespace std;
 
@@ -134,9 +137,9 @@ void menuQuanLyLop() {
                 cin.ignore();
                 cout << "Ten lop: ";
                 getline(cin, tenLop);
-                
-                Lop lopMoi(maLop, tenLop);
-                if (quanLyLop->them(lopMoi)) {
+
+                Lop* lopMoi = new Lop(maLop, tenLop);
+                if (quanLyLop->them(*lopMoi)) {
                     cout << "Them lop thanh cong!\n";
                     quanLyLop->saveToFile();
                 } else {
@@ -242,9 +245,9 @@ void menuQuanLyLop() {
                                 phai = (phaiChoice == 1);
                                 cout << "Mat khau: ";
                                 cin >> password;
-                                
-                                SinhVien svMoi(masv, ho, ten, phai, password);
-                                if (lop->getQuanLySinhVien()->them(svMoi)) {
+
+                                SinhVien* svMoi = new SinhVien(masv, ho, ten, phai, password);
+                                if (lop->getQuanLySinhVien()->them(*svMoi)) {
                                     cout << "Them sinh vien thanh cong!\n";
                                     lop->getQuanLySinhVien()->saveToFile();
                                 } else {
@@ -310,9 +313,9 @@ void menuQuanLyMonHoc() {
                 cin.ignore();
                 cout << "Ten mon hoc: ";
                 getline(cin, tenMon);
-                
-                MonHoc monMoi(maMon.c_str(), tenMon);
-                if (quanLyMonHoc->them(monMoi)) {
+
+                MonHoc* monMoi = new MonHoc(maMon.c_str(), tenMon);
+                if (quanLyMonHoc->them(*monMoi)) {
                     cout << "Them mon hoc thanh cong!\n";
                     quanLyMonHoc->saveToFile();
                 } else {
@@ -383,9 +386,9 @@ void menuQuanLyMonHoc() {
                                 cin >> dapAn;
                                 
                                 int maCauHoi = mon->getQuanLyCauHoi()->taoMaCauHoiNgauNhien();
-                                CauHoi cauHoiMoi(maCauHoi, noiDung, luaChonA, luaChonB, luaChonC, luaChonD, dapAn);
-                                
-                                if (mon->getQuanLyCauHoi()->them(cauHoiMoi)) {
+                                CauHoi* cauHoiMoi = new CauHoi(maCauHoi, noiDung, luaChonA, luaChonB, luaChonC, luaChonD, dapAn);
+
+                                if (mon->getQuanLyCauHoi()->them(*cauHoiMoi)) {
                                     cout << "Them cau hoi thanh cong! (ID: " << maCauHoi << ")\n";
                                     mon->getQuanLyCauHoi()->saveToFile();
                                 } else {
@@ -428,9 +431,28 @@ void menuBaoCao() {
                 if (lop) {
                     DynamicArray<SinhVien*> dsSV;
                     lop->getQuanLySinhVien()->danhSach(dsSV);
+                    
+                    // Get available subjects for header
+                    DynamicArray<MonHoc*> danhSachMon;
+                    quanLyMonHoc->danhSach(danhSachMon);
+                    
                     cout << "\nBANG DIEM LOP: " << lop->getTenLop() << endl;
-                    cout << left << setw(12) << "MASV" << setw(25) << "Ho Ten" << setw(15) << "Toan" 
-                         << setw(15) << "Ly" << setw(15) << "Hoa" << endl;
+                    cout << left << setw(12) << "MASV" << setw(25) << "Ho Ten";
+                    
+                    // Display subject headers (max 3 subjects)
+                    int maxSubjects = (danhSachMon.size() < 3) ? danhSachMon.size() : 3;
+                    for (int i = 0; i < maxSubjects; i++) {
+                        string tenMon = danhSachMon.get(i)->getTenMon();
+                        if (tenMon.length() > 12) tenMon = tenMon.substr(0, 12); // Truncate if too long
+                        cout << setw(15) << tenMon;
+                    }
+                    
+                    // Fill remaining columns if less than 3 subjects
+                    for (int i = maxSubjects; i < 3; i++) {
+                        cout << setw(15) << "---";
+                    }
+                    
+                    cout << endl;
                     printSeparator();
                     
                     for (int i = 0; i < dsSV.size(); i++) {
@@ -438,14 +460,145 @@ void menuBaoCao() {
                         cout << left << setw(12) << sv->getMaSinhVien()
                              << setw(25) << sv->getHoTen();
                         
-                        // Display scores for each subject (simplified)
-                        cout << setw(15) << "Chua thi"
-                             << setw(15) << "Chua thi"
-                             << setw(15) << "Chua thi" << endl;
+                        // Get available subjects and display scores
+                        DynamicArray<MonHoc*> danhSachMon;
+                        quanLyMonHoc->danhSach(danhSachMon);
+                        
+                        // Display scores for first 3 subjects (or available subjects)
+                        int maxSubjects = (danhSachMon.size() < 3) ? danhSachMon.size() : 3;
+                        for (int j = 0; j < maxSubjects; j++) {
+                            MonHoc* mon = danhSachMon.get(j);
+                            DiemThi* ketQua = sv->getQuanLyDiem()->tim(mon->getMaMon());
+                            
+                            if (ketQua) {
+                                cout << setw(15) << fixed << setprecision(1) << ketQua->getDiem();
+                            } else {
+                                cout << setw(15) << "Chua thi";
+                            }
+                        }
+                        
+                        // Fill remaining columns if less than 3 subjects
+                        for (int j = maxSubjects; j < 3; j++) {
+                            cout << setw(15) << "---";
+                        }
+                        
+                        cout << endl;
                     }
                 } else {
                     cout << "Khong tim thay lop!\n";
                 }
+                pauseScreen();
+                break;
+            }
+            case 2: {
+                printHeader("CHI TIET BAI THI SINH VIEN");
+                string maSinhVien;
+                cout << "Ma sinh vien: ";
+                cin >> maSinhVien;
+                
+                // Find student in all classes
+                SinhVien* sinhVien = nullptr;
+                DynamicArray<Lop*> danhSachLop;
+                quanLyLop->danhSach(danhSachLop);
+                
+                for (int i = 0; i < danhSachLop.size() && !sinhVien; i++) {
+                    sinhVien = danhSachLop.get(i)->getQuanLySinhVien()->tim(maSinhVien);
+                }
+                
+                if (!sinhVien) {
+                    cout << "Khong tim thay sinh vien!\n";
+                    pauseScreen();
+                    break;
+                }
+                
+                // Display student information
+                cout << "\nTHONG TIN SINH VIEN:\n";
+                cout << "Ma sinh vien: " << sinhVien->getMaSinhVien() << endl;
+                cout << "Ho ten: " << sinhVien->getHoTen() << endl;
+                cout << "Gioi tinh: " << sinhVien->getPhaiBangChu() << endl;
+                
+                // Get exam results
+                DynamicArray<DiemThi*> danhSachKetQua;
+                sinhVien->getQuanLyDiem()->danhSach(danhSachKetQua);
+                
+                if (danhSachKetQua.size() == 0) {
+                    cout << "\nSinh vien chua thi mon nao!\n";
+                    pauseScreen();
+                    break;
+                }
+                
+                cout << "\nKET QUA THI CHI TIET:\n";
+                cout << left << setw(12) << "Ma Mon" << setw(25) << "Ten Mon" 
+                     << setw(10) << "Diem" << setw(15) << "Ket Qua" << setw(25) << "Cau Tra Loi" << endl;
+                printSeparator();
+                
+                for (int i = 0; i < danhSachKetQua.size(); i++) {
+                    DiemThi* ketQua = danhSachKetQua.get(i);
+                    
+                    // Find subject name
+                    string tenMon = "Khong tim thay";
+                    DynamicArray<MonHoc*> danhSachMon;
+                    quanLyMonHoc->danhSach(danhSachMon);
+                    MonHoc* monHoc = quanLyMonHoc->tim(ketQua->getMaMon());
+                    if (monHoc) {
+                        tenMon = monHoc->getTenMon();
+                    }
+                    
+                    // Determine pass/fail status
+                    string ketQuaText = (ketQua->getDiem() >= 5.0) ? "DAU" : "ROT";
+                    
+                    // Get student answers as string
+                    string cauTraLoi = "";
+                    DynamicArray<char>* answers = ketQua->getDanhSachCauTraLoi();
+                    for (int k = 0; k < answers->size(); k++) {
+                        cauTraLoi += answers->get(k);
+                        if (k < answers->size() - 1) cauTraLoi += ",";
+                    }
+                    
+                    // Display row
+                    cout << left << setw(12) << ketQua->getMaMon()
+                         << setw(25) << tenMon
+                         << setw(10) << fixed << setprecision(2) << ketQua->getDiem()
+                         << setw(15) << ketQuaText
+                         << setw(25) << cauTraLoi << endl;
+                }
+                
+                printSeparator();
+                
+                // Display statistics
+                cout << "\nTHONG KE TONG KET:\n";
+                cout << "So mon da thi: " << sinhVien->getQuanLyDiem()->demSoMonDaThi() << endl;
+                cout << "Diem trung binh: " << fixed << setprecision(2) 
+                     << sinhVien->getQuanLyDiem()->tinhDiemTrungBinh() << "/10" << endl;
+                cout << "So mon dau: " << sinhVien->getQuanLyDiem()->demSoMonDau() << endl;
+                cout << "So mon rot: " << sinhVien->getQuanLyDiem()->demSoMonRot() << endl;
+                
+                // Option to view detailed answers for a specific subject
+                cout << "\nBan co muon xem chi tiet cau tra loi cho mon nao khong? (y/n): ";
+                char choice;
+                cin >> choice;
+                
+                if (choice == 'y' || choice == 'Y') {
+                    cout << "Nhap ma mon hoc: ";
+                    string maMon;
+                    cin >> maMon;
+                    
+                    DiemThi* ketQua = sinhVien->getQuanLyDiem()->tim(maMon.c_str());
+                    if (ketQua) {
+                        printHeader("CHI TIET CAU TRA LOI - " + maMon);
+                        cout << "Sinh vien: " << sinhVien->getHoTen() << endl;
+                        cout << "Diem: " << fixed << setprecision(2) << ketQua->getDiem() << "/10" << endl;
+                        cout << "\nCau tra loi chi tiet:\n";
+                        
+                        DynamicArray<char>* answers = ketQua->getDanhSachCauTraLoi();
+                        for (int i = 0; i < answers->size(); i++) {
+                            cout << "Cau " << (i + 1) << ": " << answers->get(i) << endl;
+                        }
+                    } else {
+                        cout << "Khong tim thay ket qua thi cho mon " << maMon << endl;
+                    }
+                }
+                
                 pauseScreen();
                 break;
             }
@@ -545,7 +698,8 @@ void menuLamBaiThi() {
     }
     
     // Get random questions
-    DynamicArray<CauHoi*> dsCauHoi = monThi.getQuanLyCauHoi()->layNgauNhien(soCauHoi);
+    DynamicArray<CauHoi*> dsCauHoi;
+    monThi.getQuanLyCauHoi()->layNgauNhien(dsCauHoi, soCauHoi);
     
     printHeader("BAI THI: " + monThi.getTenMon());
     cout << "Sinh vien: " << currentStudent->getHoTen() << endl;
@@ -554,6 +708,8 @@ void menuLamBaiThi() {
     printSeparator();
     
     int diem = 0;
+    DynamicArray<char> danhSachCauTraLoi; // Store student's answers
+    
     for (int i = 0; i < dsCauHoi.size(); i++) {
         CauHoi& ch = *dsCauHoi.get(i);
         cout << "\nCau " << (i + 1) << ": " << ch.getNoiDung() << endl;
@@ -565,6 +721,9 @@ void menuLamBaiThi() {
         char dapAn;
         cout << "Dap an cua ban (A/B/C/D): ";
         cin >> dapAn;
+        
+        // Store the student's answer
+        danhSachCauTraLoi.add(dapAn);
         
         if (ch.kiemTraDapAn(dapAn)) {
             diem++;
@@ -580,6 +739,132 @@ void menuLamBaiThi() {
     cout << "Diem: " << fixed << setprecision(2) << diemCuoi << "/10" << endl;
     cout << "So cau dung: " << diem << "/" << soCauHoi << endl;
     cout << string(50, '=') << endl;
+    
+    // Save test results to file
+    try {
+        // Create DiemThi object with student's actual answers
+        DiemThi* ketQuaThi = new DiemThi(monThi.getMaMon(), diemCuoi);
+
+        for (int i = 0; i < danhSachCauTraLoi.size(); i++) {
+            ketQuaThi->getDanhSachCauTraLoi()->add(danhSachCauTraLoi.get(i));
+        }
+        
+        // Check if student already has a score for this subject
+        DiemThi* existingScore = currentStudent->getQuanLyDiem()->tim(monThi.getMaMon());
+        
+        if (existingScore) {
+            // Update existing score if new score is better
+            if (diemCuoi > existingScore->getDiem()) {
+                currentStudent->getQuanLyDiem()->sua(*ketQuaThi);
+                cout << "\nDiem moi cao hon da duoc cap nhat!" << endl;
+            } else {
+                cout << "\nDiem cu cao hon, khong cap nhat." << endl;
+            }
+        } else {
+            // Add new score
+            currentStudent->getQuanLyDiem()->them(*ketQuaThi);
+            cout << "\nKet qua thi da duoc luu!" << endl;
+        }
+        
+        // Force save to file immediately
+        currentStudent->getQuanLyDiem()->saveToFile();
+        
+    } catch (const exception& e) {
+        cout << "\nLoi khi luu ket qua: " << e.what() << endl;
+    }
+    
+    pauseScreen();
+}
+
+void menuXemKetQuaThi() {
+    printHeader("KET QUA THI CUA BAN");
+    
+    // Get all exam results for current student
+    DynamicArray<DiemThi*> danhSachKetQua;
+    currentStudent->getQuanLyDiem()->danhSach(danhSachKetQua);
+    
+    if (danhSachKetQua.size() == 0) {
+        cout << "Ban chua thi mon nao!\n";
+        pauseScreen();
+        return;
+    }
+    
+    // Display results table header
+    cout << left << setw(12) << "Ma Mon" << setw(25) << "Ten Mon" 
+         << setw(10) << "Diem" << setw(15) << "Ket Qua" << setw(20) << "Cau Tra Loi" << endl;
+    printSeparator();
+    
+    double tongDiem = 0.0;
+    int soMonDaThi = 0;
+    
+    for (int i = 0; i < danhSachKetQua.size(); i++) {
+        DiemThi* ketQua = danhSachKetQua.get(i);
+        
+        // Find subject name
+        string tenMon = "Khong tim thay";
+        DynamicArray<MonHoc*> danhSachMon;
+        quanLyMonHoc->danhSach(danhSachMon);
+        MonHoc* monHoc = quanLyMonHoc->tim(ketQua->getMaMon());
+        if (monHoc) {
+            tenMon = monHoc->getTenMon();
+        }
+        
+        // Determine pass/fail status
+        string ketQuaText = (ketQua->getDiem() >= 5.0) ? "DAU" : "ROT";
+        
+        // Get student answers as string
+        string cauTraLoi = "";
+        DynamicArray<char>* answers = ketQua->getDanhSachCauTraLoi();
+        for (int k = 0; k < answers->size(); k++) {
+            cauTraLoi += answers->get(k);
+        }
+        
+        // Display row
+        cout << left << setw(12) << ketQua->getMaMon()
+             << setw(25) << tenMon
+             << setw(10) << fixed << setprecision(2) << ketQua->getDiem()
+             << setw(15) << ketQuaText
+             << setw(20) << cauTraLoi << endl;
+        
+        tongDiem += ketQua->getDiem();
+        soMonDaThi++;
+    }
+    
+    printSeparator();
+    
+    // Display statistics
+    cout << "\nTHONG KE TONG KET:\n";
+    cout << "So mon da thi: " << soMonDaThi << endl;
+    cout << "Diem trung binh: " << fixed << setprecision(2) 
+         << (soMonDaThi > 0 ? tongDiem / soMonDaThi : 0.0) << "/10" << endl;
+    cout << "So mon dau: " << currentStudent->getQuanLyDiem()->demSoMonDau() << endl;
+    cout << "So mon rot: " << currentStudent->getQuanLyDiem()->demSoMonRot() << endl;
+    
+    // Display detailed view option
+    cout << "\nBan co muon xem chi tiet bai thi nao khong? (y/n): ";
+    char choice;
+    cin >> choice;
+    
+    if (choice == 'y' || choice == 'Y') {
+        cout << "Nhap ma mon hoc: ";
+        string maMon;
+        cin >> maMon;
+        
+        DiemThi* ketQua = currentStudent->getQuanLyDiem()->tim(maMon.c_str());
+        if (ketQua) {
+            printHeader("CHI TIET BAI THI - " + maMon);
+            cout << "Diem: " << fixed << setprecision(2) << ketQua->getDiem() << "/10" << endl;
+            cout << "Cau tra loi cua ban: ";
+            
+            DynamicArray<char>*  answers = ketQua->getDanhSachCauTraLoi();
+            for (int i = 0; i < answers->size(); i++) {
+                cout << "Cau " << (i + 1) << ": " << answers->get(i) << "  ";
+            }
+            cout << endl;
+        } else {
+            cout << "Khong tim thay ket qua thi cho mon " << maMon << endl;
+        }
+    }
     
     pauseScreen();
 }
@@ -601,9 +886,7 @@ void menuSinhVien() {
                 menuLamBaiThi();
                 break;
             case 2:
-                printHeader("KET QUA THI");
-                cout << "Chuc nang dang phat trien...\n";
-                pauseScreen();
+                menuXemKetQuaThi();
                 break;
             case 3:
                 printHeader("THONG TIN CA NHAN");
@@ -622,14 +905,10 @@ void initializeSystem() {
     // Initialize managers
     quanLyLop = new QuanLyLop();
     quanLyMonHoc = new QuanLyMonHoc();
-    
-    cout << "Loading data from files...\n";
 
     // Load data from files
     quanLyLop->loadFromFile();
     quanLyMonHoc->loadFromFile();
-
-    cout << "Loading questions for each subject...\n";
     
     // Load questions for each subject
     DynamicArray<MonHoc*> danhSachMon;
@@ -637,14 +916,19 @@ void initializeSystem() {
     for (int i = 0; i < danhSachMon.size(); i++) {
         danhSachMon.get(i)->getQuanLyCauHoi()->loadFromFile();
     }
-
-    cout << "Loading students for each class...\n";
     
     // Load students for each class
     DynamicArray<Lop*> danhSachLop;
     quanLyLop->danhSach(danhSachLop);
     for (int i = 0; i < danhSachLop.size(); i++) {
         danhSachLop.get(i)->getQuanLySinhVien()->loadFromFile();
+
+        // Load scores for each student
+        DynamicArray<SinhVien*> danhSachSinhVien;
+        danhSachLop.get(i)->getQuanLySinhVien()->danhSach(danhSachSinhVien);
+        for (int j = 0; j < danhSachSinhVien.size(); j++) {
+            danhSachSinhVien.get(j)->getQuanLyDiem()->loadFromFile();
+        }
     }
 }
 

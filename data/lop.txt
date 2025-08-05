@@ -1,3 +1,2 @@
-2
-CNTT01|cong nghe thogn tin1
-CNTT02|cong nghe thogn tin2
+1
+cntt|cong
