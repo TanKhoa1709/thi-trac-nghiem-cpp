@@ -157,6 +157,7 @@ void MainWindow::createLoginWidget()
     usernameEdit = new QLineEdit();
     usernameEdit->setPlaceholderText("Enter username/student ID");
     usernameEdit->setStyleSheet("padding: 8px;");
+    connect(usernameEdit, &QLineEdit::textChanged, this, &MainWindow::onUsernameTextChanged);
 
     // Password field
     QLabel *passwordLabel = new QLabel("Password:");
@@ -384,4 +385,17 @@ void MainWindow::handleExamCancelled()
 {
     // Just show a message
     statusBar()->showMessage("Exam was cancelled", 3000);
+}
+
+void MainWindow::onUsernameTextChanged(const QString &text)
+{
+    QString upperText = text.toUpper();
+    if (text != upperText)
+    {
+        int cursorPos = usernameEdit->cursorPosition();
+        usernameEdit->blockSignals(true);
+        usernameEdit->setText(upperText);
+        usernameEdit->blockSignals(false);
+        usernameEdit->setCursorPosition(cursorPos);
+    }
 }

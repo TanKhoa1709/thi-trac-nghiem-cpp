@@ -45,6 +45,9 @@ private slots:
     void handleExamCompleted(double score);
     void handleExamCancelled();
 
+public slots:
+    void onUsernameTextChanged(const QString &text);
+
 private:
     Ui::MainWindow *ui;
     QStackedWidget *centralStack;

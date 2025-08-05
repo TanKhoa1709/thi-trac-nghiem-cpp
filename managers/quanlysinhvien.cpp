@@ -163,6 +163,10 @@ void QuanLySinhVien::loadFromFile()
         if (tokens.size() == 5)
         {
             std::string maSV = tokens[0];
+            // Chuyển maSV sang in hoa
+            for (char &c : maSV)
+                c = std::toupper(static_cast<unsigned char>(c));
+
             std::string ho = tokens[1];
             std::string ten = tokens[2];
             bool phai = (tokens[3] == "1");
