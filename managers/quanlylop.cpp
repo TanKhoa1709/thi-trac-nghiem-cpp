@@ -3,25 +3,21 @@
 #include <sstream>
 
 // Constructor
-QuanLyLop::QuanLyLop()
-{
+QuanLyLop::QuanLyLop() {
 }
 
 // Destructor
-QuanLyLop::~QuanLyLop()
-{
+QuanLyLop::~QuanLyLop() {
     saveToFile();
     danhSachLop.clear();
 }
 
 // Get all classes as dynamic array
-void QuanLyLop::danhSach(DynamicArray<Lop *> &result)
-{
+void QuanLyLop::danhSach(DynamicArray<Lop *> &result) {
     // Clear the result array before adding
     result.clear();
 
-    for (int i = 0; i < danhSachLop.size(); i++)
-    {
+    for (int i = 0; i < danhSachLop.size(); i++) {
         // result.add(&danhSachLop.get(i));
         Lop *lop = &danhSachLop.get(i);
         result.add(lop);
@@ -29,12 +25,9 @@ void QuanLyLop::danhSach(DynamicArray<Lop *> &result)
 }
 
 // Find class by code
-Lop *QuanLyLop::tim(const std::string &maLop)
-{
-    for (int i = 0; i < danhSachLop.size(); i++)
-    {
-        if (danhSachLop.get(i).getMaLop() == maLop)
-        {
+Lop *QuanLyLop::tim(const std::string &maLop) {
+    for (int i = 0; i < danhSachLop.size(); i++) {
+        if (danhSachLop.get(i).getMaLop() == maLop) {
             return &danhSachLop.get(i);
         }
     }
@@ -42,16 +35,13 @@ Lop *QuanLyLop::tim(const std::string &maLop)
 }
 
 // Add new class
-bool QuanLyLop::them(Lop &lop)
-{
-    if (!lop.validate())
-    {
+bool QuanLyLop::them(Lop &lop) {
+    if (!lop.validate()) {
         return false;
     }
 
     // Check if class code already exists
-    if (tim(lop.getMaLop()) != nullptr)
-    {
+    if (tim(lop.getMaLop()) != nullptr) {
         return false;
     }
 
@@ -60,17 +50,14 @@ bool QuanLyLop::them(Lop &lop)
 }
 
 // Update existing class
-bool QuanLyLop::sua(Lop &lop)
-{
-    if (!lop.validate())
-    {
+bool QuanLyLop::sua(Lop &lop) {
+    if (!lop.validate()) {
         return false;
     }
 
     // Find existing class
     Lop *existing = tim(lop.getMaLop());
-    if (!existing)
-    {
+    if (!existing) {
         return false; // Class doesn't exist
     }
 
@@ -81,11 +68,9 @@ bool QuanLyLop::sua(Lop &lop)
 }
 
 // Remove class by code
-bool QuanLyLop::xoa(const std::string &maLop)
-{
+bool QuanLyLop::xoa(const std::string &maLop) {
     Lop *lop = tim(maLop);
-    if (!lop)
-    {
+    if (!lop) {
         return false;
     }
 
@@ -94,19 +79,16 @@ bool QuanLyLop::xoa(const std::string &maLop)
 }
 
 // Save to file
-void QuanLyLop::saveToFile()
-{
+void QuanLyLop::saveToFile() {
     std::ofstream file("data/lop.txt");
 
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         throw std::runtime_error("Cannot open file for writing: data/lop.txt");
     }
 
     file << danhSachLop.size() << std::endl;
 
-    for (size_t i = 0; i < danhSachLop.size(); i++)
-    {
+    for (size_t i = 0; i < danhSachLop.size(); i++) {
         Lop &lop = danhSachLop.get(i);
         file << lop.getMaLop() << "|" << lop.getTenLop() << std::endl;
     }
@@ -115,16 +97,13 @@ void QuanLyLop::saveToFile()
 }
 
 // Load from file
-void QuanLyLop::loadFromFile()
-{
+void QuanLyLop::loadFromFile() {
     std::ifstream file("data/lop.txt");
 
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         // Create empty data file if it doesn't exist
         std::ofstream createFile("data/lop.txt");
-        if (createFile.is_open())
-        {
+        if (createFile.is_open()) {
             createFile << "0" << std::endl; // Empty file with count = 0
             createFile.close();
         }
@@ -135,16 +114,14 @@ void QuanLyLop::loadFromFile()
     file >> count;
     file.ignore();
 
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         std::string line;
         std::getline(file, line);
 
         std::stringstream ss(line);
         std::string maLop, tenLop;
 
-        if (std::getline(ss, maLop, '|') && std::getline(ss, tenLop))
-        {
+        if (std::getline(ss, maLop, '|') && std::getline(ss, tenLop)) {
             Lop *lop = new Lop(maLop, tenLop);
             danhSachLop.add(*lop);
         }

@@ -1,15 +1,12 @@
 #ifndef EXAMWIDGET_H
 #define EXAMWIDGET_H
 
-#include <QDialog>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QRadioButton>
 #include <QPushButton>
 #include <QProgressBar>
 #include <QTimer>
-#include <QButtonGroup>
 #include <QScrollArea>
 #include <QMessageBox>
 #include <QFrame>
@@ -19,19 +16,19 @@ class MonHoc;
 class CauHoi;
 class SinhVien;
 class DiemThi;
-template <typename T>
+template<typename T>
 class DynamicArray;
 
 /**
  * @brief Exam Widget - Modal dialog for taking exams
  * Provides exam interface with timer and question navigation
  */
-class ExamWidget : public QDialog
-{
+class ExamWidget : public QDialog {
     Q_OBJECT
 
 public:
     explicit ExamWidget(QWidget *parent = nullptr);
+
     ~ExamWidget();
 
     // Setup exam
@@ -39,14 +36,20 @@ public:
 
 signals:
     void examCompleted(double score);
+
     void examCancelled();
 
 private slots:
     void nextQuestion();
+
     void previousQuestion();
+
     void submitExam();
+
     void updateTimer();
+
     void onAnswerSelected();
+
     void goToQuestion(int questionIndex);
 
 protected:
@@ -83,7 +86,7 @@ private:
     // Timer
     QTimer *examTimer;
     int timeRemaining; // in seconds
-    int totalTime;     // in seconds
+    int totalTime; // in seconds
 
     // Exam data
     MonHoc *currentSubject;
@@ -95,24 +98,37 @@ private:
 
     // Setup methods
     void setupUI();
+
     void setupConnections();
+
     void setupTimer(int minutes = 60);
+
     void createNavigationPanel();
 
     // Exam logic
     void loadQuestion(int index);
+
     void saveCurrentAnswer();
+
     void calculateAndSaveResults();
+
     double calculateScore();
+
     void updateQuestionNavigation();
+
     void updateProgress();
 
     // Helper methods
     QString formatTime(int seconds);
+
     char getSelectedAnswer();
+
     void setSelectedAnswer(char answer);
+
     void resetExam();
+
     bool confirmSubmission();
+
     bool confirmCancellation();
 };
 

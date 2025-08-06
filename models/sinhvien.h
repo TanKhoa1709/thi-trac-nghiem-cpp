@@ -9,21 +9,22 @@ class QuanLyDiem;
 /**
  * @brief Sinh viên - MASV, HO, TEN, PHAI, password, con trỏ quản lý điểm
  */
-class SinhVien
-{
+class SinhVien {
 private:
     std::string maSinhVien; // Mã sinh viên (khóa duy nhất)
-    std::string ho;         // Họ
-    std::string ten;        // Tên
-    bool phai;              // Giới tính (true = Nam, false = Nữ)
-    std::string password;   // Mật khẩu
+    std::string ho; // Họ
+    std::string ten; // Tên
+    bool phai; // Giới tính (true = Nam, false = Nữ)
+    std::string password; // Mật khẩu
     QuanLyDiem *quanLyDiem; // Con trỏ quản lý điểm
 
 public:
     // Constructors & Destructor
     SinhVien();
+
     SinhVien(const std::string &ma, const std::string &ho, const std::string &ten,
              bool phai, const std::string &pass);
+
     ~SinhVien();
 
     // Getters (const methods)
@@ -44,17 +45,16 @@ public:
 
     // Business logic methods
     bool validate() const;
+
     std::string getHoTen() const { return ho + " " + ten; }
     std::string getPhaiBangChu() const { return phai ? "Nam" : "Nữ"; }
 
     // Operators for LinkedList operations
-    bool operator==(SinhVien &other)
-    {
+    bool operator==(SinhVien &other) {
         return maSinhVien == other.maSinhVien;
     }
 
-    bool operator!=(SinhVien &other)
-    {
+    bool operator!=(SinhVien &other) {
         return !(*this == other);
     }
 };

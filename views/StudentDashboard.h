@@ -21,30 +21,36 @@ class ExamWidget;
  * @brief Student Dashboard Widget
  * Provides student interface for exams and score viewing
  */
-class StudentDashboard : public QWidget
-{
+class StudentDashboard : public QWidget {
     Q_OBJECT
 
 public:
     explicit StudentDashboard(QWidget *parent = nullptr);
+
     ~StudentDashboard();
 
     // Set current student and controllers
     void setCurrentStudent(SinhVien *student);
+
     void setSubjectManager(QuanLyMonHoc *manager);
 
 public slots:
     void refreshScores();
+
     void refreshData();
 
 signals:
     void logoutRequested();
+
     void examRequested(MonHoc *subject, int numQuestions);
 
 private slots:
     void startExam();
+
     void viewDetailedScores();
+
     void viewProfile();
+
     void onExamCompleted(double score);
 
 private:
@@ -73,12 +79,16 @@ private:
 
     // Setup methods
     void setupUI();
+
     void setupConnections();
+
     void updateStudentInfo();
+
     void updateStatistics();
 
     // Helper methods
     QString formatGrade(double score);
+
     QString getPassFailStatus(double score);
 };
 

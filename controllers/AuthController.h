@@ -13,12 +13,12 @@ class QuanLyLop;
  * @brief Authentication Controller
  * Handles teacher and student authentication
  */
-class AuthController : public QObject
-{
+class AuthController : public QObject {
     Q_OBJECT
 
 public:
     explicit AuthController(QObject *parent = nullptr);
+
     ~AuthController();
 
     // Set reference to class manager for student authentication
@@ -29,12 +29,14 @@ public slots:
 
 signals:
     void loginSuccess(QString userType, SinhVien *student = nullptr);
+
     void loginFailed(QString errorMessage);
 
 private:
     QuanLyLop *classManager;
 
     bool authenticateTeacher(const QString &username, const QString &password);
+
     SinhVien *authenticateStudent(const QString &masv, const QString &password);
 };
 

@@ -1,23 +1,11 @@
 #ifndef TEACHERDASHBOARD_H
 #define TEACHERDASHBOARD_H
 
-#include <QWidget>
-#include <QTabWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QTableWidget>
 #include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
 #include <QComboBox>
-#include <QMessageBox>
-#include <QHeaderView>
 #include <QInputDialog>
 #include <QFileDialog>
-#include <QDateTime>
-#include <QTextStream>
-#include <QDialog>
-#include <QTextEdit>
 
 // Forward declarations
 class QuanLyLop;
@@ -32,16 +20,17 @@ class DiemThi;
  * @brief Teacher Dashboard Widget
  * Provides tabbed interface for teacher operations
  */
-class TeacherDashboard : public QWidget
-{
+class TeacherDashboard : public QWidget {
     Q_OBJECT
 
 public:
     explicit TeacherDashboard(QWidget *parent = nullptr);
+
     ~TeacherDashboard();
 
     // Set controllers
     void setClassManager(QuanLyLop *manager);
+
     void setSubjectManager(QuanLyMonHoc *manager);
 
 public slots:
@@ -53,33 +42,49 @@ signals:
 private slots:
     // Class management
     void refreshClassList();
+
     void onClassSelected();
+
     void addNewClass();
+
     void editClass();
+
     void deleteClass();
 
     // Student management
     void refreshStudentList();
+
     void addNewStudent();
+
     void editStudent();
+
     void deleteStudent();
 
     // Subject management
     void refreshSubjectList();
+
     void addNewSubject();
+
     void editSubject();
+
     void deleteSubject();
+
     void manageQuestions();
 
     // Question management
     void refreshQuestionList();
+
     void onSubjectChangedForQuestions();
+
     void addNewQuestion();
+
     void editQuestion();
+
     void deleteQuestion();
 
     // Report management
     void generateExamScoreReport();
+
     void exportReport();
 
 private:
@@ -131,16 +136,24 @@ private:
 
     // Setup methods
     void setupUI();
+
     void setupClassTab();
+
     void setupSubjectTab();
+
     void setupQuestionTab();
+
     void setupReportsTab();
+
     void setupConnections();
 
     // Helper methods
     void populateSubjectCombo();
+
     void populateReportCombos();
+
     MonHoc *getCurrentSubject();
+
     Lop *getCurrentClass();
 };
 

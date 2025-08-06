@@ -9,31 +9,26 @@
 #include "../utils/DynamicArray.h"
 
 StudentDashboard::StudentDashboard(QWidget *parent)
-    : QWidget(parent), currentStudent(nullptr), subjectManager(nullptr), examDialog(nullptr)
-{
+    : QWidget(parent), currentStudent(nullptr), subjectManager(nullptr), examDialog(nullptr) {
     setupUI();
     setupConnections();
 }
 
-StudentDashboard::~StudentDashboard()
-{
+StudentDashboard::~StudentDashboard() {
     // Qt handles widget cleanup through parent-child relationships
 }
 
-void StudentDashboard::setCurrentStudent(SinhVien *student)
-{
+void StudentDashboard::setCurrentStudent(SinhVien *student) {
     currentStudent = student;
     updateStudentInfo();
     refreshScores();
 }
 
-void StudentDashboard::setSubjectManager(QuanLyMonHoc *manager)
-{
+void StudentDashboard::setSubjectManager(QuanLyMonHoc *manager) {
     subjectManager = manager;
 }
 
-void StudentDashboard::setupUI()
-{
+void StudentDashboard::setupUI() {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(20);
     mainLayout->setContentsMargins(20, 20, 20, 20);
@@ -54,8 +49,8 @@ void StudentDashboard::setupUI()
 
     takeExamButton = new QPushButton("Start New Exam");
     takeExamButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-                                  "padding: 12px; font-size: 14px; border: none; border-radius: 6px; }"
-                                  "QPushButton:hover { background-color: #2980b9; }");
+        "padding: 12px; font-size: 14px; border: none; border-radius: 6px; }"
+        "QPushButton:hover { background-color: #2980b9; }");
     takeExamButton->setMinimumHeight(40);
 
     examLayout->addWidget(takeExamButton);
@@ -75,13 +70,13 @@ void StudentDashboard::setupUI()
     QHBoxLayout *scoresButtonLayout = new QHBoxLayout();
     viewDetailButton = new QPushButton("View Detailed Results");
     viewDetailButton->setStyleSheet("QPushButton { background-color: #9b59b6; color: white; "
-                                    "padding: 8px 16px; border: none; border-radius: 4px; }"
-                                    "QPushButton:hover { background-color: #8e44ad; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #8e44ad; }");
 
     viewProfileButton = new QPushButton("View Profile");
     viewProfileButton->setStyleSheet("QPushButton { background-color: #1abc9c; color: white; "
-                                     "padding: 8px 16px; border: none; border-radius: 4px; }"
-                                     "QPushButton:hover { background-color: #16a085; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #16a085; }");
 
     scoresButtonLayout->addWidget(viewDetailButton);
     scoresButtonLayout->addWidget(viewProfileButton);
@@ -99,8 +94,8 @@ void StudentDashboard::setupUI()
     bottomLayout->addStretch();
     logoutButton = new QPushButton("Logout");
     logoutButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-                                "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
-                                "QPushButton:hover { background-color: #c0392b; }");
+        "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #c0392b; }");
     bottomLayout->addWidget(logoutButton);
 
     // Add all to main layout
@@ -112,18 +107,15 @@ void StudentDashboard::setupUI()
     mainLayout->addLayout(bottomLayout);
 }
 
-void StudentDashboard::setupConnections()
-{
+void StudentDashboard::setupConnections() {
     connect(takeExamButton, &QPushButton::clicked, this, &StudentDashboard::startExam);
     connect(viewDetailButton, &QPushButton::clicked, this, &StudentDashboard::viewDetailedScores);
     connect(viewProfileButton, &QPushButton::clicked, this, &StudentDashboard::viewProfile);
     connect(logoutButton, &QPushButton::clicked, this, &StudentDashboard::logoutRequested);
 }
 
-void StudentDashboard::updateStudentInfo()
-{
-    if (!currentStudent)
-    {
+void StudentDashboard::updateStudentInfo() {
+    if (!currentStudent) {
         welcomeLabel->setText("Student Dashboard");
         studentInfoLabel->setText("No student information available");
         return;
@@ -137,10 +129,8 @@ void StudentDashboard::updateStudentInfo()
     studentInfoLabel->setText(QString("Student ID: %1 | Gender: %2").arg(studentId, gender));
 }
 
-void StudentDashboard::refreshScores()
-{
-    if (!currentStudent || !currentStudent->getQuanLyDiem())
-    {
+void StudentDashboard::refreshScores() {
+    if (!currentStudent || !currentStudent->getQuanLyDiem()) {
         scoresTable->setRowCount(0);
         statisticsLabel->setText("No exam results available");
         return;
@@ -151,17 +141,14 @@ void StudentDashboard::refreshScores()
 
     scoresTable->setRowCount(danhSachKetQua.size());
 
-    for (int i = 0; i < danhSachKetQua.size(); i++)
-    {
+    for (int i = 0; i < danhSachKetQua.size(); i++) {
         DiemThi *ketQua = danhSachKetQua.get(i);
 
         // Get subject name
         QString subjectName = "Unknown Subject";
-        if (subjectManager)
-        {
+        if (subjectManager) {
             MonHoc *monHoc = subjectManager->tim(ketQua->getMaMon());
-            if (monHoc)
-            {
+            if (monHoc) {
                 subjectName = QString::fromStdString(monHoc->getTenMon());
             }
         }
@@ -173,12 +160,9 @@ void StudentDashboard::refreshScores()
 
         // Color coding for status
         QTableWidgetItem *statusItem = scoresTable->item(i, 3);
-        if (ketQua->getDiem() >= 5.0)
-        {
+        if (ketQua->getDiem() >= 5.0) {
             statusItem->setBackground(QColor(200, 255, 200)); // Light green
-        }
-        else
-        {
+        } else {
             statusItem->setBackground(QColor(255, 200, 200)); // Light red
         }
     }
@@ -186,10 +170,8 @@ void StudentDashboard::refreshScores()
     updateStatistics();
 }
 
-void StudentDashboard::updateStatistics()
-{
-    if (!currentStudent || !currentStudent->getQuanLyDiem())
-    {
+void StudentDashboard::updateStatistics() {
+    if (!currentStudent || !currentStudent->getQuanLyDiem()) {
         statisticsLabel->setText("No statistics available");
         return;
     }
@@ -200,18 +182,16 @@ void StudentDashboard::updateStatistics()
     double average = currentStudent->getQuanLyDiem()->tinhDiemTrungBinh();
 
     QString stats = QString("Total Exams: %1 | Passed: %2 | Failed: %3 | Average: %4/10")
-                        .arg(totalExams)
-                        .arg(passed)
-                        .arg(failed)
-                        .arg(QString::number(average, 'f', 2));
+            .arg(totalExams)
+            .arg(passed)
+            .arg(failed)
+            .arg(QString::number(average, 'f', 2));
 
     statisticsLabel->setText(stats);
 }
 
-void StudentDashboard::startExam()
-{
-    if (!subjectManager)
-    {
+void StudentDashboard::startExam() {
+    if (!subjectManager) {
         QMessageBox::warning(this, "Error", "Subject manager not available.");
         return;
     }
@@ -220,21 +200,19 @@ void StudentDashboard::startExam()
     DynamicArray<MonHoc *> danhSachMon;
     subjectManager->danhSach(danhSachMon);
 
-    if (danhSachMon.size() == 0)
-    {
+    if (danhSachMon.size() == 0) {
         QMessageBox::information(this, "No Subjects", "No subjects available for examination.");
         return;
     }
 
     // Create subject selection dialog
     QStringList subjectList;
-    for (int i = 0; i < danhSachMon.size(); i++)
-    {
+    for (int i = 0; i < danhSachMon.size(); i++) {
         MonHoc *mon = danhSachMon.get(i);
         QString item = QString("%1 - %2 (%3 questions)")
-                           .arg(QString::fromStdString(mon->getMaMon()))
-                           .arg(QString::fromStdString(mon->getTenMon()))
-                           .arg(mon->getQuanLyCauHoi() ? mon->getQuanLyCauHoi()->size() : 0);
+                .arg(QString::fromStdString(mon->getMaMon()))
+                .arg(QString::fromStdString(mon->getTenMon()))
+                .arg(mon->getQuanLyCauHoi() ? mon->getQuanLyCauHoi()->size() : 0);
         subjectList.append(item);
     }
 
@@ -251,8 +229,7 @@ void StudentDashboard::startExam()
         return;
 
     MonHoc *selectedMon = danhSachMon.get(selectedIndex);
-    if (!selectedMon->getQuanLyCauHoi() || selectedMon->getQuanLyCauHoi()->size() == 0)
-    {
+    if (!selectedMon->getQuanLyCauHoi() || selectedMon->getQuanLyCauHoi()->size() == 0) {
         QMessageBox::warning(this, "No Questions", "This subject has no questions available for examination.");
         return;
     }
@@ -269,11 +246,9 @@ void StudentDashboard::startExam()
     emit examRequested(selectedMon, numQuestions);
 }
 
-void StudentDashboard::viewDetailedScores()
-{
+void StudentDashboard::viewDetailedScores() {
     int currentRow = scoresTable->currentRow();
-    if (currentRow < 0)
-    {
+    if (currentRow < 0) {
         QMessageBox::information(this, "No Selection", "Please select an exam result to view details.");
         return;
     }
@@ -284,30 +259,26 @@ void StudentDashboard::viewDetailedScores()
 
     QString subjectCode = subjectItem->text();
 
-    if (!currentStudent || !currentStudent->getQuanLyDiem())
-    {
+    if (!currentStudent || !currentStudent->getQuanLyDiem()) {
         QMessageBox::warning(this, "Error", "Student data not available.");
         return;
     }
 
     DiemThi *ketQua = currentStudent->getQuanLyDiem()->tim(subjectCode.toStdString().c_str());
-    if (!ketQua)
-    {
+    if (!ketQua) {
         QMessageBox::warning(this, "Error", "Exam result not found.");
         return;
     }
 
     // Show detailed results
     QString details = QString("Subject: %1\nScore: %2/10\nStatus: %3\n\nAnswers: ")
-                          .arg(subjectCode)
-                          .arg(QString::number(ketQua->getDiem(), 'f', 2))
-                          .arg(getPassFailStatus(ketQua->getDiem()));
+            .arg(subjectCode)
+            .arg(QString::number(ketQua->getDiem(), 'f', 2))
+            .arg(getPassFailStatus(ketQua->getDiem()));
 
     DynamicArray<char> *answers = ketQua->getDanhSachCauTraLoi();
-    if (answers)
-    {
-        for (int i = 0; i < answers->size(); i++)
-        {
+    if (answers) {
+        for (int i = 0; i < answers->size(); i++) {
             details += QString("Q%1:%2 ").arg(i + 1).arg(answers->get(i));
         }
     }
@@ -315,39 +286,39 @@ void StudentDashboard::viewDetailedScores()
     QMessageBox::information(this, "Detailed Results", details);
 }
 
-void StudentDashboard::viewProfile()
-{
-    if (!currentStudent)
-    {
+void StudentDashboard::viewProfile() {
+    if (!currentStudent) {
         QMessageBox::warning(this, "Error", "Student information not available.");
         return;
     }
 
-    QString profile = QString("STUDENT PROFILE\n\n") + QString("Student ID: %1\n").arg(QString::fromStdString(currentStudent->getMaSinhVien())) + QString("Full Name: %1 %2\n").arg(QString::fromStdString(currentStudent->getHo())).arg(QString::fromStdString(currentStudent->getTen())) + QString("Gender: %1\n\n").arg(currentStudent->getPhai() ? "Male" : "Female");
+    QString profile = QString("STUDENT PROFILE\n\n") + QString("Student ID: %1\n").
+                      arg(QString::fromStdString(currentStudent->getMaSinhVien())) + QString("Full Name: %1 %2\n").
+                      arg(QString::fromStdString(currentStudent->getHo())).
+                      arg(QString::fromStdString(currentStudent->getTen())) + QString("Gender: %1\n\n").arg(
+                          currentStudent->getPhai() ? "Male" : "Female");
 
-    if (currentStudent->getQuanLyDiem())
-    {
+    if (currentStudent->getQuanLyDiem()) {
         profile += QString("ACADEMIC RECORD\n");
         profile += QString("Total Exams Taken: %1\n").arg(currentStudent->getQuanLyDiem()->demSoMonDaThi());
         profile += QString("Exams Passed: %1\n").arg(currentStudent->getQuanLyDiem()->demSoMonDau());
         profile += QString("Exams Failed: %1\n").arg(currentStudent->getQuanLyDiem()->demSoMonRot());
-        profile += QString("Average Score: %1/10").arg(QString::number(currentStudent->getQuanLyDiem()->tinhDiemTrungBinh(), 'f', 2));
+        profile += QString("Average Score: %1/10").arg(
+            QString::number(currentStudent->getQuanLyDiem()->tinhDiemTrungBinh(), 'f', 2));
     }
 
     QMessageBox::information(this, "Student Profile", profile);
 }
 
-void StudentDashboard::refreshData()
-{
+void StudentDashboard::refreshData() {
     updateStudentInfo();
     refreshScores();
 }
 
-void StudentDashboard::onExamCompleted(double score)
-{
+void StudentDashboard::onExamCompleted(double score) {
     QString message = QString("Exam completed!\nYour score: %1/10\nStatus: %2")
-                          .arg(QString::number(score, 'f', 2))
-                          .arg(getPassFailStatus(score));
+            .arg(QString::number(score, 'f', 2))
+            .arg(getPassFailStatus(score));
 
     QMessageBox::information(this, "Exam Results", message);
 
@@ -355,12 +326,10 @@ void StudentDashboard::onExamCompleted(double score)
     refreshScores();
 }
 
-QString StudentDashboard::formatGrade(double score)
-{
+QString StudentDashboard::formatGrade(double score) {
     return QString::number(score, 'f', 2) + "/10";
 }
 
-QString StudentDashboard::getPassFailStatus(double score)
-{
+QString StudentDashboard::getPassFailStatus(double score) {
     return (score >= 5.0) ? "PASSED" : "FAILED";
 }

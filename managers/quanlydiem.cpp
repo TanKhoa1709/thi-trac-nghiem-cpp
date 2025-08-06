@@ -7,37 +7,30 @@
 
 // Constructor
 QuanLyDiem::QuanLyDiem(const std::string &maSinhVien)
-    : maSinhVien(maSinhVien)
-{
+    : maSinhVien(maSinhVien) {
 }
 
 // Destructor
-QuanLyDiem::~QuanLyDiem()
-{
+QuanLyDiem::~QuanLyDiem() {
     saveToFile();
     quanLyDiem.clear();
 }
 
 // Get all scores as dynamic array
-void QuanLyDiem::danhSach(DynamicArray<DiemThi *> &result)
-{
+void QuanLyDiem::danhSach(DynamicArray<DiemThi *> &result) {
     // Clear the result array before adding
     result.clear();
 
-    for (int i = 0; i < quanLyDiem.size(); i++)
-    {
+    for (int i = 0; i < quanLyDiem.size(); i++) {
         DiemThi *score = &quanLyDiem.get(i);
         result.add(score);
     }
 }
 
 // Find score by subject code
-DiemThi *QuanLyDiem::tim(const char *maMon)
-{
-    for (int i = 0; i < quanLyDiem.size(); i++)
-    {
-        if (std::strcmp(quanLyDiem.get(i).getMaMon(), maMon) == 0)
-        {
+DiemThi *QuanLyDiem::tim(const char *maMon) {
+    for (int i = 0; i < quanLyDiem.size(); i++) {
+        if (std::strcmp(quanLyDiem.get(i).getMaMon(), maMon) == 0) {
             return &quanLyDiem.get(i);
         }
     }
@@ -45,16 +38,13 @@ DiemThi *QuanLyDiem::tim(const char *maMon)
 }
 
 // Add new score
-bool QuanLyDiem::them(DiemThi &diem)
-{
-    if (!diem.validate())
-    {
+bool QuanLyDiem::them(DiemThi &diem) {
+    if (!diem.validate()) {
         return false;
     }
 
     // Check if score for this subject already exists
-    if (tim(diem.getMaMon()) != nullptr)
-    {
+    if (tim(diem.getMaMon()) != nullptr) {
         return false;
     }
 
@@ -63,17 +53,14 @@ bool QuanLyDiem::them(DiemThi &diem)
 }
 
 // Update existing score
-bool QuanLyDiem::sua(DiemThi &diem)
-{
-    if (!diem.validate())
-    {
+bool QuanLyDiem::sua(DiemThi &diem) {
+    if (!diem.validate()) {
         return false;
     }
 
     // Find existing score
     DiemThi *existing = tim(diem.getMaMon());
-    if (!existing)
-    {
+    if (!existing) {
         return false; // Score doesn't exist
     }
 
@@ -85,11 +72,9 @@ bool QuanLyDiem::sua(DiemThi &diem)
 }
 
 // Remove score by subject code
-bool QuanLyDiem::xoa(const char *maMon)
-{
+bool QuanLyDiem::xoa(const char *maMon) {
     DiemThi *score = tim(maMon);
-    if (!score)
-    {
+    if (!score) {
         return false;
     }
 
@@ -98,18 +83,15 @@ bool QuanLyDiem::xoa(const char *maMon)
 }
 
 // Calculate average score
-double QuanLyDiem::tinhDiemTrungBinh()
-{
-    if (quanLyDiem.isEmpty())
-    {
+double QuanLyDiem::tinhDiemTrungBinh() {
+    if (quanLyDiem.isEmpty()) {
         return 0.0;
     }
 
     double total = 0.0;
     int count = 0;
 
-    for (int i = 0; i < quanLyDiem.size(); i++)
-    {
+    for (int i = 0; i < quanLyDiem.size(); i++) {
         DiemThi &score = quanLyDiem.get(i);
         total += score.getDiem();
         count++;
@@ -119,15 +101,12 @@ double QuanLyDiem::tinhDiemTrungBinh()
 }
 
 // Count passed subjects (score >= 5.0)
-int QuanLyDiem::demSoMonDau()
-{
+int QuanLyDiem::demSoMonDau() {
     int count = 0;
 
-    for (int i = 0; i < quanLyDiem.size(); i++)
-    {
+    for (int i = 0; i < quanLyDiem.size(); i++) {
         DiemThi &score = quanLyDiem.get(i);
-        if (score.getDiem() >= 5.0)
-        {
+        if (score.getDiem() >= 5.0) {
             count++;
         }
     }
@@ -136,15 +115,12 @@ int QuanLyDiem::demSoMonDau()
 }
 
 // Count failed subjects (score < 5.0)
-int QuanLyDiem::demSoMonRot()
-{
+int QuanLyDiem::demSoMonRot() {
     int count = 0;
 
-    for (int i = 0; i < quanLyDiem.size(); i++)
-    {
+    for (int i = 0; i < quanLyDiem.size(); i++) {
         DiemThi &score = quanLyDiem.get(i);
-        if (score.getDiem() < 5.0)
-        {
+        if (score.getDiem() < 5.0) {
             count++;
         }
     }
@@ -153,34 +129,29 @@ int QuanLyDiem::demSoMonRot()
 }
 
 // Count total subjects taken
-int QuanLyDiem::demSoMonDaThi()
-{
+int QuanLyDiem::demSoMonDaThi() {
     return quanLyDiem.size();
 }
 
 // Save to file
-void QuanLyDiem::saveToFile()
-{
+void QuanLyDiem::saveToFile() {
     std::string filename = "data/diemthi/diemthi_" + maSinhVien + ".txt";
     std::ofstream file(filename);
 
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         throw std::runtime_error("Cannot open file for writing: " + filename);
     }
 
     file << quanLyDiem.size() << std::endl;
 
-    for (int i = 0; i < quanLyDiem.size(); i++)
-    {
+    for (int i = 0; i < quanLyDiem.size(); i++) {
         DiemThi &score = quanLyDiem.get(i);
         file << score.getMaMon() << "|";
         file << score.getDiem() << "|";
 
         // Save the answer list as a string of characters
         DynamicArray<char> *answers = score.getDanhSachCauTraLoi();
-        for (int j = 0; j < answers->size(); j++)
-        {
+        for (int j = 0; j < answers->size(); j++) {
             file << answers->get(j);
         }
         file << std::endl;
@@ -190,17 +161,14 @@ void QuanLyDiem::saveToFile()
 }
 
 // Load from file
-void QuanLyDiem::loadFromFile()
-{
+void QuanLyDiem::loadFromFile() {
     std::string filename = "data/diemthi/diemthi_" + maSinhVien + ".txt";
     std::ifstream file(filename);
 
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         // Create empty data file if it doesn't exist
         std::ofstream createFile(filename);
-        if (createFile.is_open())
-        {
+        if (createFile.is_open()) {
             createFile << "0" << std::endl; // Empty file with count = 0
             createFile.close();
         }
@@ -211,8 +179,7 @@ void QuanLyDiem::loadFromFile()
     file >> count;
     file.ignore();
 
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         std::string line;
         std::getline(file, line);
 
@@ -220,27 +187,23 @@ void QuanLyDiem::loadFromFile()
         std::string token;
         DynamicArray<std::string> tokens;
 
-        while (std::getline(ss, token, '|'))
-        {
+        while (std::getline(ss, token, '|')) {
             tokens.add(token);
         }
 
-        if (tokens.size() >= 3)
-        {
+        if (tokens.size() >= 3) {
             std::string subjectCode = tokens.get(0);
             double score = std::stod(tokens.get(1));
             std::string answersStr = tokens.get(2);
 
             // Convert string back to DynamicArray<char>
             DynamicArray<char> answers;
-            for (char c : answersStr)
-            {
+            for (char c: answersStr) {
                 answers.add(c);
             }
 
             DiemThi *examScore = new DiemThi(subjectCode.c_str(), score);
-            for (int j = 0; j < answers.size(); j++)
-            {
+            for (int j = 0; j < answers.size(); j++) {
                 examScore->getDanhSachCauTraLoi()->add(answers.get(j));
             }
             quanLyDiem.add(*examScore);

@@ -9,17 +9,18 @@ class QuanLySinhVien;
 /**
  * @brief Lớp học - MALOP, TENLOP, con trỏ quản lý sinh viên
  */
-class Lop
-{
+class Lop {
 private:
-    std::string maLop;              // Mã lớp học (khóa duy nhất)
-    std::string tenLop;             // Tên lớp học
+    std::string maLop; // Mã lớp học (khóa duy nhất)
+    std::string tenLop; // Tên lớp học
     QuanLySinhVien *quanLySinhVien; // Con trỏ quản lý sinh viên
 
 public:
     // Constructors & Destructor
     Lop();
+
     Lop(const std::string &ma, const std::string &ten);
+
     ~Lop();
 
     // Getters (const methods)

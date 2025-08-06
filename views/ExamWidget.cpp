@@ -9,15 +9,17 @@
 #include <QCloseEvent>
 #include <QGridLayout>
 #include <QSpacerItem>
+#include <QButtonGroup>
+#include <QBoxLayout>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
 ExamWidget::ExamWidget(QWidget *parent)
-    : QDialog(parent), currentSubject(nullptr), currentStudent(nullptr), questions(nullptr), studentAnswers(nullptr), currentQuestionIndex(0), totalQuestions(0), timeRemaining(3600) // 60 minutes default
+    : QDialog(parent), currentSubject(nullptr), currentStudent(nullptr), questions(nullptr), studentAnswers(nullptr),
+      currentQuestionIndex(0), totalQuestions(0), timeRemaining(3600) // 60 minutes default
       ,
-      totalTime(3600)
-{
+      totalTime(3600) {
     setModal(true);
     setWindowTitle("Exam - Multiple Choice Test");
     resize(1000, 700);
@@ -29,20 +31,16 @@ ExamWidget::ExamWidget(QWidget *parent)
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 }
 
-ExamWidget::~ExamWidget()
-{
-    if (questions)
-    {
+ExamWidget::~ExamWidget() {
+    if (questions) {
         delete questions;
     }
-    if (studentAnswers)
-    {
+    if (studentAnswers) {
         delete studentAnswers;
     }
 }
 
-void ExamWidget::setupUI()
-{
+void ExamWidget::setupUI() {
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
 
     // Left side - Exam content
@@ -56,7 +54,7 @@ void ExamWidget::setupUI()
 
     timerLabel = new QLabel("Time: 60:00");
     timerLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #e74c3c; "
-                              "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
+        "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
 
     headerLayout->addWidget(titleLabel);
     headerLayout->addStretch();
@@ -65,8 +63,8 @@ void ExamWidget::setupUI()
     // Progress bar
     progressBar = new QProgressBar();
     progressBar->setStyleSheet("QProgressBar { border: 2px solid #bdc3c7; border-radius: 5px; "
-                               "text-align: center; } "
-                               "QProgressBar::chunk { background-color: #3498db; }");
+        "text-align: center; } "
+        "QProgressBar::chunk { background-color: #3498db; }");
 
     // Question display area
     questionScrollArea = new QScrollArea();
@@ -82,8 +80,8 @@ void ExamWidget::setupUI()
     questionContentLabel = new QLabel("Question content will appear here...");
     questionContentLabel->setWordWrap(true);
     questionContentLabel->setStyleSheet("font-size: 14px; color: #2c3e50; padding: 15px; "
-                                        "background-color: #f8f9fa; border: 1px solid #dee2e6; "
-                                        "border-radius: 6px; margin-bottom: 20px;");
+        "background-color: #f8f9fa; border: 1px solid #dee2e6; "
+        "border-radius: 6px; margin-bottom: 20px;");
 
     // Answer options
     answerGroup = new QButtonGroup();
@@ -100,12 +98,12 @@ void ExamWidget::setupUI()
 
     // Style radio buttons
     QString radioStyle = "QRadioButton { font-size: 13px; color: #2c3e50; padding: 8px; "
-                         "margin: 4px 0px; } "
-                         "QRadioButton::indicator { width: 18px; height: 18px; } "
-                         "QRadioButton::indicator:unchecked { border: 2px solid #bdc3c7; "
-                         "border-radius: 9px; background-color: white; } "
-                         "QRadioButton::indicator:checked { border: 2px solid #3498db; "
-                         "border-radius: 9px; background-color: #3498db; }";
+            "margin: 4px 0px; } "
+            "QRadioButton::indicator { width: 18px; height: 18px; } "
+            "QRadioButton::indicator:unchecked { border: 2px solid #bdc3c7; "
+            "border-radius: 9px; background-color: white; } "
+            "QRadioButton::indicator:checked { border: 2px solid #3498db; "
+            "border-radius: 9px; background-color: #3498db; }";
 
     optionA->setStyleSheet(radioStyle);
     optionB->setStyleSheet(radioStyle);
@@ -131,21 +129,21 @@ void ExamWidget::setupUI()
     cancelButton = new QPushButton("Cancel");
 
     previousButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; "
-                                  "padding: 8px 16px; border: none; border-radius: 4px; }"
-                                  "QPushButton:hover { background-color: #7f8c8d; }"
-                                  "QPushButton:disabled { background-color: #bdc3c7; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #7f8c8d; }"
+        "QPushButton:disabled { background-color: #bdc3c7; }");
 
     nextButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-                              "padding: 8px 16px; border: none; border-radius: 4px; }"
-                              "QPushButton:hover { background-color: #2980b9; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #2980b9; }");
 
     submitButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; "
-                                "padding: 8px 16px; border: none; border-radius: 4px; }"
-                                "QPushButton:hover { background-color: #229954; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #229954; }");
 
     cancelButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-                                "padding: 8px 16px; border: none; border-radius: 4px; }"
-                                "QPushButton:hover { background-color: #c0392b; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #c0392b; }");
 
     navButtonLayout->addWidget(previousButton);
     navButtonLayout->addWidget(nextButton);
@@ -171,8 +169,7 @@ void ExamWidget::setupUI()
     connect(examTimer, &QTimer::timeout, this, &ExamWidget::updateTimer);
 }
 
-void ExamWidget::setupConnections()
-{
+void ExamWidget::setupConnections() {
     connect(previousButton, &QPushButton::clicked, this, &ExamWidget::previousQuestion);
     connect(nextButton, &QPushButton::clicked, this, &ExamWidget::nextQuestion);
     connect(submitButton, &QPushButton::clicked, this, &ExamWidget::submitExam);
@@ -185,8 +182,7 @@ void ExamWidget::setupConnections()
     connect(optionD, &QRadioButton::clicked, this, &ExamWidget::onAnswerSelected);
 }
 
-void ExamWidget::createNavigationPanel()
-{
+void ExamWidget::createNavigationPanel() {
     navigationPanel = new QFrame();
     navigationPanel->setFrameStyle(QFrame::Box);
     navigationPanel->setStyleSheet("QFrame { background-color: #f8f9fa; border: 1px solid #dee2e6; }");
@@ -202,10 +198,8 @@ void ExamWidget::createNavigationPanel()
     navLayout->addStretch();
 }
 
-void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student)
-{
-    if (!subject || !student || !subject->getQuanLyCauHoi())
-    {
+void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student) {
+    if (!subject || !student || !subject->getQuanLyCauHoi()) {
         QMessageBox::critical(this, "Error", "Invalid exam parameters.");
         reject();
         return;
@@ -227,8 +221,7 @@ void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student)
     questions = new DynamicArray<CauHoi *>();
     subject->getQuanLyCauHoi()->layNgauNhien(*questions, numQuestions);
 
-    if (questions->size() == 0)
-    {
+    if (questions->size() == 0) {
         QMessageBox::critical(this, "Error", "No questions available for this exam.");
         reject();
         return;
@@ -236,8 +229,7 @@ void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student)
 
     // Initialize answers array
     studentAnswers = new DynamicArray<char>();
-    for (int i = 0; i < questions->size(); i++)
-    {
+    for (int i = 0; i < questions->size(); i++) {
         char empty = ' ';
         studentAnswers->add(empty); // Empty answer initially
     }
@@ -254,17 +246,14 @@ void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student)
     updateProgress();
 }
 
-void ExamWidget::setupTimer(int minutes)
-{
+void ExamWidget::setupTimer(int minutes) {
     totalTime = minutes * 60;
     timeRemaining = totalTime;
     timerLabel->setText(formatTime(timeRemaining));
 }
 
-void ExamWidget::loadQuestion(int index)
-{
-    if (!questions || index < 0 || index >= questions->size())
-    {
+void ExamWidget::loadQuestion(int index) {
+    if (!questions || index < 0 || index >= questions->size()) {
         return;
     }
 
@@ -282,12 +271,9 @@ void ExamWidget::loadQuestion(int index)
     optionD->setText(QString("D. %1").arg(QString::fromStdString(question->getLuaChonD())));
 
     // Load previous answer if exists
-    if (studentAnswers && index < studentAnswers->size())
-    {
+    if (studentAnswers && index < studentAnswers->size()) {
         setSelectedAnswer(studentAnswers->get(index));
-    }
-    else
-    {
+    } else {
         answerGroup->setExclusive(false);
         optionA->setChecked(false);
         optionB->setChecked(false);
@@ -303,10 +289,8 @@ void ExamWidget::loadQuestion(int index)
     updateProgress();
 }
 
-void ExamWidget::saveCurrentAnswer()
-{
-    if (!studentAnswers || currentQuestionIndex >= studentAnswers->size())
-    {
+void ExamWidget::saveCurrentAnswer() {
+    if (!studentAnswers || currentQuestionIndex >= studentAnswers->size()) {
         return;
     }
 
@@ -315,28 +299,22 @@ void ExamWidget::saveCurrentAnswer()
     updateQuestionNavigation();
 }
 
-void ExamWidget::nextQuestion()
-{
+void ExamWidget::nextQuestion() {
     saveCurrentAnswer();
-    if (currentQuestionIndex < questions->size() - 1)
-    {
+    if (currentQuestionIndex < questions->size() - 1) {
         loadQuestion(currentQuestionIndex + 1);
     }
 }
 
-void ExamWidget::previousQuestion()
-{
+void ExamWidget::previousQuestion() {
     saveCurrentAnswer();
-    if (currentQuestionIndex > 0)
-    {
+    if (currentQuestionIndex > 0) {
         loadQuestion(currentQuestionIndex - 1);
     }
 }
 
-void ExamWidget::submitExam()
-{
-    if (!confirmSubmission())
-    {
+void ExamWidget::submitExam() {
+    if (!confirmSubmission()) {
         return;
     }
 
@@ -347,21 +325,18 @@ void ExamWidget::submitExam()
     accept();
 }
 
-void ExamWidget::updateTimer()
-{
+void ExamWidget::updateTimer() {
     timeRemaining--;
     timerLabel->setText(formatTime(timeRemaining));
 
     // Change color when time is running low (last 5 minutes)
-    if (timeRemaining <= 300)
-    {
+    if (timeRemaining <= 300) {
         timerLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: white; "
-                                  "background-color: #e74c3c; padding: 8px 12px; border-radius: 4px;");
+            "background-color: #e74c3c; padding: 8px 12px; border-radius: 4px;");
     }
 
     // Auto-submit when time runs out
-    if (timeRemaining <= 0)
-    {
+    if (timeRemaining <= 0) {
         examTimer->stop();
         QMessageBox::information(this, "Time Up", "Time has expired. Your exam will be submitted automatically.");
         saveCurrentAnswer();
@@ -370,45 +345,36 @@ void ExamWidget::updateTimer()
     }
 }
 
-void ExamWidget::onAnswerSelected()
-{
+void ExamWidget::onAnswerSelected() {
     // Save answer immediately when selected
     saveCurrentAnswer();
     updateProgress();
 }
 
-void ExamWidget::calculateAndSaveResults()
-{
+void ExamWidget::calculateAndSaveResults() {
     double score = calculateScore();
 
     // Create DiemThi object following memory management rules
     DiemThi *ketQuaThi = new DiemThi(currentSubject->getMaMon(), score);
 
     // Add student answers to the result
-    if (studentAnswers)
-    {
-        for (int i = 0; i < studentAnswers->size(); i++)
-        {
+    if (studentAnswers) {
+        for (int i = 0; i < studentAnswers->size(); i++) {
             ketQuaThi->getDanhSachCauTraLoi()->add(studentAnswers->get(i));
         }
     }
 
     // Save to student's score manager
-    if (currentStudent && currentStudent->getQuanLyDiem())
-    {
+    if (currentStudent && currentStudent->getQuanLyDiem()) {
         // Check if student already has a score for this subject
         DiemThi *existingScore = currentStudent->getQuanLyDiem()->tim(currentSubject->getMaMon());
 
-        if (existingScore)
-        {
+        if (existingScore) {
             // Update existing score if new score is better
-            if (score > existingScore->getDiem())
-            {
+            if (score > existingScore->getDiem()) {
                 currentStudent->getQuanLyDiem()->sua(*ketQuaThi);
             }
-        }
-        else
-        {
+        } else {
             // Add new score
             currentStudent->getQuanLyDiem()->them(*ketQuaThi);
         }
@@ -420,22 +386,18 @@ void ExamWidget::calculateAndSaveResults()
     emit examCompleted(score);
 }
 
-double ExamWidget::calculateScore()
-{
-    if (!questions || !studentAnswers || questions->size() == 0)
-    {
+double ExamWidget::calculateScore() {
+    if (!questions || !studentAnswers || questions->size() == 0) {
         return 0.0;
     }
 
     int correctAnswers = 0;
 
-    for (int i = 0; i < questions->size() && i < studentAnswers->size(); i++)
-    {
+    for (int i = 0; i < questions->size() && i < studentAnswers->size(); i++) {
         CauHoi *question = questions->get(i);
         char studentAnswer = studentAnswers->get(i);
 
-        if (question && question->kiemTraDapAn(studentAnswer))
-        {
+        if (question && question->kiemTraDapAn(studentAnswer)) {
             correctAnswers++;
         }
     }
@@ -443,14 +405,12 @@ double ExamWidget::calculateScore()
     return (static_cast<double>(correctAnswers) / questions->size()) * 10.0;
 }
 
-void ExamWidget::updateQuestionNavigation()
-{
+void ExamWidget::updateQuestionNavigation() {
     // Clear existing buttons
-    while (navLayout->count() > 2)
-    { // Keep title and stretch
+    while (navLayout->count() > 2) {
+        // Keep title and stretch
         QLayoutItem *item = navLayout->takeAt(1);
-        if (item->widget())
-        {
+        if (item->widget()) {
             delete item->widget();
         }
         delete item;
@@ -462,29 +422,26 @@ void ExamWidget::updateQuestionNavigation()
     // Create grid layout for question buttons
     QGridLayout *gridLayout = new QGridLayout();
 
-    for (int i = 0; i < questions->size(); i++)
-    {
+    for (int i = 0; i < questions->size(); i++) {
         QPushButton *questionBtn = new QPushButton(QString::number(i + 1));
         questionBtn->setFixedSize(30, 30);
 
         // Color coding based on answer status
-        if (i < studentAnswers->size() && studentAnswers->get(i) != ' ')
-        {
-            questionBtn->setStyleSheet("QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
-        }
-        else
-        {
-            questionBtn->setStyleSheet("QPushButton { background-color: #ecf0f1; color: #2c3e50; border: 1px solid #bdc3c7; border-radius: 4px; }");
+        if (i < studentAnswers->size() && studentAnswers->get(i) != ' ') {
+            questionBtn->setStyleSheet(
+                "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
+        } else {
+            questionBtn->setStyleSheet(
+                "QPushButton { background-color: #ecf0f1; color: #2c3e50; border: 1px solid #bdc3c7; border-radius: 4px; }");
         }
 
         // Highlight current question
-        if (i == currentQuestionIndex)
-        {
-            questionBtn->setStyleSheet("QPushButton { background-color: #3498db; color: white; border: none; border-radius: 4px; }");
+        if (i == currentQuestionIndex) {
+            questionBtn->setStyleSheet(
+                "QPushButton { background-color: #3498db; color: white; border: none; border-radius: 4px; }");
         }
 
-        connect(questionBtn, &QPushButton::clicked, [this, i]()
-                { goToQuestion(i); });
+        connect(questionBtn, &QPushButton::clicked, [this, i]() { goToQuestion(i); });
 
         gridLayout->addWidget(questionBtn, i / 5, i % 5);
     }
@@ -495,18 +452,14 @@ void ExamWidget::updateQuestionNavigation()
     navLayout->insertWidget(1, gridWidget);
 }
 
-void ExamWidget::updateProgress()
-{
+void ExamWidget::updateProgress() {
     if (!questions)
         return;
 
     int answeredQuestions = 0;
-    if (studentAnswers)
-    {
-        for (int i = 0; i < studentAnswers->size(); i++)
-        {
-            if (studentAnswers->get(i) != ' ')
-            {
+    if (studentAnswers) {
+        for (int i = 0; i < studentAnswers->size(); i++) {
+            if (studentAnswers->get(i) != ' ') {
                 answeredQuestions++;
             }
         }
@@ -515,21 +468,18 @@ void ExamWidget::updateProgress()
     int percentage = (answeredQuestions * 100) / questions->size();
     progressBar->setValue(percentage);
     progressBar->setFormat(QString("Progress: %1/%2 questions answered (%p%)")
-                               .arg(answeredQuestions)
-                               .arg(questions->size()));
+        .arg(answeredQuestions)
+        .arg(questions->size()));
 }
 
-void ExamWidget::goToQuestion(int questionIndex)
-{
-    if (questionIndex >= 0 && questionIndex < questions->size())
-    {
+void ExamWidget::goToQuestion(int questionIndex) {
+    if (questionIndex >= 0 && questionIndex < questions->size()) {
         saveCurrentAnswer();
         loadQuestion(questionIndex);
     }
 }
 
-char ExamWidget::getSelectedAnswer()
-{
+char ExamWidget::getSelectedAnswer() {
     if (optionA->isChecked())
         return 'A';
     if (optionB->isChecked())
@@ -541,8 +491,7 @@ char ExamWidget::getSelectedAnswer()
     return ' '; // No answer selected
 }
 
-void ExamWidget::setSelectedAnswer(char answer)
-{
+void ExamWidget::setSelectedAnswer(char answer) {
     answerGroup->setExclusive(false);
     optionA->setChecked(answer == 'A');
     optionB->setChecked(answer == 'B');
@@ -551,30 +500,24 @@ void ExamWidget::setSelectedAnswer(char answer)
     answerGroup->setExclusive(true);
 }
 
-QString ExamWidget::formatTime(int seconds)
-{
+QString ExamWidget::formatTime(int seconds) {
     int minutes = seconds / 60;
     int secs = seconds % 60;
     return QString("%1:%2").arg(minutes, 2, 10, QChar('0')).arg(secs, 2, 10, QChar('0'));
 }
 
-bool ExamWidget::confirmSubmission()
-{
+bool ExamWidget::confirmSubmission() {
     int unanswered = 0;
-    if (studentAnswers)
-    {
-        for (int i = 0; i < studentAnswers->size(); i++)
-        {
-            if (studentAnswers->get(i) == ' ')
-            {
+    if (studentAnswers) {
+        for (int i = 0; i < studentAnswers->size(); i++) {
+            if (studentAnswers->get(i) == ' ') {
                 unanswered++;
             }
         }
     }
 
     QString message = "Are you sure you want to submit your exam?";
-    if (unanswered > 0)
-    {
+    if (unanswered > 0) {
         message += QString("\n\nYou have %1 unanswered questions.").arg(unanswered);
     }
 
@@ -582,43 +525,32 @@ bool ExamWidget::confirmSubmission()
                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
 }
 
-bool ExamWidget::confirmCancellation()
-{
+bool ExamWidget::confirmCancellation() {
     return QMessageBox::question(this, "Cancel Exam",
                                  "Are you sure you want to cancel the exam? All progress will be lost.",
                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
 }
 
-void ExamWidget::closeEvent(QCloseEvent *event)
-{
-    if (examTimer && examTimer->isActive())
-    {
-        if (confirmCancellation())
-        {
+void ExamWidget::closeEvent(QCloseEvent *event) {
+    if (examTimer && examTimer->isActive()) {
+        if (confirmCancellation()) {
             examTimer->stop();
             emit examCancelled();
             event->accept();
-        }
-        else
-        {
+        } else {
             event->ignore();
         }
-    }
-    else
-    {
+    } else {
         event->accept();
     }
 }
 
-void ExamWidget::resetExam()
-{
-    if (questions)
-    {
+void ExamWidget::resetExam() {
+    if (questions) {
         delete questions;
         questions = nullptr;
     }
-    if (studentAnswers)
-    {
+    if (studentAnswers) {
         delete studentAnswers;
         studentAnswers = nullptr;
     }
@@ -628,8 +560,7 @@ void ExamWidget::resetExam()
     currentSubject = nullptr;
     currentStudent = nullptr;
 
-    if (examTimer)
-    {
+    if (examTimer) {
         examTimer->stop();
     }
 }

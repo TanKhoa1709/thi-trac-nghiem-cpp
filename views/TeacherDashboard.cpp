@@ -10,34 +10,34 @@
 #include "../models/cauhoi.h"
 #include "../models/diemthi.h"
 #include "../utils/DynamicArray.h"
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QHeaderView>
+#include <QMessageBox>
+#include <QTextEdit>
 #include <cstring>
 
 TeacherDashboard::TeacherDashboard(QWidget *parent)
-    : QWidget(parent), mainTabs(nullptr), classManager(nullptr), subjectManager(nullptr)
-{
+    : QWidget(parent), mainTabs(nullptr), classManager(nullptr), subjectManager(nullptr) {
     setupUI();
     setupConnections();
 }
 
-TeacherDashboard::~TeacherDashboard()
-{
+TeacherDashboard::~TeacherDashboard() {
     // Qt handles widget cleanup through parent-child relationships
 }
 
-void TeacherDashboard::setClassManager(QuanLyLop *manager)
-{
+void TeacherDashboard::setClassManager(QuanLyLop *manager) {
     classManager = manager;
     // Don't refresh immediately - will be called manually after data loading
 }
 
-void TeacherDashboard::setSubjectManager(QuanLyMonHoc *manager)
-{
+void TeacherDashboard::setSubjectManager(QuanLyMonHoc *manager) {
     subjectManager = manager;
     // Don't refresh immediately - will be called manually after data loading
 }
 
-void TeacherDashboard::setupUI()
-{
+void TeacherDashboard::setupUI() {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     // Title
@@ -58,8 +58,8 @@ void TeacherDashboard::setupUI()
     bottomLayout->addStretch();
     QPushButton *logoutButton = new QPushButton("Logout");
     logoutButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-                                "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
-                                "QPushButton:hover { background-color: #c0392b; }");
+        "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #c0392b; }");
     connect(logoutButton, &QPushButton::clicked, this, &TeacherDashboard::logoutRequested);
     bottomLayout->addWidget(logoutButton);
 
@@ -68,8 +68,7 @@ void TeacherDashboard::setupUI()
     mainLayout->addLayout(bottomLayout);
 }
 
-void TeacherDashboard::setupClassTab()
-{
+void TeacherDashboard::setupClassTab() {
     classTab = new QWidget();
     QHBoxLayout *layout = new QHBoxLayout(classTab);
 
@@ -88,9 +87,12 @@ void TeacherDashboard::setupClassTab()
     editClassButton = new QPushButton("Edit Class");
     deleteClassButton = new QPushButton("Delete Class");
 
-    addClassButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    editClassButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    deleteClassButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    addClassButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    editClassButton->setStyleSheet(
+        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    deleteClassButton->setStyleSheet(
+        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     classButtonLayout->addWidget(addClassButton);
     classButtonLayout->addWidget(editClassButton);
@@ -116,9 +118,12 @@ void TeacherDashboard::setupClassTab()
     editStudentButton = new QPushButton("Edit Student");
     deleteStudentButton = new QPushButton("Delete Student");
 
-    addStudentButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    editStudentButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    deleteStudentButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    addStudentButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    editStudentButton->setStyleSheet(
+        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    deleteStudentButton->setStyleSheet(
+        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     studentButtonLayout->addWidget(addStudentButton);
     studentButtonLayout->addWidget(editStudentButton);
@@ -136,8 +141,7 @@ void TeacherDashboard::setupClassTab()
     mainTabs->addTab(classTab, "Quản Lý Lớp");
 }
 
-void TeacherDashboard::setupSubjectTab()
-{
+void TeacherDashboard::setupSubjectTab() {
     subjectTab = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(subjectTab);
 
@@ -155,10 +159,14 @@ void TeacherDashboard::setupSubjectTab()
     deleteSubjectButton = new QPushButton("Delete Subject");
     manageQuestionsButton = new QPushButton("Manage Questions");
 
-    addSubjectButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    editSubjectButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    deleteSubjectButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    manageQuestionsButton->setStyleSheet("QPushButton { background-color: #9b59b6; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    addSubjectButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    editSubjectButton->setStyleSheet(
+        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    deleteSubjectButton->setStyleSheet(
+        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    manageQuestionsButton->setStyleSheet(
+        "QPushButton { background-color: #9b59b6; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     buttonLayout->addWidget(addSubjectButton);
     buttonLayout->addWidget(editSubjectButton);
@@ -173,8 +181,7 @@ void TeacherDashboard::setupSubjectTab()
     mainTabs->addTab(subjectTab, "Quản Lý Môn");
 }
 
-void TeacherDashboard::setupQuestionTab()
-{
+void TeacherDashboard::setupQuestionTab() {
     questionTab = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(questionTab);
 
@@ -199,9 +206,12 @@ void TeacherDashboard::setupQuestionTab()
     editQuestionButton = new QPushButton("Edit Question");
     deleteQuestionButton = new QPushButton("Delete Question");
 
-    addQuestionButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    editQuestionButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    deleteQuestionButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    addQuestionButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    editQuestionButton->setStyleSheet(
+        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+    deleteQuestionButton->setStyleSheet(
+        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     buttonLayout->addWidget(addQuestionButton);
     buttonLayout->addWidget(editQuestionButton);
@@ -216,8 +226,7 @@ void TeacherDashboard::setupQuestionTab()
     mainTabs->addTab(questionTab, "Quản Lý Câu Hỏi");
 }
 
-void TeacherDashboard::setupReportsTab()
-{
+void TeacherDashboard::setupReportsTab() {
     reportsTab = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(reportsTab);
 
@@ -248,8 +257,10 @@ void TeacherDashboard::setupReportsTab()
     generateReportButton = new QPushButton("Tạo bảng điểm");
     exportReportButton = new QPushButton("Xuất file");
 
-    generateReportButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
-    exportReportButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
+    generateReportButton->setStyleSheet(
+        "QPushButton { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
+    exportReportButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
     exportReportButton->setEnabled(false); // Enabled after report generation
 
     buttonLayout->addWidget(generateReportButton);
@@ -276,8 +287,7 @@ void TeacherDashboard::setupReportsTab()
     mainTabs->addTab(reportsTab, "Bảng Điểm");
 }
 
-void TeacherDashboard::setupConnections()
-{
+void TeacherDashboard::setupConnections() {
     // Class management connections
     connect(classTable, &QTableWidget::itemSelectionChanged, this, &TeacherDashboard::onClassSelected);
     connect(addClassButton, &QPushButton::clicked, this, &TeacherDashboard::addNewClass);
@@ -307,8 +317,7 @@ void TeacherDashboard::setupConnections()
     connect(exportReportButton, &QPushButton::clicked, this, &TeacherDashboard::exportReport);
 }
 
-void TeacherDashboard::refreshAllData()
-{
+void TeacherDashboard::refreshAllData() {
     refreshClassList();
     refreshSubjectList();
     populateSubjectCombo();
@@ -316,8 +325,7 @@ void TeacherDashboard::refreshAllData()
     refreshQuestionList();
 }
 
-void TeacherDashboard::refreshClassList()
-{
+void TeacherDashboard::refreshClassList() {
     if (!classManager)
         return;
 
@@ -325,8 +333,7 @@ void TeacherDashboard::refreshClassList()
     classManager->danhSach(danhSachLop);
 
     classTable->setRowCount(danhSachLop.size());
-    for (int i = 0; i < danhSachLop.size(); i++)
-    {
+    for (int i = 0; i < danhSachLop.size(); i++) {
         Lop *lop = danhSachLop.get(i);
         classTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(lop->getMaLop())));
         classTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(lop->getTenLop())));
@@ -336,31 +343,25 @@ void TeacherDashboard::refreshClassList()
     }
 }
 
-void TeacherDashboard::onClassSelected()
-{
+void TeacherDashboard::onClassSelected() {
     int row = classTable->currentRow();
-    if (row >= 0)
-    {
+    if (row >= 0) {
         QTableWidgetItem *item = classTable->item(row, 0);
-        if (item)
-        {
+        if (item) {
             currentClassCode = item->text();
             refreshStudentList();
         }
     }
 }
 
-void TeacherDashboard::refreshStudentList()
-{
-    if (!classManager || currentClassCode.isEmpty())
-    {
+void TeacherDashboard::refreshStudentList() {
+    if (!classManager || currentClassCode.isEmpty()) {
         studentTable->setRowCount(0);
         return;
     }
 
     Lop *lop = classManager->tim(currentClassCode.toStdString());
-    if (!lop || !lop->getQuanLySinhVien())
-    {
+    if (!lop || !lop->getQuanLySinhVien()) {
         studentTable->setRowCount(0);
         return;
     }
@@ -369,8 +370,7 @@ void TeacherDashboard::refreshStudentList()
     lop->getQuanLySinhVien()->danhSach(danhSachSV);
 
     studentTable->setRowCount(danhSachSV.size());
-    for (int i = 0; i < danhSachSV.size(); i++)
-    {
+    for (int i = 0; i < danhSachSV.size(); i++) {
         SinhVien *sv = danhSachSV.get(i);
         studentTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(sv->getMaSinhVien())));
         studentTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(sv->getHo())));
@@ -379,8 +379,7 @@ void TeacherDashboard::refreshStudentList()
     }
 }
 
-void TeacherDashboard::addNewClass()
-{
+void TeacherDashboard::addNewClass() {
     bool ok;
     QString classCode = QInputDialog::getText(this, "Add New Class", "Class Code:", QLineEdit::Normal, "", &ok);
     if (!ok || classCode.isEmpty())
@@ -390,28 +389,22 @@ void TeacherDashboard::addNewClass()
     if (!ok || className.isEmpty())
         return;
 
-    if (classManager)
-    {
+    if (classManager) {
         // Create new class following memory management rules
         Lop *lopMoi = new Lop(classCode.toStdString(), className.toStdString());
-        if (classManager->them(*lopMoi))
-        {
+        if (classManager->them(*lopMoi)) {
             classManager->saveToFile();
             refreshClassList();
             QMessageBox::information(this, "Success", "Class added successfully!");
-        }
-        else
-        {
+        } else {
             delete lopMoi; // Clean up if adding failed
             QMessageBox::warning(this, "Error", "Failed to add class. Class code may already exist.");
         }
     }
 }
 
-void TeacherDashboard::addNewStudent()
-{
-    if (currentClassCode.isEmpty())
-    {
+void TeacherDashboard::addNewStudent() {
+    if (currentClassCode.isEmpty()) {
         QMessageBox::warning(this, "Error", "Please select a class first.");
         return;
     }
@@ -439,28 +432,23 @@ void TeacherDashboard::addNewStudent()
         return;
 
     Lop *lop = classManager->tim(currentClassCode.toStdString());
-    if (lop && lop->getQuanLySinhVien())
-    {
+    if (lop && lop->getQuanLySinhVien()) {
         // Create new student following memory management rules
         SinhVien *svMoi = new SinhVien(studentId.toStdString(), lastName.toStdString(),
                                        firstName.toStdString(), gender == "Male", password.toStdString());
-        if (lop->getQuanLySinhVien()->them(*svMoi))
-        {
+        if (lop->getQuanLySinhVien()->them(*svMoi)) {
             lop->getQuanLySinhVien()->saveToFile();
             refreshStudentList();
             refreshClassList(); // Update student count
             QMessageBox::information(this, "Success", "Student added successfully!");
-        }
-        else
-        {
+        } else {
             delete svMoi; // Clean up if adding failed
             QMessageBox::warning(this, "Error", "Failed to add student. Student ID may already exist.");
         }
     }
 }
 
-void TeacherDashboard::refreshSubjectList()
-{
+void TeacherDashboard::refreshSubjectList() {
     if (!subjectManager)
         return;
 
@@ -468,8 +456,7 @@ void TeacherDashboard::refreshSubjectList()
     subjectManager->danhSach(danhSachMon);
 
     subjectTable->setRowCount(danhSachMon.size());
-    for (int i = 0; i < danhSachMon.size(); i++)
-    {
+    for (int i = 0; i < danhSachMon.size(); i++) {
         MonHoc *mon = danhSachMon.get(i);
         subjectTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(mon->getMaMon())));
         subjectTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(mon->getTenMon())));
@@ -479,8 +466,7 @@ void TeacherDashboard::refreshSubjectList()
     }
 }
 
-void TeacherDashboard::addNewSubject()
-{
+void TeacherDashboard::addNewSubject() {
     bool ok;
     QString subjectCode = QInputDialog::getText(this, "Add New Subject", "Subject Code:", QLineEdit::Normal, "", &ok);
     if (!ok || subjectCode.isEmpty())
@@ -490,27 +476,22 @@ void TeacherDashboard::addNewSubject()
     if (!ok || subjectName.isEmpty())
         return;
 
-    if (subjectManager)
-    {
+    if (subjectManager) {
         // Create new subject following memory management rules
         MonHoc *monMoi = new MonHoc(subjectCode.toStdString().c_str(), subjectName.toStdString());
-        if (subjectManager->them(*monMoi))
-        {
+        if (subjectManager->them(*monMoi)) {
             subjectManager->saveToFile();
             refreshSubjectList();
             populateSubjectCombo();
             QMessageBox::information(this, "Success", "Subject added successfully!");
-        }
-        else
-        {
+        } else {
             delete monMoi; // Clean up if adding failed
             QMessageBox::warning(this, "Error", "Failed to add subject. Subject code may already exist.");
         }
     }
 }
 
-void TeacherDashboard::populateSubjectCombo()
-{
+void TeacherDashboard::populateSubjectCombo() {
     if (!subjectManager)
         return;
 
@@ -519,34 +500,29 @@ void TeacherDashboard::populateSubjectCombo()
     DynamicArray<MonHoc *> danhSachMon;
     subjectManager->danhSach(danhSachMon);
 
-    for (int i = 0; i < danhSachMon.size(); i++)
-    {
+    for (int i = 0; i < danhSachMon.size(); i++) {
         MonHoc *mon = danhSachMon.get(i);
-        QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(QString::fromStdString(mon->getTenMon()));
+        QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(
+            QString::fromStdString(mon->getTenMon()));
         subjectComboForQuestions->addItem(item, QString::fromStdString(mon->getMaMon()));
     }
 }
 
-void TeacherDashboard::onSubjectChangedForQuestions()
-{
-    if (subjectComboForQuestions->currentIndex() >= 0)
-    {
+void TeacherDashboard::onSubjectChangedForQuestions() {
+    if (subjectComboForQuestions->currentIndex() >= 0) {
         currentSubjectCode = subjectComboForQuestions->currentData().toString();
         refreshQuestionList();
     }
 }
 
-void TeacherDashboard::refreshQuestionList()
-{
-    if (!subjectManager || currentSubjectCode.isEmpty())
-    {
+void TeacherDashboard::refreshQuestionList() {
+    if (!subjectManager || currentSubjectCode.isEmpty()) {
         questionTable->setRowCount(0);
         return;
     }
 
     MonHoc *mon = subjectManager->tim(currentSubjectCode.toStdString().c_str());
-    if (!mon || !mon->getQuanLyCauHoi())
-    {
+    if (!mon || !mon->getQuanLyCauHoi()) {
         questionTable->setRowCount(0);
         return;
     }
@@ -555,15 +531,13 @@ void TeacherDashboard::refreshQuestionList()
     mon->getQuanLyCauHoi()->danhSach(danhSachCH);
 
     questionTable->setRowCount(danhSachCH.size());
-    for (int i = 0; i < danhSachCH.size(); i++)
-    {
+    for (int i = 0; i < danhSachCH.size(); i++) {
         CauHoi *ch = danhSachCH.get(i);
         questionTable->setItem(i, 0, new QTableWidgetItem(QString::number(ch->getMaCauHoi())));
 
         // Truncate long questions for display
         QString content = QString::fromStdString(ch->getNoiDung());
-        if (content.length() > 50)
-        {
+        if (content.length() > 50) {
             content = content.left(47) + "...";
         }
         questionTable->setItem(i, 1, new QTableWidgetItem(content));
@@ -571,17 +545,14 @@ void TeacherDashboard::refreshQuestionList()
     }
 }
 
-void TeacherDashboard::addNewQuestion()
-{
-    if (currentSubjectCode.isEmpty())
-    {
+void TeacherDashboard::addNewQuestion() {
+    if (currentSubjectCode.isEmpty()) {
         QMessageBox::warning(this, "Error", "Please select a subject first.");
         return;
     }
 
     MonHoc *mon = subjectManager->tim(currentSubjectCode.toStdString().c_str());
-    if (!mon || !mon->getQuanLyCauHoi())
-    {
+    if (!mon || !mon->getQuanLyCauHoi()) {
         QMessageBox::warning(this, "Error", "Subject not found or question manager not initialized.");
         return;
     }
@@ -620,8 +591,10 @@ void TeacherDashboard::addNewQuestion()
     QPushButton *okButton = new QPushButton("Add Question");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
-    okButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
-    cancelButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    okButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(okButton);
@@ -640,23 +613,22 @@ void TeacherDashboard::addNewQuestion()
     layout->addLayout(buttonLayout);
 
     // Connect buttons
-    connect(okButton, &QPushButton::clicked, [&]()
-            {
+    connect(okButton, &QPushButton::clicked, [&]() {
         QString content = contentEdit->toPlainText().trimmed();
         QString a = optionA->text().trimmed();
         QString b = optionB->text().trimmed();
         QString c = optionC->text().trimmed();
         QString d = optionD->text().trimmed();
         char correct = correctCombo->currentText().at(0).toLatin1();
-        
+
         if (content.isEmpty() || a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty()) {
             QMessageBox::warning(&dialog, "Error", "Please fill in all fields.");
             return;
         }
-        
+
         // Create new question with heap allocation (following user rules)
-        CauHoi* newQuestion = new CauHoi();
-        
+        CauHoi *newQuestion = new CauHoi();
+
         // Generate unique ID
         int newId = mon->getQuanLyCauHoi()->taoMaCauHoiNgauNhien();
         newQuestion->setMaCauHoi(newId);
@@ -666,7 +638,7 @@ void TeacherDashboard::addNewQuestion()
         newQuestion->setLuaChonC(c.toStdString());
         newQuestion->setLuaChonD(d.toStdString());
         newQuestion->setDapAnDung(correct);
-        
+
         // Add to manager using dereferenced value (following user rules)
         if (mon->getQuanLyCauHoi()->them(*newQuestion)) {
             // Save changes to file immediately
@@ -676,21 +648,19 @@ void TeacherDashboard::addNewQuestion()
         } else {
             QMessageBox::warning(&dialog, "Error", "Failed to add question. Please check the input.");
             delete newQuestion; // Clean up on failure
-        } });
+        }
+    });
 
     connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
 
-    if (dialog.exec() == QDialog::Accepted)
-    {
+    if (dialog.exec() == QDialog::Accepted) {
         refreshQuestionList();
     }
 }
 
-void TeacherDashboard::editClass()
-{
+void TeacherDashboard::editClass() {
     int row = classTable->currentRow();
-    if (row < 0)
-    {
+    if (row < 0) {
         QMessageBox::warning(this, "Error", "Please select a class to edit.");
         return;
     }
@@ -701,8 +671,7 @@ void TeacherDashboard::editClass()
 
     QString oldClassCode = item->text();
     Lop *lop = classManager->tim(oldClassCode.toStdString());
-    if (!lop)
-    {
+    if (!lop) {
         QMessageBox::warning(this, "Error", "Selected class not found.");
         return;
     }
@@ -722,19 +691,15 @@ void TeacherDashboard::editClass()
     lop->setMaLop(newClassCode.toStdString());
     lop->setTenLop(newClassName.toStdString());
 
-    if (classManager->sua(*lop))
-    {
+    if (classManager->sua(*lop)) {
         classManager->saveToFile();
         refreshClassList();
         // Update current selection if it was the edited class
-        if (currentClassCode == oldClassCode)
-        {
+        if (currentClassCode == oldClassCode) {
             currentClassCode = newClassCode;
         }
         QMessageBox::information(this, "Success", "Class updated successfully!");
-    }
-    else
-    {
+    } else {
         // Restore original values if update failed
         lop->setMaLop(oldClassCode.toStdString());
         lop->setTenLop(item ? classTable->item(row, 1)->text().toStdString() : "");
@@ -742,11 +707,9 @@ void TeacherDashboard::editClass()
     }
 }
 
-void TeacherDashboard::deleteClass()
-{
+void TeacherDashboard::deleteClass() {
     int row = classTable->currentRow();
-    if (row < 0)
-    {
+    if (row < 0) {
         QMessageBox::warning(this, "Error", "Please select a class to delete.");
         return;
     }
@@ -761,47 +724,40 @@ void TeacherDashboard::deleteClass()
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
                                        QString("Are you sure you want to delete class '%1 - %2'?\n\n"
-                                               "This will also delete all students in this class and their exam results.\n"
-                                               "This action cannot be undone.")
-                                           .arg(classCode)
-                                           .arg(className),
+                                           "This will also delete all students in this class and their exam results.\n"
+                                           "This action cannot be undone.")
+                                       .arg(classCode)
+                                       .arg(className),
                                        QMessageBox::Yes | QMessageBox::No,
                                        QMessageBox::No);
 
     if (result != QMessageBox::Yes)
         return;
 
-    if (classManager->xoa(classCode.toStdString()))
-    {
+    if (classManager->xoa(classCode.toStdString())) {
         classManager->saveToFile();
 
         // Clear current selection if it was the deleted class
-        if (currentClassCode == classCode)
-        {
+        if (currentClassCode == classCode) {
             currentClassCode.clear();
             studentTable->setRowCount(0);
         }
 
         refreshClassList();
         QMessageBox::information(this, "Success", "Class deleted successfully!");
-    }
-    else
-    {
+    } else {
         QMessageBox::warning(this, "Error", "Failed to delete class.");
     }
 }
 
-void TeacherDashboard::editStudent()
-{
-    if (currentClassCode.isEmpty())
-    {
+void TeacherDashboard::editStudent() {
+    if (currentClassCode.isEmpty()) {
         QMessageBox::warning(this, "Error", "Please select a class first.");
         return;
     }
 
     int row = studentTable->currentRow();
-    if (row < 0)
-    {
+    if (row < 0) {
         QMessageBox::warning(this, "Error", "Please select a student to edit.");
         return;
     }
@@ -813,15 +769,13 @@ void TeacherDashboard::editStudent()
     QString oldStudentId = item->text();
 
     Lop *lop = classManager->tim(currentClassCode.toStdString());
-    if (!lop || !lop->getQuanLySinhVien())
-    {
+    if (!lop || !lop->getQuanLySinhVien()) {
         QMessageBox::warning(this, "Error", "Class or student manager not found.");
         return;
     }
 
     SinhVien *sv = lop->getQuanLySinhVien()->tim(oldStudentId.toStdString());
-    if (!sv)
-    {
+    if (!sv) {
         QMessageBox::warning(this, "Error", "Selected student not found.");
         return;
     }
@@ -861,15 +815,12 @@ void TeacherDashboard::editStudent()
     sv->setPhai(newGender == "Male");
     sv->setPassword(newPassword.toStdString());
 
-    if (lop->getQuanLySinhVien()->sua(*sv))
-    {
+    if (lop->getQuanLySinhVien()->sua(*sv)) {
         lop->getQuanLySinhVien()->saveToFile();
         refreshStudentList();
         refreshClassList(); // Update student count if needed
         QMessageBox::information(this, "Success", "Student updated successfully!");
-    }
-    else
-    {
+    } else {
         // Restore original values if update failed
         sv->setMaSinhVien(oldStudentId.toStdString());
         sv->setHo(studentTable->item(row, 1)->text().toStdString());
@@ -879,17 +830,14 @@ void TeacherDashboard::editStudent()
     }
 }
 
-void TeacherDashboard::deleteStudent()
-{
-    if (currentClassCode.isEmpty())
-    {
+void TeacherDashboard::deleteStudent() {
+    if (currentClassCode.isEmpty()) {
         QMessageBox::warning(this, "Error", "Please select a class first.");
         return;
     }
 
     int row = studentTable->currentRow();
-    if (row < 0)
-    {
+    if (row < 0) {
         QMessageBox::warning(this, "Error", "Please select a student to delete.");
         return;
     }
@@ -899,15 +847,16 @@ void TeacherDashboard::deleteStudent()
         return;
 
     QString studentId = item->text();
-    QString studentName = QString("%1 %2").arg(studentTable->item(row, 1)->text()).arg(studentTable->item(row, 2)->text());
+    QString studentName = QString("%1 %2").arg(studentTable->item(row, 1)->text()).arg(
+        studentTable->item(row, 2)->text());
 
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
                                        QString("Are you sure you want to delete student '%1 - %2'?\n\n"
-                                               "This will also delete all exam results for this student.\n"
-                                               "This action cannot be undone.")
-                                           .arg(studentId)
-                                           .arg(studentName),
+                                           "This will also delete all exam results for this student.\n"
+                                           "This action cannot be undone.")
+                                       .arg(studentId)
+                                       .arg(studentName),
                                        QMessageBox::Yes | QMessageBox::No,
                                        QMessageBox::No);
 
@@ -915,30 +864,24 @@ void TeacherDashboard::deleteStudent()
         return;
 
     Lop *lop = classManager->tim(currentClassCode.toStdString());
-    if (!lop || !lop->getQuanLySinhVien())
-    {
+    if (!lop || !lop->getQuanLySinhVien()) {
         QMessageBox::warning(this, "Error", "Class or student manager not found.");
         return;
     }
 
-    if (lop->getQuanLySinhVien()->xoa(studentId.toStdString()))
-    {
+    if (lop->getQuanLySinhVien()->xoa(studentId.toStdString())) {
         lop->getQuanLySinhVien()->saveToFile();
         refreshStudentList();
         refreshClassList(); // Update student count
         QMessageBox::information(this, "Success", "Student deleted successfully!");
-    }
-    else
-    {
+    } else {
         QMessageBox::warning(this, "Error", "Failed to delete student.");
     }
 }
 
-void TeacherDashboard::editSubject()
-{
+void TeacherDashboard::editSubject() {
     int row = subjectTable->currentRow();
-    if (row < 0)
-    {
+    if (row < 0) {
         QMessageBox::warning(this, "Error", "Please select a subject to edit.");
         return;
     }
@@ -949,8 +892,7 @@ void TeacherDashboard::editSubject()
 
     QString oldSubjectCode = item->text();
     MonHoc *mon = subjectManager->tim(oldSubjectCode.toStdString().c_str());
-    if (!mon)
-    {
+    if (!mon) {
         QMessageBox::warning(this, "Error", "Selected subject not found.");
         return;
     }
@@ -975,22 +917,18 @@ void TeacherDashboard::editSubject()
     mon->setMaMon(newSubjectCode.toStdString().c_str());
     mon->setTenMon(newSubjectName.toStdString());
 
-    if (subjectManager->sua(*mon))
-    {
+    if (subjectManager->sua(*mon)) {
         subjectManager->saveToFile();
         refreshSubjectList();
         populateSubjectCombo();
 
         // Update current selection if it was the edited subject
-        if (currentSubjectCode == oldSubjectCode)
-        {
+        if (currentSubjectCode == oldSubjectCode) {
             currentSubjectCode = newSubjectCode;
         }
 
         QMessageBox::information(this, "Success", "Subject updated successfully!");
-    }
-    else
-    {
+    } else {
         // Restore original values if update failed
         mon->setMaMon(originalCode);
         mon->setTenMon(originalName);
@@ -998,11 +936,9 @@ void TeacherDashboard::editSubject()
     }
 }
 
-void TeacherDashboard::deleteSubject()
-{
+void TeacherDashboard::deleteSubject() {
     int row = subjectTable->currentRow();
-    if (row < 0)
-    {
+    if (row < 0) {
         QMessageBox::warning(this, "Error", "Please select a subject to delete.");
         return;
     }
@@ -1017,23 +953,21 @@ void TeacherDashboard::deleteSubject()
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
                                        QString("Are you sure you want to delete subject '%1 - %2'?\n\n"
-                                               "This will also delete all questions for this subject and related exam results.\n"
-                                               "This action cannot be undone.")
-                                           .arg(subjectCode)
-                                           .arg(subjectName),
+                                           "This will also delete all questions for this subject and related exam results.\n"
+                                           "This action cannot be undone.")
+                                       .arg(subjectCode)
+                                       .arg(subjectName),
                                        QMessageBox::Yes | QMessageBox::No,
                                        QMessageBox::No);
 
     if (result != QMessageBox::Yes)
         return;
 
-    if (subjectManager->xoa(subjectCode.toStdString().c_str()))
-    {
+    if (subjectManager->xoa(subjectCode.toStdString().c_str())) {
         subjectManager->saveToFile();
 
         // Clear current selection if it was the deleted subject
-        if (currentSubjectCode == subjectCode)
-        {
+        if (currentSubjectCode == subjectCode) {
             currentSubjectCode.clear();
             questionTable->setRowCount(0);
         }
@@ -1042,37 +976,30 @@ void TeacherDashboard::deleteSubject()
         populateSubjectCombo();
         refreshQuestionList(); // Update question list if current subject was deleted
         QMessageBox::information(this, "Success", "Subject deleted successfully!");
-    }
-    else
-    {
+    } else {
         QMessageBox::warning(this, "Error", "Failed to delete subject.");
     }
 }
 
-void TeacherDashboard::manageQuestions()
-{
+void TeacherDashboard::manageQuestions() {
     // Switch to question management tab
     mainTabs->setCurrentWidget(questionTab);
 }
 
-void TeacherDashboard::editQuestion()
-{
-    if (currentSubjectCode.isEmpty())
-    {
+void TeacherDashboard::editQuestion() {
+    if (currentSubjectCode.isEmpty()) {
         QMessageBox::warning(this, "Error", "Please select a subject first.");
         return;
     }
 
     int currentRow = questionTable->currentRow();
-    if (currentRow < 0)
-    {
+    if (currentRow < 0) {
         QMessageBox::warning(this, "Error", "Please select a question to edit.");
         return;
     }
 
     MonHoc *mon = subjectManager->tim(currentSubjectCode.toStdString().c_str());
-    if (!mon || !mon->getQuanLyCauHoi())
-    {
+    if (!mon || !mon->getQuanLyCauHoi()) {
         QMessageBox::warning(this, "Error", "Subject not found or question manager not initialized.");
         return;
     }
@@ -1084,8 +1011,7 @@ void TeacherDashboard::editQuestion()
 
     int questionId = idItem->text().toInt();
     CauHoi *existingQuestion = mon->getQuanLyCauHoi()->tim(questionId);
-    if (!existingQuestion)
-    {
+    if (!existingQuestion) {
         QMessageBox::warning(this, "Error", "Question not found.");
         return;
     }
@@ -1135,8 +1061,10 @@ void TeacherDashboard::editQuestion()
     QPushButton *okButton = new QPushButton("Update Question");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
-    okButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
-    cancelButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    okButton->setStyleSheet(
+        "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(okButton);
@@ -1155,20 +1083,19 @@ void TeacherDashboard::editQuestion()
     layout->addLayout(buttonLayout);
 
     // Connect buttons
-    connect(okButton, &QPushButton::clicked, [&]()
-            {
+    connect(okButton, &QPushButton::clicked, [&]() {
         QString content = contentEdit->toPlainText().trimmed();
         QString a = optionA->text().trimmed();
         QString b = optionB->text().trimmed();
         QString c = optionC->text().trimmed();
         QString d = optionD->text().trimmed();
         char correct = correctCombo->currentText().at(0).toLatin1();
-        
+
         if (content.isEmpty() || a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty()) {
             QMessageBox::warning(&dialog, "Error", "Please fill in all fields.");
             return;
         }
-        
+
         // Update the existing question
         existingQuestion->setNoiDung(content.toStdString());
         existingQuestion->setLuaChonA(a.toStdString());
@@ -1176,7 +1103,7 @@ void TeacherDashboard::editQuestion()
         existingQuestion->setLuaChonC(c.toStdString());
         existingQuestion->setLuaChonD(d.toStdString());
         existingQuestion->setDapAnDung(correct);
-        
+
         // Update in the BST using the sua method
         if (mon->getQuanLyCauHoi()->sua(*existingQuestion)) {
             // Save changes to file immediately
@@ -1185,34 +1112,30 @@ void TeacherDashboard::editQuestion()
             dialog.accept();
         } else {
             QMessageBox::warning(&dialog, "Error", "Failed to update question.");
-        } });
+        }
+    });
 
     connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
 
-    if (dialog.exec() == QDialog::Accepted)
-    {
+    if (dialog.exec() == QDialog::Accepted) {
         refreshQuestionList();
     }
 }
 
-void TeacherDashboard::deleteQuestion()
-{
-    if (currentSubjectCode.isEmpty())
-    {
+void TeacherDashboard::deleteQuestion() {
+    if (currentSubjectCode.isEmpty()) {
         QMessageBox::warning(this, "Error", "Please select a subject first.");
         return;
     }
 
     int currentRow = questionTable->currentRow();
-    if (currentRow < 0)
-    {
+    if (currentRow < 0) {
         QMessageBox::warning(this, "Error", "Please select a question to delete.");
         return;
     }
 
     MonHoc *mon = subjectManager->tim(currentSubjectCode.toStdString().c_str());
-    if (!mon || !mon->getQuanLyCauHoi())
-    {
+    if (!mon || !mon->getQuanLyCauHoi()) {
         QMessageBox::warning(this, "Error", "Subject not found or question manager not initialized.");
         return;
     }
@@ -1224,53 +1147,44 @@ void TeacherDashboard::deleteQuestion()
 
     int questionId = idItem->text().toInt();
     CauHoi *existingQuestion = mon->getQuanLyCauHoi()->tim(questionId);
-    if (!existingQuestion)
-    {
+    if (!existingQuestion) {
         QMessageBox::warning(this, "Error", "Question not found.");
         return;
     }
 
     // Show confirmation dialog
     QString questionPreview = QString::fromStdString(existingQuestion->getNoiDung());
-    if (questionPreview.length() > 100)
-    {
+    if (questionPreview.length() > 100) {
         questionPreview = questionPreview.left(97) + "...";
     }
 
     int reply = QMessageBox::question(this, "Confirm Delete",
-                                      QString("Are you sure you want to delete this question?\n\n\"%1\"").arg(questionPreview),
+                                      QString("Are you sure you want to delete this question?\n\n\"%1\"").arg(
+                                          questionPreview),
                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
-    if (reply == QMessageBox::Yes)
-    {
+    if (reply == QMessageBox::Yes) {
         // Delete from BST
-        if (mon->getQuanLyCauHoi()->xoa(questionId))
-        {
+        if (mon->getQuanLyCauHoi()->xoa(questionId)) {
             // Save changes to file immediately
             mon->getQuanLyCauHoi()->saveToFile();
             QMessageBox::information(this, "Success", "Question deleted successfully!");
             refreshQuestionList();
-        }
-        else
-        {
+        } else {
             QMessageBox::warning(this, "Error", "Failed to delete question.");
         }
     }
 }
 
-MonHoc *TeacherDashboard::getCurrentSubject()
-{
-    if (!subjectManager || currentSubjectCode.isEmpty())
-    {
+MonHoc *TeacherDashboard::getCurrentSubject() {
+    if (!subjectManager || currentSubjectCode.isEmpty()) {
         return nullptr;
     }
     return subjectManager->tim(currentSubjectCode.toStdString().c_str());
 }
 
-Lop *TeacherDashboard::getCurrentClass()
-{
-    if (!classManager || currentClassCode.isEmpty())
-    {
+Lop *TeacherDashboard::getCurrentClass() {
+    if (!classManager || currentClassCode.isEmpty()) {
         return nullptr;
     }
     return classManager->tim(currentClassCode.toStdString());
@@ -1278,8 +1192,7 @@ Lop *TeacherDashboard::getCurrentClass()
 
 // Report Management Functions Implementation
 
-void TeacherDashboard::populateReportCombos()
-{
+void TeacherDashboard::populateReportCombos() {
     if (!classManager || !subjectManager)
         return;
 
@@ -1288,10 +1201,10 @@ void TeacherDashboard::populateReportCombos()
     DynamicArray<Lop *> danhSachLop;
     classManager->danhSach(danhSachLop);
 
-    for (int i = 0; i < danhSachLop.size(); i++)
-    {
+    for (int i = 0; i < danhSachLop.size(); i++) {
         Lop *lop = danhSachLop.get(i);
-        QString item = QString("%1 - %2").arg(QString::fromStdString(lop->getMaLop())).arg(QString::fromStdString(lop->getTenLop()));
+        QString item = QString("%1 - %2").arg(QString::fromStdString(lop->getMaLop())).arg(
+            QString::fromStdString(lop->getTenLop()));
         reportClassCombo->addItem(item, QString::fromStdString(lop->getMaLop()));
     }
 
@@ -1300,27 +1213,24 @@ void TeacherDashboard::populateReportCombos()
     DynamicArray<MonHoc *> danhSachMon;
     subjectManager->danhSach(danhSachMon);
 
-    for (int i = 0; i < danhSachMon.size(); i++)
-    {
+    for (int i = 0; i < danhSachMon.size(); i++) {
         MonHoc *mon = danhSachMon.get(i);
-        QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(QString::fromStdString(mon->getTenMon()));
+        QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(
+            QString::fromStdString(mon->getTenMon()));
         reportSubjectCombo->addItem(item, QString::fromStdString(mon->getMaMon()));
     }
 }
 
-void TeacherDashboard::generateExamScoreReport()
-{
+void TeacherDashboard::generateExamScoreReport() {
     QString classCode = reportClassCombo->currentData().toString();
     QString subjectCode = reportSubjectCombo->currentData().toString();
 
-    if (classCode.isEmpty() || subjectCode.isEmpty())
-    {
+    if (classCode.isEmpty() || subjectCode.isEmpty()) {
         QMessageBox::warning(this, "Lỗi", "Vui lòng chọn lớp và môn học.");
         return;
     }
 
-    if (!classManager || !subjectManager)
-    {
+    if (!classManager || !subjectManager) {
         QMessageBox::warning(this, "Lỗi", "Không tìm thấy dữ liệu lớp hoặc môn học.");
         return;
     }
@@ -1328,14 +1238,12 @@ void TeacherDashboard::generateExamScoreReport()
     Lop *lop = classManager->tim(classCode.toStdString());
     MonHoc *mon = subjectManager->tim(subjectCode.toStdString().c_str());
 
-    if (!lop || !mon)
-    {
+    if (!lop || !mon) {
         QMessageBox::warning(this, "Lỗi", "Không tìm thấy lớp hoặc môn học được chọn.");
         return;
     }
 
-    if (!lop->getQuanLySinhVien())
-    {
+    if (!lop->getQuanLySinhVien()) {
         QMessageBox::warning(this, "Lỗi", "Lớp không có danh sách sinh viên.");
         return;
     }
@@ -1351,8 +1259,7 @@ void TeacherDashboard::generateExamScoreReport()
 
     reportTable->setRowCount(danhSachSV.size());
 
-    for (int i = 0; i < danhSachSV.size(); i++)
-    {
+    for (int i = 0; i < danhSachSV.size(); i++) {
         SinhVien *sv = danhSachSV.get(i);
 
         reportTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(sv->getMaSinhVien())));
@@ -1362,17 +1269,14 @@ void TeacherDashboard::generateExamScoreReport()
 
         // Check if student has exam result for this subject
         QString examScore = "Chưa thi";
-        if (sv->getQuanLyDiem())
-        {
+        if (sv->getQuanLyDiem()) {
             DynamicArray<DiemThi *> danhSachDiem;
             sv->getQuanLyDiem()->danhSach(danhSachDiem);
 
             // Find exam result for this subject
-            for (int j = 0; j < danhSachDiem.size(); j++)
-            {
+            for (int j = 0; j < danhSachDiem.size(); j++) {
                 DiemThi *diem = danhSachDiem.get(j);
-                if (diem && strcmp(diem->getMaMon(), subjectCode.toStdString().c_str()) == 0)
-                {
+                if (diem && strcmp(diem->getMaMon(), subjectCode.toStdString().c_str()) == 0) {
                     examScore = QString::number(diem->getDiem(), 'f', 2);
                     break;
                 }
@@ -1386,29 +1290,27 @@ void TeacherDashboard::generateExamScoreReport()
 
     QMessageBox::information(this, "Thành công",
                              QString("Đã tạo bảng điểm cho %1 sinh viên trong lớp %2 - môn %3.")
-                                 .arg(danhSachSV.size())
-                                 .arg(reportClassCombo->currentText())
-                                 .arg(reportSubjectCombo->currentText()));
+                             .arg(danhSachSV.size())
+                             .arg(reportClassCombo->currentText())
+                             .arg(reportSubjectCombo->currentText()));
 }
 
-void TeacherDashboard::exportReport()
-{
-    if (reportTable->rowCount() == 0)
-    {
+void TeacherDashboard::exportReport() {
+    if (reportTable->rowCount() == 0) {
         QMessageBox::warning(this, "Lỗi", "Không có dữ liệu để xuất. Vui lòng tạo bảng điểm trước.");
         return;
     }
 
     QString fileName = QFileDialog::getSaveFileName(this, "Xuất bảng điểm",
-                                                    QString("BangDiem_%1.txt").arg(QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss")),
+                                                    QString("BangDiem_%1.txt").arg(
+                                                        QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss")),
                                                     "Text Files (*.txt);;CSV Files (*.csv)");
 
     if (fileName.isEmpty())
         return;
 
     QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::warning(this, "Lỗi", "Không thể tạo file xuất.");
         return;
     }
@@ -1423,37 +1325,28 @@ void TeacherDashboard::exportReport()
 
     // Write table headers
     QStringList headers;
-    for (int col = 0; col < reportTable->columnCount(); col++)
-    {
+    for (int col = 0; col < reportTable->columnCount(); col++) {
         headers << reportTable->horizontalHeaderItem(col)->text();
     }
 
-    if (fileName.endsWith(".csv"))
-    {
+    if (fileName.endsWith(".csv")) {
         out << headers.join(",") << "\n";
-    }
-    else
-    {
+    } else {
         out << headers.join("\t") << "\n";
         out << QString("-").repeated(80) << "\n";
     }
 
     // Write table data
-    for (int row = 0; row < reportTable->rowCount(); row++)
-    {
+    for (int row = 0; row < reportTable->rowCount(); row++) {
         QStringList rowData;
-        for (int col = 0; col < reportTable->columnCount(); col++)
-        {
+        for (int col = 0; col < reportTable->columnCount(); col++) {
             QTableWidgetItem *item = reportTable->item(row, col);
             rowData << (item ? item->text() : "");
         }
 
-        if (fileName.endsWith(".csv"))
-        {
+        if (fileName.endsWith(".csv")) {
             out << rowData.join(",") << "\n";
-        }
-        else
-        {
+        } else {
             out << rowData.join("\t") << "\n";
         }
     }

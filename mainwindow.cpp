@@ -12,8 +12,9 @@
 #include "views/ExamWidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), centralStack(nullptr), loginWidget(nullptr), teacherDashboard(nullptr), studentDashboard(nullptr), examDialog(nullptr), authController(nullptr), classManager(nullptr), subjectManager(nullptr), isTeacher(false), currentStudent(nullptr)
-{
+    : QMainWindow(parent), ui(new Ui::MainWindow), centralStack(nullptr), loginWidget(nullptr),
+      teacherDashboard(nullptr), studentDashboard(nullptr), examDialog(nullptr), authController(nullptr),
+      classManager(nullptr), subjectManager(nullptr), isTeacher(false), currentStudent(nullptr) {
     ui->setupUi(this);
 
     // Set window properties
@@ -27,14 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
     loadInitialData();
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     cleanupResources();
     delete ui;
 }
 
-void MainWindow::initializeControllers()
-{
+void MainWindow::initializeControllers() {
     // Initialize managers (they will become controllers)
     classManager = new QuanLyLop();
     subjectManager = new QuanLyMonHoc();
@@ -44,8 +43,7 @@ void MainWindow::initializeControllers()
     authController->setClassManager(classManager);
 }
 
-void MainWindow::setupUI()
-{
+void MainWindow::setupUI() {
     // Create central stacked widget
     centralStack = new QStackedWidget(this);
     setCentralWidget(centralStack);
@@ -59,8 +57,7 @@ void MainWindow::setupUI()
     centralStack->setCurrentWidget(loginWidget);
 }
 
-void MainWindow::setupConnections()
-{
+void MainWindow::setupConnections() {
     // Connect authentication signals
     connect(authController, &AuthController::loginSuccess,
             this, &MainWindow::handleLoginSuccess);
@@ -72,10 +69,8 @@ void MainWindow::setupConnections()
             this, &MainWindow::handleLoginRequest);
 }
 
-void MainWindow::loadInitialData()
-{
-    try
-    {
+void MainWindow::loadInitialData() {
+    try {
         // Load class data
         classManager->loadFromFile();
 
@@ -85,10 +80,8 @@ void MainWindow::loadInitialData()
         // Load questions for each subject
         DynamicArray<MonHoc *> danhSachMon;
         subjectManager->danhSach(danhSachMon);
-        for (int i = 0; i < danhSachMon.size(); i++)
-        {
-            if (danhSachMon.get(i)->getQuanLyCauHoi())
-            {
+        for (int i = 0; i < danhSachMon.size(); i++) {
+            if (danhSachMon.get(i)->getQuanLyCauHoi()) {
                 danhSachMon.get(i)->getQuanLyCauHoi()->loadFromFile();
             }
         }
@@ -96,19 +89,15 @@ void MainWindow::loadInitialData()
         // Load students for each class
         DynamicArray<Lop *> danhSachLop;
         classManager->danhSach(danhSachLop);
-        for (int i = 0; i < danhSachLop.size(); i++)
-        {
-            if (danhSachLop.get(i)->getQuanLySinhVien())
-            {
+        for (int i = 0; i < danhSachLop.size(); i++) {
+            if (danhSachLop.get(i)->getQuanLySinhVien()) {
                 danhSachLop.get(i)->getQuanLySinhVien()->loadFromFile();
 
                 // Load scores for each student
                 DynamicArray<SinhVien *> danhSachSinhVien;
                 danhSachLop.get(i)->getQuanLySinhVien()->danhSach(danhSachSinhVien);
-                for (int j = 0; j < danhSachSinhVien.size(); j++)
-                {
-                    if (danhSachSinhVien.get(j)->getQuanLyDiem())
-                    {
+                for (int j = 0; j < danhSachSinhVien.size(); j++) {
+                    if (danhSachSinhVien.get(j)->getQuanLyDiem()) {
                         danhSachSinhVien.get(j)->getQuanLyDiem()->loadFromFile();
                     }
                 }
@@ -118,20 +107,16 @@ void MainWindow::loadInitialData()
         statusBar()->showMessage("Data loaded successfully", 3000);
 
         // Refresh TeacherDashboard if it exists
-        if (teacherDashboard)
-        {
+        if (teacherDashboard) {
             teacherDashboard->refreshAllData();
         }
-    }
-    catch (const std::exception &e)
-    {
+    } catch (const std::exception &e) {
         QMessageBox::warning(this, "Data Loading Error",
                              QString("Error loading data: %1").arg(e.what()));
     }
 }
 
-void MainWindow::createLoginWidget()
-{
+void MainWindow::createLoginWidget() {
     loginWidget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(loginWidget);
 
@@ -150,7 +135,7 @@ void MainWindow::createLoginWidget()
     userTypeCombo->addItem("Teacher");
     userTypeCombo->addItem("Student");
     userTypeCombo->setStyleSheet("QComboBox { min-width: 200px; padding: 8px; }"
-                                 "QComboBox QAbstractItemView { max-height: 60px; padding: 8px; }");
+        "QComboBox QAbstractItemView { max-height: 60px; padding: 8px; }");
 
     // Username field
     QLabel *usernameLabel = new QLabel("Username:");
@@ -169,9 +154,9 @@ void MainWindow::createLoginWidget()
     // Login button
     loginButton = new QPushButton("Login");
     loginButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-                               "padding: 10px; font-size: 14px; border: none; border-radius: 5px; "
-                               "min-width: 350px; margin-right: 2px; }"
-                               "QPushButton:hover { background-color: #2980b9; }");
+        "padding: 10px; font-size: 14px; border: none; border-radius: 5px; "
+        "min-width: 350px; margin-right: 2px; }"
+        "QPushButton:hover { background-color: #2980b9; }");
 
     // Add widgets to form
     // formLayout->addWidget(userTypeLabel);
@@ -187,7 +172,7 @@ void MainWindow::createLoginWidget()
     formContainer->setLayout(formLayout);
     formContainer->setMaximumWidth(400);
     formContainer->setStyleSheet("QWidget { background-color: white; padding: 30px; "
-                                 "border-radius: 10px; border: 1px solid #bdc3c7; }");
+        "border-radius: 10px; border: 1px solid #bdc3c7; }");
 
     // Main layout
     layout->addStretch();
@@ -199,8 +184,7 @@ void MainWindow::createLoginWidget()
     centralStack->addWidget(loginWidget);
 }
 
-void MainWindow::createTeacherDashboard()
-{
+void MainWindow::createTeacherDashboard() {
     teacherDashboard = new TeacherDashboard(this);
 
     // Set up the controllers for the teacher dashboard
@@ -213,8 +197,7 @@ void MainWindow::createTeacherDashboard()
     centralStack->addWidget(teacherDashboard);
 }
 
-void MainWindow::createStudentDashboard()
-{
+void MainWindow::createStudentDashboard() {
     studentDashboard = new StudentDashboard(this);
 
     // Set up the controllers for the student dashboard
@@ -227,14 +210,12 @@ void MainWindow::createStudentDashboard()
     centralStack->addWidget(studentDashboard);
 }
 
-void MainWindow::handleLoginRequest()
-{
+void MainWindow::handleLoginRequest() {
     QString username = usernameEdit->text().trimmed();
     QString password = passwordEdit->text();
     QString userType = userTypeCombo->currentText();
 
-    if (username.isEmpty() || password.isEmpty())
-    {
+    if (username.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Login Error", "Please enter both username and password.");
         return;
     }
@@ -247,8 +228,7 @@ void MainWindow::handleLoginRequest()
     authController->authenticate(username, password, userType);
 }
 
-void MainWindow::handleLoginSuccess(QString userType, SinhVien *student)
-{
+void MainWindow::handleLoginSuccess(QString userType, SinhVien *student) {
     // Reset login form
     loginButton->setEnabled(true);
     loginButton->setText("Login");
@@ -256,37 +236,31 @@ void MainWindow::handleLoginSuccess(QString userType, SinhVien *student)
     passwordEdit->clear();
 
     // Set session state
-    if (userType == "Teacher")
-    {
+    if (userType == "Teacher") {
         isTeacher = true;
         currentStudent = nullptr;
         centralStack->setCurrentWidget(teacherDashboard);
         statusBar()->showMessage("Logged in as Teacher", 3000);
-    }
-    else if (userType == "Student")
-    {
+    } else if (userType == "Student") {
         isTeacher = false;
         currentStudent = student;
 
         // Set current student in dashboard
-        if (studentDashboard && student)
-        {
+        if (studentDashboard && student) {
             studentDashboard->setCurrentStudent(student);
         }
 
         centralStack->setCurrentWidget(studentDashboard);
-        if (student)
-        {
+        if (student) {
             statusBar()->showMessage(QString("Logged in as %1 %2")
-                                         .arg(QString::fromStdString(student->getHo()))
-                                         .arg(QString::fromStdString(student->getTen())),
+                                     .arg(QString::fromStdString(student->getHo()))
+                                     .arg(QString::fromStdString(student->getTen())),
                                      3000);
         }
     }
 }
 
-void MainWindow::handleLoginFailed(QString errorMessage)
-{
+void MainWindow::handleLoginFailed(QString errorMessage) {
     // Reset login button
     loginButton->setEnabled(true);
     loginButton->setText("Login");
@@ -299,8 +273,7 @@ void MainWindow::handleLoginFailed(QString errorMessage)
     passwordEdit->setFocus();
 }
 
-void MainWindow::handleLogout()
-{
+void MainWindow::handleLogout() {
     // Reset session state
     isTeacher = false;
     currentStudent = nullptr;
@@ -317,16 +290,13 @@ void MainWindow::handleLogout()
     statusBar()->showMessage("Logged out successfully", 3000);
 }
 
-void MainWindow::cleanupResources()
-{
-    if (classManager)
-    {
+void MainWindow::cleanupResources() {
+    if (classManager) {
         delete classManager;
         classManager = nullptr;
     }
 
-    if (subjectManager)
-    {
+    if (subjectManager) {
         delete subjectManager;
         subjectManager = nullptr;
     }
@@ -334,17 +304,14 @@ void MainWindow::cleanupResources()
     // authController is managed by Qt's parent-child system
 }
 
-void MainWindow::handleExamRequest(MonHoc *subject, int numQuestions)
-{
-    if (!currentStudent || !subject)
-    {
+void MainWindow::handleExamRequest(MonHoc *subject, int numQuestions) {
+    if (!currentStudent || !subject) {
         QMessageBox::warning(this, "Error", "Invalid exam request parameters.");
         return;
     }
 
     // Create exam dialog if it doesn't exist
-    if (!examDialog)
-    {
+    if (!examDialog) {
         examDialog = new ExamWidget(this);
         connect(examDialog, &ExamWidget::examCompleted, this, &MainWindow::handleExamCompleted);
         connect(examDialog, &ExamWidget::examCancelled, this, &MainWindow::handleExamCancelled);
@@ -354,44 +321,36 @@ void MainWindow::handleExamRequest(MonHoc *subject, int numQuestions)
     examDialog->startExam(subject, numQuestions, currentStudent);
 
     // Show exam dialog
-    if (examDialog->exec() == QDialog::Accepted)
-    {
+    if (examDialog->exec() == QDialog::Accepted) {
         // Exam was completed successfully
         statusBar()->showMessage("Exam completed successfully", 3000);
-    }
-    else
-    {
+    } else {
         // Exam was cancelled
         statusBar()->showMessage("Exam cancelled", 3000);
     }
 }
 
-void MainWindow::handleExamCompleted(double score)
-{
+void MainWindow::handleExamCompleted(double score) {
     // Refresh student dashboard to show new score
-    if (studentDashboard)
-    {
+    if (studentDashboard) {
         studentDashboard->refreshScores();
     }
 
     // Show completion message
     QString message = QString("Exam completed!\nYour score: %1/10")
-                          .arg(QString::number(score, 'f', 2));
+            .arg(QString::number(score, 'f', 2));
 
     QMessageBox::information(this, "Exam Results", message);
 }
 
-void MainWindow::handleExamCancelled()
-{
+void MainWindow::handleExamCancelled() {
     // Just show a message
     statusBar()->showMessage("Exam was cancelled", 3000);
 }
 
-void MainWindow::onUsernameTextChanged(const QString &text)
-{
+void MainWindow::onUsernameTextChanged(const QString &text) {
     QString upperText = text.toUpper();
-    if (text != upperText)
-    {
+    if (text != upperText) {
         int cursorPos = usernameEdit->cursorPosition();
         usernameEdit->blockSignals(true);
         usernameEdit->setText(upperText);

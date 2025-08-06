@@ -2,69 +2,51 @@
 #include "../managers/quanlylop.h"
 #include "../utils/DynamicArray.h"
 #include "../managers/quanlysinhvien.h"
+#include <iostream>
 
 AuthController::AuthController(QObject *parent)
-    : QObject(parent), classManager(nullptr)
-{
+    : QObject(parent), classManager(nullptr) {
 }
 
-AuthController::~AuthController()
-{
+AuthController::~AuthController() {
     // Don't delete classManager - it's managed elsewhere
 }
 
-void AuthController::setClassManager(QuanLyLop *manager)
-{
+void AuthController::setClassManager(QuanLyLop *manager) {
     classManager = manager;
 }
 
-void AuthController::authenticate(QString username, QString password, QString userType)
-{
-    try
-    {
-        if (userType == "Teacher")
-        {
-            if (authenticateTeacher(username, password))
-            {
+void AuthController::authenticate(QString username, QString password, QString userType) {
+    try {
+        if (userType == "Teacher") {
+            if (authenticateTeacher(username, password)) {
                 emit loginSuccess("Teacher");
-            }
-            else
-            {
+            } else {
                 emit loginFailed("Invalid teacher credentials");
             }
-        }
-        else if (userType == "Student")
-        {
+        } else if (userType == "Student") {
             SinhVien *student = authenticateStudent(username, password);
-            if (student)
-            {
+            if (student) {
                 emit loginSuccess("Student", student);
-            }
-            else
-            {
+            } else {
+                std::cout << "Authentication failed for student: " << username.toStdString() << " with password: " <<
+                        password.toStdString() << std::endl;
                 emit loginFailed("Invalid student credentials");
             }
-        }
-        else
-        {
+        } else {
             emit loginFailed("Invalid user type");
         }
-    }
-    catch (const std::exception &e)
-    {
+    } catch (const std::exception &e) {
         emit loginFailed(QString("Authentication error: %1").arg(e.what()));
     }
 }
 
-bool AuthController::authenticateTeacher(const QString &username, const QString &password)
-{
+bool AuthController::authenticateTeacher(const QString &username, const QString &password) {
     return (username == "GV" && password == "GV");
 }
 
-SinhVien *AuthController::authenticateStudent(const QString &masv, const QString &password)
-{
-    if (!classManager)
-    {
+SinhVien *AuthController::authenticateStudent(const QString &masv, const QString &password) {
+    if (!classManager) {
         return nullptr;
     }
 
@@ -72,14 +54,11 @@ SinhVien *AuthController::authenticateStudent(const QString &masv, const QString
     DynamicArray<Lop *> danhSachLop;
     classManager->danhSach(danhSachLop);
 
-    for (int i = 0; i < danhSachLop.size(); i++)
-    {
+    for (int i = 0; i < danhSachLop.size(); i++) {
         Lop *lop = danhSachLop.get(i);
-        if (lop && lop->getQuanLySinhVien())
-        {
+        if (lop && lop->getQuanLySinhVien()) {
             SinhVien *sv = lop->getQuanLySinhVien()->tim(masv.toStdString());
-            if (sv && sv->getPassword() == password.toStdString())
-            {
+            if (sv && sv->getPassword() == password.toStdString()) {
                 return sv;
             }
         }

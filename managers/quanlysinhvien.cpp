@@ -2,41 +2,35 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 // Constructor
 QuanLySinhVien::QuanLySinhVien(const std::string &maLop)
-    : maLop(maLop)
-{
+    : maLop(maLop) {
 }
 
 // Destructor
-QuanLySinhVien::~QuanLySinhVien()
-{
+QuanLySinhVien::~QuanLySinhVien() {
     saveToFile();
     danhSachSinhVien.clear();
 }
 
 // Get all students as dynamic array
-void QuanLySinhVien::danhSach(DynamicArray<SinhVien *> &result)
-{
+void QuanLySinhVien::danhSach(DynamicArray<SinhVien *> &result) {
     // Clear the result array before adding
     result.clear();
 
-    for (int i = 0; i < danhSachSinhVien.size(); i++)
-    {
+    for (int i = 0; i < danhSachSinhVien.size(); i++) {
         SinhVien *student = &danhSachSinhVien.get(i);
         result.add(student);
     }
 }
 
 // Find student by ID
-SinhVien *QuanLySinhVien::tim(const std::string &maSinhVien)
-{
+SinhVien *QuanLySinhVien::tim(const std::string &maSinhVien) {
     // Manually iterate through the list to compare actual objects
-    for (int i = 0; i < danhSachSinhVien.size(); i++)
-    {
-        if (danhSachSinhVien.get(i).getMaSinhVien() == maSinhVien)
-        {
+    for (int i = 0; i < danhSachSinhVien.size(); i++) {
+        if (danhSachSinhVien.get(i).getMaSinhVien() == maSinhVien) {
             return &danhSachSinhVien.get(i);
         }
     }
@@ -44,16 +38,13 @@ SinhVien *QuanLySinhVien::tim(const std::string &maSinhVien)
 }
 
 // Add new student
-bool QuanLySinhVien::them(SinhVien &sinhVien)
-{
-    if (!sinhVien.validate())
-    {
+bool QuanLySinhVien::them(SinhVien &sinhVien) {
+    if (!sinhVien.validate()) {
         return false;
     }
 
     // Check if student ID already exists
-    if (tim(sinhVien.getMaSinhVien()) != nullptr)
-    {
+    if (tim(sinhVien.getMaSinhVien()) != nullptr) {
         return false;
     }
 
@@ -62,17 +53,14 @@ bool QuanLySinhVien::them(SinhVien &sinhVien)
 }
 
 // Update existing student
-bool QuanLySinhVien::sua(SinhVien &sinhVien)
-{
-    if (!sinhVien.validate())
-    {
+bool QuanLySinhVien::sua(SinhVien &sinhVien) {
+    if (!sinhVien.validate()) {
         return false;
     }
 
     // Find existing student
     SinhVien *existing = tim(sinhVien.getMaSinhVien());
-    if (!existing)
-    {
+    if (!existing) {
         return false; // Student doesn't exist
     }
 
@@ -86,11 +74,9 @@ bool QuanLySinhVien::sua(SinhVien &sinhVien)
 }
 
 // Remove student by ID
-bool QuanLySinhVien::xoa(const std::string &maSinhVien)
-{
+bool QuanLySinhVien::xoa(const std::string &maSinhVien) {
     SinhVien *student = tim(maSinhVien);
-    if (!student)
-    {
+    if (!student) {
         return false;
     }
 
@@ -99,43 +85,37 @@ bool QuanLySinhVien::xoa(const std::string &maSinhVien)
 }
 
 // Save to file
-void QuanLySinhVien::saveToFile()
-{
+void QuanLySinhVien::saveToFile() {
     std::string filename = "data/sinhvien/sinhvien_" + maLop + ".txt";
     std::ofstream file(filename);
 
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         throw std::runtime_error("Cannot open file for writing: " + filename);
     }
 
     file << danhSachSinhVien.size() << std::endl;
 
-    for (int i = 0; i < danhSachSinhVien.size(); i++)
-    {
+    for (int i = 0; i < danhSachSinhVien.size(); i++) {
         SinhVien &student = danhSachSinhVien.get(i);
         file << student.getMaSinhVien() << "|"
-             << student.getHo() << "|"
-             << student.getTen() << "|"
-             << (student.getPhai() ? "1" : "0") << "|"
-             << student.getPassword() << std::endl;
+                << student.getHo() << "|"
+                << student.getTen() << "|"
+                << (student.getPhai() ? "1" : "0") << "|"
+                << student.getPassword() << std::endl;
     }
 
     file.close();
 }
 
 // Load from file
-void QuanLySinhVien::loadFromFile()
-{
+void QuanLySinhVien::loadFromFile() {
     std::string filename = "data/sinhvien/sinhvien_" + maLop + ".txt";
     std::ifstream file(filename);
 
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         // Create empty data file if it doesn't exist
         std::ofstream createFile(filename);
-        if (createFile.is_open())
-        {
+        if (createFile.is_open()) {
             createFile << "0" << std::endl; // Empty file with count = 0
             createFile.close();
         }
@@ -146,8 +126,7 @@ void QuanLySinhVien::loadFromFile()
     file >> count;
     file.ignore(); // Ignore newline after count
 
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         std::string line;
         std::getline(file, line);
 
@@ -155,16 +134,15 @@ void QuanLySinhVien::loadFromFile()
         std::string token;
         std::vector<std::string> tokens;
 
-        while (std::getline(ss, token, '|'))
-        {
+        while (std::getline(ss, token, '|')) {
             tokens.push_back(token);
         }
 
-        if (tokens.size() == 5)
-        {
+        if (tokens.size() == 5) {
             std::string maSV = tokens[0];
+            std::cout << "Loaded student: " << maSV << std::endl;
             // Chuyển maSV sang in hoa
-            for (char &c : maSV)
+            for (char &c: maSV)
                 c = std::toupper(static_cast<unsigned char>(c));
 
             std::string ho = tokens[1];
@@ -174,6 +152,7 @@ void QuanLySinhVien::loadFromFile()
 
             SinhVien *student = new SinhVien(maSV, ho, ten, phai, password);
             danhSachSinhVien.add(*student);
+            std::cout << "Loaded student: " << maSV << std::endl;
         }
     }
 

@@ -12,10 +12,11 @@
 #include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
-namespace Ui
-{
+
+namespace Ui {
     class MainWindow;
 }
+
 QT_END_NAMESPACE
 
 // Forward declarations
@@ -28,21 +29,27 @@ class StudentDashboard;
 class ExamWidget;
 class MonHoc;
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
     MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow();
 
 private slots:
     void handleLoginRequest();
+
     void handleLoginSuccess(QString userType, SinhVien *student = nullptr);
+
     void handleLoginFailed(QString errorMessage);
+
     void handleLogout();
+
     void handleExamRequest(MonHoc *subject, int numQuestions);
+
     void handleExamCompleted(double score);
+
     void handleExamCancelled();
 
 public slots:
@@ -77,12 +84,19 @@ private:
 
     // Setup methods
     void initializeControllers();
+
     void setupUI();
+
     void setupConnections();
+
     void loadInitialData();
+
     void createLoginWidget();
+
     void createTeacherDashboard();
+
     void createStudentDashboard();
+
     void cleanupResources();
 };
 
