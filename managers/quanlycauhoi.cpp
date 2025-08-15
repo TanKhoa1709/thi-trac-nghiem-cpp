@@ -1,11 +1,11 @@
 #include "quanlycauhoi.h"
-#include <fstream>
-#include <sstream>
-#include <random>
 #include <algorithm>
-#include <cstring>
-#include <iostream>
 #include <chrono>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+#include <random>
+#include <sstream>
 
 // Constructor
 QuanLyCauHoi::QuanLyCauHoi(const char *ma) {
@@ -104,6 +104,38 @@ int QuanLyCauHoi::taoMaCauHoiNgauNhien() {
     return newId;
 }
 
+int QuanLyCauHoi::taoMaCauHoiMoi(int minId = 1, int maxId = 10000) {
+    if (minId < 1 || maxId < minId) {
+        throw std::invalid_argument("Loi tao ma cau hoi: minId phai >= 1 va maxId phai >= minId");
+    }
+
+    // Hàm đệ quy tìm ID trống gần "trung vị" nhất
+    std::function<int(int, int)> findId = [&](int low, int high) -> int {
+        if (low > high)
+            return -1;
+
+        int mid = low + (high - low) / 2; // Tránh tràn số nguyên
+
+        if (this->tim(mid) == nullptr) {
+            return mid; // Tìm thấy mã chưa tồn tại
+        }
+
+        // Thử tìm bên trái trước
+        int leftId = findId(low, mid - 1);
+        if (leftId != -1)
+            return leftId;
+
+        // Nếu không có bên trái thì tìm bên phải
+        return findId(mid + 1, high);
+    };
+
+    int newId = findId(minId, maxId);
+    if (newId == -1) {
+        throw std::runtime_error("Khong con ID trong pham vi cho phep");
+    }
+    return newId;
+}
+
 // Get random questions
 void QuanLyCauHoi::layNgauNhien(DynamicArray<CauHoi *> &result, int soLuong) {
     DynamicArray<CauHoi *> allQuestions;
@@ -168,13 +200,9 @@ void QuanLyCauHoi::saveToFile() {
 
     for (int i = 0; i < allQuestions.size(); i++) {
         CauHoi *question = allQuestions.get(i);
-        file << question->getMaCauHoi() << "|"
-                << question->getNoiDung() << "|"
-                << question->getLuaChonA() << "|"
-                << question->getLuaChonB() << "|"
-                << question->getLuaChonC() << "|"
-                << question->getLuaChonD() << "|"
-                << question->getDapAnDung() << std::endl;
+        file << question->getMaCauHoi() << "|" << question->getNoiDung() << "|" << question->getLuaChonA() << "|"
+             << question->getLuaChonB() << "|" << question->getLuaChonC() << "|" << question->getLuaChonD() << "|"
+             << question->getDapAnDung() << std::endl;
     }
 
     file.close();

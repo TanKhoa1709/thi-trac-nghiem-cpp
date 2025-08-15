@@ -34,6 +34,9 @@ public:
     // ID generation - Tự động tạo ngẫu nhiên và duy nhất
     int taoMaCauHoiNgauNhien();
 
+    // Generate new ID using "divide and conquer" algorithm
+    int taoMaCauHoiMoi(int minId = 1, int maxId = 10000);
+
     // Random question selection
     void layNgauNhien(DynamicArray<CauHoi *> &result, int soLuong);
 
