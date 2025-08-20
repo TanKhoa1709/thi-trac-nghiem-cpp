@@ -1,0 +1,101 @@
+100
+6001|Mã hóa là gì?|Chuyển đổi dữ liệu để bảo vệ tính bí mật|Nén dữ liệu|Sao chép dữ liệu|Lưu trữ dữ liệu|A
+6002|Thuật toán AES thuộc loại nào?|Mã hóa đối xứng|Mã hóa bất đối xứng|Hàm băm|Chuỗi khóa|A
+6003|RSA dựa trên vấn đề toán học nào?|Phân tích thừa số nguyên|Định lý Pythagoras|Giải tích ma trận|Đếm prime pairs|A
+6004|Hàm băm dùng để làm gì?|Tạo giá trị ngắn đại diện cho dữ liệu|Mã hóa dữ liệu có thể giải ngược|Lưu trữ khóa|Tăng tốc truyền tải|A
+6005|MD5 hiện nay bị xem là?|Không an toàn cho mật mã|Rất an toàn|Dùng cho mã hóa bất đối xứng|Thay thế RSA|A
+6006|SHA-256 thuộc họ nào?|SHA-2|SHA-1|MD5|CRC|A
+6007|Khóa công khai (public key) dùng cho?|Mã hóa cho bên nhận hoặc xác thực chữ ký|Giai ma rieng tu|Luu mat khau nguoi dung|Dung de hash|A
+6008|Chữ ký số (digital signature) dùng để?|Xác thực nguồn và toàn vẹn dữ liệu|Mã hóa dữ liệu|Nén dữ liệu|Quản lý phiên|A
+6009|Hệ mật mã bất đối xứng thường chậm hơn vì sao?|Phép toán số lớn tốn tính toán|Do truyền nhiều dữ liệu|Do lưu trữ lớn|Do cần phần cứng|A
+6010|AES-256 có độ dài khóa bao nhiêu bit?|256 bit|128 bit|64 bit|512 bit|A
+6011|ECB mode có nhược điểm gì?|Mẫu dữ liệu lộ ra do mã hóa mỗi block độc lập|An toàn nhất|Tự động nén dữ liệu|Không cần IV|A
+6012|CBC mode cần gì thêm so với ECB?|IV (initialization vector)|Key dài hơn|Không cần padding|Không cần block|A
+6013|GCM mode hỗ trợ tính năng gì?|Authenticated Encryption (AE) kết hợp mã hóa và xác thực|Chỉ mã hóa|Chỉ băm|Chỉ nén|A
+6014|Diffie-Hellman dùng để làm gì?|Trao đổi khóa an toàn trên kênh công khai|Mã hóa dữ liệu|Băm mật khẩu|Nén file|A
+6015|Perfect forward secrecy (PFS) có nghĩa là?|Thỏa thuận khóa ngắn hạn, lộ khóa hiện tại không ảnh hưởng quá khứ|Khóa tĩnh mãi mãi|Không dùng khóa|Mật khẩu mạnh hơn|A
+6016|Xác thực hai chiều (mutual authentication) là gì?|Cả client và server xác thực lẫn nhau|Chỉ client xác thực server|Chỉ server xác thực client|Không xác thực|A
+6017|RSA signing sử dụng trường hợp nào?|Ký điện tử để xác thực, không để mã hóa lớn|Dùng cho streaming|Dùng thay AES|Dùng cho hash|A
+6018|OAEP padding dùng để làm gì trong RSA?|Bảo đảm an toàn khi mã hóa với RSA|Tăng tốc RSA|Giảm kích thước khóa|Lưu khóa|A
+6019|HMAC là gì?|Hash-based Message Authentication Code|Một loại RSA|Mã hóa đối xứng|Giao thức mạng|A
+6020|Salt trong lưu trữ mật khẩu giúp gì?|Ngăn rainbow table và tăng tính khác biệt giữa hash|Giảm an toàn|Thay thế hashing|Tăng kích thước DB|A
+6021|Pepper khác salt ở điểm nào?|Pepper là giá trị bí mật lưu chỗ khác, salt là công khai|Pepper công khai|Hai từ giống nhau|Không dùng trong hashing|A
+6022|Which is true about asymmetric keys?|Use different keys for encryption and decryption|Use same key both sides|Only one key exists|No keys required|A
+6023|Public key cryptography relies on which hard problem for RSA?|Integer factorization|Discrete log in elliptic curves|Graph isomorphism|Sorting|A
+6024|Elliptic Curve Cryptography (ECC) advantage?|Same security with smaller key sizes than RSA|Slower than RSA|Uses more memory|Not used in TLS|A
+6025|Which curve commonly used in ECC for TLS?|secp256r1 (P-256)|Curve25519 only|No curves used|MD5 curve|A
+6026|What is key exchange algorithm in TLS 1.3 often used?|ECDHE (Elliptic Curve Diffie-Hellman Ephemeral)|Static RSA only|No key exchange|MD5 exchange|A
+6027|RSA key generation requires choosing what?|Two large primes p and q|Random even numbers|Hash of password|IV|A
+6028|If p and q are small in RSA what happens?|System is insecure because factoring is easy|System is faster and secure|No change|Better compression|A
+6029|Which is common block cipher mode for disk encryption?|XTS|ECB|CTR without tweak|GCM only|A
+6030|What is stream cipher property?|Encrypts bit-by-bit or byte-by-byte with keystream|Operates only on blocks|Requires public key|Always authenticated|A
+6031|RC4 is considered?|Insecure for many uses due to biases|Very secure|Recommended for TLS modern|Hash function|A
+6032|What is key wrapping?|Securely encrypt a key with another key for transport|Wrap tokens only|Compress keys|Hash keys|A
+6033|Which factor increases cryptographic strength?|Longer key length and strong algorithm|Short keys|Obfuscation only|No randomness|A
+6034|Random number generation is critical because?|Predictable RNG breaks cryptography|It's only for games|It speeds up hashing|It reduces memory|A
+6035|CTR mode turns block cipher into?|Stream cipher|Hash function|Signature scheme|Compression|A
+6036|Which is authenticated encryption?|AES-GCM|AES-ECB|DES|MD5|A
+6037|Certificate in X.509 contains what?|Public key and identity info signed by CA|Private key|Only name|Only email|A
+6038|What is CA (Certificate Authority) role?|Issue and sign certificates to bind keys to identities|Store user files|Encrypt traffic|Monitor networks|A
+6039|Self-signed certificate implies?|Certificate not signed by trusted CA, may not be trusted by browsers|Always trusted|Never contains key|Only for email|A
+6040|CRL (Certificate Revocation List) used to?|List revoked certificates not to be trusted|List valid certificates|Encrypt certificates|Store private keys|A
+6041|OCSP does what?|Online status check for certificate revocation|Encrypt data|Sign certificates|Issue keys|A
+6042|What is forward secrecy benefit?|Compromise of long-term keys doesn't compromise past session keys|No benefit|Only for speed|Only for hashing|A
+6043|Which is hybrid encryption approach?|Use asymmetric to encrypt symmetric key and symmetric for data|Only symmetric|Only asymmetric|Only hashing|A
+6044|What is length extension attack relevant to?|Some Merkle–Damgård hash functions like MD5/SHA-1|HMAC|AES|RSA|A
+6045|Which prevents length extension attacks for hashing messages?|Use HMAC or SHA-3|Use MD5 raw|Use ECB|Use static IV|A
+6046|What is PBKDF2 used for?|Derive keys from passwords using iterations and salt|Encrypt files|Sign data|Compress data|A
+6047|Which is recommended KDF for passwords modernly?|Argon2|MD5|SHA-1|CRC32|A
+6048|What is side-channel attack?|Attack that exploits implementation leaks like timing or power|Attack on algorithm only|Network DDoS|SQL Injection|A
+6049|Which mitigates timing attacks?|Constant-time implementations and blinding|Use variable-time operations|Use weak RNG|Log timings|A
+6050|Which is concept of deniability in crypto protocols?|Receiver cannot prove to third party what message was|Encrypting with public key only|Signing messages publicly|Use stronger hash|A
+6051|What is homomorphic encryption?|Allows computation on ciphertext resulting in encrypted result equating to operation on plaintext|Compression technique|Signature scheme|Hashing method|A
+6052|Which is practical homomorphic use-case?|Encrypted computation on cloud without revealing data|Simple file copy|Local logging|System boot|A
+6053|What is format-preserving encryption?|Encrypts while preserving formatted structure like credit card format|Compress numbers|Hash values|Only for images|A
+6054|Which is deterministic encryption risk?|Leaking patterns when same plaintext maps to same ciphertext|Always better than randomized|Never used in databases|Required for all protocols|A
+6055|Which helps protect against chosen-ciphertext attacks?|Use IND-CCA secure schemes or AEAD modes like GCM|Use ECB|Use unauthenticated modes|Use MD5|A
+6056|What is key derivation salt role?|Make derived keys unique per context and slow down brute force|Make keys public|Store keys in DB|Serve as IV always|A
+6057|What is ephemeral key?|Short-lived key used per session to provide PFS|Long-term key|Static key|Public key only|A
+6058|Which is format for representing keys/certs commonly?|PEM base64 with headers|Raw binary only|JSON only|XML only|A
+6059|What is TLS handshake purpose?|Negotiate cipher suites, exchange keys, and authenticate|Transfer data only|Encrypt browsing history|Compress payload|A
+6060|Which cipher suite property is important in TLS?|Use AEAD and PFS-enabled key exchange|Use static RSA only|Use MD5 only|No need for MAC|A
+6061|What is HKDF?|HMAC-based Extract-and-Expand Key Derivation Function|Hashing only|Encryption algorithm|Signature scheme|A
+6062|What is entropy source for cryptography?|Hardware RNG or OS entropy pool to seed RNG|Clock only|User input only|Empty source|A
+6063|Which practice weakens security?|Hardcoding keys in source code|Using HSM|Using KMS|Using secure storage|A
+6064|What is transport layer encryption vs application?|Transport encrypts channel (TLS), application may encrypt payload end-to-end|They are same|Transport never encrypts|Application cannot encrypt|A
+6065|Which is MAC (Message Authentication Code) purpose?|Ensure integrity and authenticity with a shared key|Encrypt data|Hash only|Sign with public key|A
+6066|Which is stronger for integrity in some scenarios?|HMAC with SHA-256|Plain SHA-256 without key|MD5 without key|CRC32|A
+6067|Which is concept of key separation?|Use different keys for different purposes (encryption, MAC, signing)|Use same key everywhere|No keys|Use passwords|A
+6068|Which is quantum-resistant candidate?|Lattice-based cryptography like Kyber|RSA|ECC|MD5|A
+6069|Which is threat from quantum computers to classical crypto?|Break RSA and ECC via Shor's algorithm|Break AES trivially|No impact|Only affects hashing|A
+6070|What is post-quantum cryptography goal?|Design algorithms secure against quantum attacks|Increase key sizes only|Remove keys|Use symmetric only|A
+6071|Which is ciphertext indistinguishability goal?|Ciphertexts of different plaintexts indistinguishable to adversary without key|Make ciphertexts readable|Compress ciphertexts|Reveal patterns|A
+6072|What is replay attack defense?|Use nonces or timestamps and sequence numbers|Reuse tokens|Ignore authentication|Store plaintext|A
+6073|Which is importance of secure random IV?|Prevents reuse attacks and provides uniqueness for modes like CBC|Not required|Public key only|Compress data|A
+6074|What is key rotation practice?|Periodically replace keys to limit exposure window|Never change keys|Change only when breach|Use same key forever|A
+6075|What is cert pinning?|Bind service to a specific certificate/public key to prevent MITM using rogue CA|Always recommended for public websites without management|Not useful|Only for email|A
+6076|Which is CRYPTO policy for storing passwords?|Store salted hashed passwords using slow KDF like Argon2|Store plain text|Store MD5|Store reversible encryption|A
+6077|Which is advantage of AEAD modes?|Provide confidentiality and integrity in one primitive|Only confidentiality|Only integrity|Only compression|A
+6078|What is nonce misuse consequence?|Reuse of nonce in some modes can lead to key recovery or plaintext leaks|No consequence|Only performance issue|Only affects hashing|A
+6079|Which is typical key length for RSA considered secure today?|2048 bits or higher|512 bits|128 bits|64 bits|A
+6080|Which is block cipher standard approved widely?|AES|DES|RC4|MD5|A
+6081|Which attack exploits weaknesses in padding?|Padding oracle attack|Brute force|Phishing|SQL injection|A
+6082|Which mitigates padding oracle?|Use authenticated encryption or constant-time padding checks|Use ECB|Use MD5|Use no padding|A
+6083|What is deterministic signing risk?|Signature reveals nonce reuse leading to private key recovery (e.g., ECDSA with reused k)|No risk|Only performance issue|Only affects hashing|A
+6084|Which is common mitigant for ECDSA nonce reuse?|Use RFC6979 deterministic k or strong RNG|Reuse k|Store k in code|Use MD5|A
+6085|What is key escrow concept?|Third party holds decryption keys for lawful access|Introduces trust and privacy concerns|Always secure|No tradeoffs|None|A
+6086|Which is role of entropy in key generation?|Ensure keys unpredictable and strong against brute force|Not important|Only for hashing|Only for compression|A
+6087|Which is recommended for random bytes generation in apps?|Use OS-provided CSPRNG (e.g., /dev/urandom or CryptGenRandom)|Use rand()|Use time()|Use predictable seed|A
+6088|Which is attack on RSA when using small public exponent without padding?|Low exponent attack (e.g., e=3) can allow message recovery|No attack|Only on symmetric keys|Only on ECC|A
+6089|Which is purpose of certificate chain?|Establish trust from root CA down to leaf certificate via signatures|Compress certificates|Encrypt certificates|Store private keys|A
+6090|Which is role of intermediate CA?|Sign leaf certificates and be signed by root, limiting root exposure|Store private keys|Encrypt traffic|Monitor networks|A
+6091|What is CSR (Certificate Signing Request)?|Request containing public key and identity info sent to CA to request cert|Signed certificate itself|Private key|Browser data|A
+6092|Which is OCSP stapling benefit?|Reduce latency and privacy leak by server providing OCSP response|Slower checks|No privacy|Not used|A
+6093|What is PKCS#11?|API for cryptographic tokens like HSM and smartcards|Hash function|Encryption algorithm|Certificate format|A
+6094|What is secure enclave/HSM role?|Protect private keys and perform crypto ops in tamper-resistant hardware|Store all user data|Replace OS kernel|Optimize network|A
+6095|What is envelope encryption?|Encrypt data with DEK (data encryption key) and encrypt DEK with KEK (key encryption key)|Only hashing|Only signing|Only compression|A
+6096|Which is advantage of using AEAD for storage?|Ensures both confidentiality and integrity of stored ciphertexts|Only integrity|Only confidentiality|No protection|A
+6097|Which is common mistake in implementing crypto?|Rolling own crypto primitives instead of using vetted libraries|Use OpenSSL properly|Use KMS|Use HSM|A
+6098|What is key stretching?|Make brute force harder by applying iterative KDFs|Make keys shorter|Store plaintext|Use simple hash|A
+6099|Which is side effect of poor RNG in repeated keys?|Predictable keys enabling compromises|Better security|No effect|Faster operations|A
+6100|Which practice reduces risk of key compromise?|Use hardware key storage (HSM/TPM), rotate keys, least privilege|Hardcode keys in repo|Share keys via email|Use same key forever|A

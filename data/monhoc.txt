@@ -1,0 +1,11 @@
+10
+CTDL|Cau truc du lieu
+OOP|Lap trinh huong doi tuong
+ATBM|An toan bao mat
+MMT|Mang may tinh
+HDH|He dieu hanh
+MAHOA|Ma hoa va bao mat
+CSDL|Co so du lieu
+WEB|Phat trien ung dung web
+KTPT|Kiem thu phan mem
+PEN|Kiem thuc xam nhap (Penetration Testing)

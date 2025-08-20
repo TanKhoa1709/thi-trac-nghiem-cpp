@@ -1,0 +1,101 @@
+100
+4001|Layer thuong duoc goi la lap trinh ung dung trong OSI la layer nao?|Layer 7 - Application|Layer 4 - Transport|Layer 3 - Network|Layer 2 - Data Link|A
+4002|IP la viet tat cua gi?|Internet Protocol|Internal Process|Internet Port|Interconnected Packet|A
+4003|TCP va UDP khac nhau chinh o dau?|TCP la connection-oriented, UDP connectionless|TCP la connectionless|UDP reliable, TCP unreliable|TCP la datagram|A
+4004|Port 80 phu trach cho giao thuc nao?|HTTP|HTTPS|FTP|SSH|A
+4005|Port 443 phu trach cho?|HTTPS|HTTP|SMTP|DNS|A
+4006|ARP dung de lam gi trong mang LAN?|Map dia chi IP sang dia chi MAC|Map hostname sang IP|Map port sang service|Map subnet mask|A
+4007|DHCP chuc nang gi?|Cap IP tu dong cho client|Luu DNS|Encrypt traffic|Tinh toan MTU|A
+4008|MAC address co do dai bao nhieu bit?|48 bit|32 bit|64 bit|128 bit|A
+4009|IPv4 co bao nhieu bit?|32 bit|64 bit|128 bit|16 bit|A
+4010|IPv6 co bao nhieu bit?|128 bit|32 bit|64 bit|256 bit|A
+4011|CIDR duoc su dung de gi?|Ghi nho phan mask va tien to cho subnetting|Chia se port|Encrypt IP|Map MAC|A
+4012|Subnet mask 255.255.255.0 tuong ung voi /? trong CIDR?|/24|/16|/8|/32|A
+4013|Default gateway la gi?|Router noi voi cac mang khac|DNS server|Proxy server|Switch|A
+4014|NAT lam gi?|Dich dia chi IP rieng sang dia chi cong cong|Map hostname|Encrypt IP|Map MAC|A
+4015|MTU la gi?|Maximum Transmission Unit|Minimum Transfer Unit|Max Time Until|Mean Transfer Unit|A
+4016|DNS chuc nang gi?|Phan giai ten mien thanh IP|Cap IP cho client|Map MAC|Encrypt email|A
+4017|HTTP la giao thuc unsafely hay safe?|Unsafe (plain text)|Always encrypted|Only for email|Only for file transfer|A
+4018|HTTPS su dung gi de bao mat?|TLS/SSL|SSH|IPSec|FTP|A
+4019|Traceroute dung kich thich thong tin gi?|Tim hanh trinh packet qua router|Kiem tra port open|Map MAC|Encrypt traffic|A
+4020|Ping dung de gi?|Kiem tra tinh ket noi va do latency|Thay IP|Map host|Chia subnet|A
+4021|OSI layer nao quan ly routing?|Layer 3 - Network|Layer 2 - Data Link|Layer 4 - Transport|Layer 1 - Physical|A
+4022|Switch hoat dong o layer nao?|Layer 2 (Data Link)|Layer 3 (Network)|Layer 1 (Physical)|Layer 4 (Transport)|A
+4023|Router hoat dong o layer nao?|Layer 3 (Network)|Layer 2|Layer 4|Layer 1|A
+4024|TCP three-way handshake gom cac buoc nao?|SYN, SYN-ACK, ACK|SYN, ACK|ACK, SYN|FIN, ACK|A
+4025|Which protocol is connectionless?|UDP|TCP|HTTP|SSH|A
+4026|Which protocol ensures ordered delivery?|TCP|UDP|ICMP|ARP|A
+4027|ICMP duoc su dung cho?|Diagnostic messages like ping and traceroute|Transport data|File transfer|DNS resolution|A
+4028|Which is the loopback IPv4 address?|127.0.0.1|0.0.0.0|255.255.255.255|192.168.0.1|A
+4029|Private IPv4 range khong phai la?|10.0.0.0/8|172.16.0.0/12|192.168.0.0/16|8.8.8.0/24|D
+4030|ARP cache luu gi?|Mapping IP->MAC|Mapping port->service|Mapping name->IP|Mapping MAC->vendor|A
+4031|Which is classful network default mask for class A?|255.0.0.0|255.255.0.0|255.255.255.0|255.255.255.255|A
+4032|Which is common protocol for email submission?|SMTP|HTTP|FTP|DNS|A
+4033|Which protocol used to fetch email from server to client?|POP3 or IMAP|SMTP|FTP|SSH|A
+4034|Which is secure remote shell protocol?|SSH|Telnet|FTP|HTTP|A
+4035|Which is data link protocol for ethernet?|Ethernet II (IEEE 802.3)|PPP|SLIP|IP|A
+4036|Which device segments collision domain but not broadcast domain?|Switch|Router|Hub|Modem|C
+4037|Which device segments broadcast domain?|Router|Switch|Hub|Bridge|A
+4038|Which protocol resolves MAC from IP in IPv4?|ARP|RARP|DNS|DHCP|A
+4039|Which is UDP characteristic?|Low overhead, no guarantee|High overhead, guaranteed|Ordered delivery|Flow control|A
+4040|Which is TCP characteristic?|Reliable, ordered, connection-oriented|Unreliable|No ordering|No connection|A
+4041|Which is multicast address range in IPv4?|224.0.0.0 - 239.255.255.255|10.0.0.0 - 10.255.255.255|127.0.0.1|192.168.0.0/16|A
+4042|Which protocol provides name resolution on local network without DNS?|mDNS|SMTP|FTP|DHCP|A
+4043|Which technology isolates traffic in LAN using tags?|VLAN (802.1Q)|NAT|ARP|ICMP|A
+4044|Which command lists open ports on Linux?|netstat or ss|ls|cat|pwd|A
+4045|Which is used for secure file transfer over SSH?|SFTP|FTP|HTTP|Telnet|A
+4046|Which layer handles end-to-end connections and reliability?|Transport layer|Network layer|Application layer|Data link layer|A
+4047|Which protocol is used for time synchronization?|NTP|DNS|DHCP|SMTP|A
+4048|Which is the purpose of TTL in IP packet?|Limit packet lifetime to prevent loops|Indicate throughput|Measure latency|Specify port|A
+4049|Which header contains source and destination ports in TCP?|TCP header|IP header|Ethernet header|Application header|A
+4050|Which is function of NAT overload (PAT)?|Multiple private IPs share one public IP via different ports|Change MAC addresses|Encrypt traffic|Route between networks|A
+4051|Which is common subnet for home routers default?|192.168.1.0/24|10.0.0.0/8|172.16.0.0/12|8.8.8.0/24|A
+4052|Which protocol uses port 53?|DNS|HTTP|SMTP|DHCP|A
+4053|DHCP discover step la buoc dau tien de lam gi?|Client broadcast to find DHCP server|Server assigns IP directly|Client ping gateway|Client request DNS|A
+4054|Which is the purpose of MTU?|Maximum packet size that can be transmitted without fragmentation|Minimum transfer unit|Maximum TTL|Maximum connections|A
+4055|Which is fragmentation related to?|IP layer when packet size > MTU|TCP only|Ethernet only|Application layer|A
+4056|Which is mechanism for reliable UDP-like behavior?|Application-level ACKs or SCTP|TCP only|ICMP|ARP|A
+4057|Which is typical use case for UDP?|DNS queries, streaming, gaming|File download with reliability|Email transfer|SSH remote shell|A
+4058|Which is typical use for TCP?|Web page retrieval, reliable transfer|Voice streaming live|Broadcasting|Multicast video stream|A
+4059|Which is an interior gateway protocol (IGP)?|OSPF or RIP|BGP|DNS|HTTP|A
+4060|Which is exterior gateway protocol (EGP)?|BGP|OSPF|RIP|EIGRP|A
+4061|Which routing algorithm uses shortest path first?|OSPF (Dijkstra)|RIP (distance-vector)|BGP|Static routing|A
+4062|Which uses hop count as metric?|RIP|OSPF|BGP|EIGRP|A
+4063|Which is administrative distance for OSPF (default)?|110|120|90|20|A
+4064|Which is purpose of ARP gratuitous?|Announce IP to MAC mapping and detect conflicts|Map DNS|Encrypt traffic|Reset switch|A
+4065|Which protocol provides link-layer address assignment for IPv6?|NDP (Neighbor Discovery Protocol)|ARP|RARP|DHCPv4|A
+4066|Which protocol is used to find path MTU?|PMTUD (Path MTU Discovery)|ARP|ICMP only|DNS|A
+4067|Which header field indicates fragmentation offset?|Fragment Offset in IP header|TTL|Checksum|Protocol|A
+4068|Which is two common wireless standards?|802.11 a/b/g/n/ac|802.3 and 802.5|Ethernet only|Bluetooth only|A
+4069|Which is WEP weakness?|Weak IV handling and broken crypto|Very secure|No weaknesses|Better than WPA|A
+4070|Which is stronger than WEP for Wi-Fi security?|WPA2 or WPA3|None|WEP2|WPA1 only|A
+4071|Which protocol used for remote logging?|syslog|SNMP|DNS|DHCP|A
+4072|SNMP is used for?|Network management and monitoring|Packet routing|Encrypting data|User authentication|A
+4073|Which indicates full-duplex link?|Simultaneous send and receive|Only send|Only receive|Half duplex|A
+4074|Which is CSMA/CD associated with?|Ethernet (shared media) prevention of collisions|IP routing|TCP flow|Application protocol|A
+4075|Which is speed unit for networks?|Mbps or Gbps|KBps only|Hz only|Degrees|A
+4076|Which is VLAN tagging standard?|IEEE 802.1Q|IEEE 802.3|IEEE 802.11|IEEE 802.15|A
+4077|Which technology increases capacity by combining multiple links?|Link aggregation (LACP)|NAT|ARP|VLAN|A
+4078|Which is multicast group management protocol?|IGMP|ARP|ICMP|DHCP|A
+4079|Which is common link state routing protocol?|OSPF|RIP|BGP|STP|A
+4080|Which protocol prevents loops in switched networks?|Spanning Tree Protocol (STP)|BGP|OSPF|RIP|A
+4081|Which is purpose of QoS?|Prioritize certain traffic types (e.g., voice)|Encrypt packets|Compress data|Map MAC|A
+4082|Which is common for real-time voice packets?|RTP over UDP|HTTP over TCP|FTP over TCP|SMTP over TCP|A
+4083|Which is Reverse DNS lookup used for?|Finding hostname from IP|Finding IP from hostname|Encrypting DNS|Blocking DNS|A
+4084|Which DNS record type maps name to IPv4?|A record|AAAA|MX|CNAME|A
+4085|Which DNS record type maps name to IPv6?|AAAA|A|MX|PTR|A
+4086|Which tool displays routing table on Linux?|route or ip route|ls|cd|pwd|A
+4087|Which protocol used for secure management of network devices?|SSH|Telnet|FTP|HTTP|A
+4088|Which is function of proxy server?|Forward requests and filter content|Encrypt network packets|Assign IP addresses|Route between VLANs|A
+4089|Which is common metric for wireless signal strength?|RSSI (Received Signal Strength Indicator)|MTU|TTL|MSS|A
+4090|Which is DHCP lease renewal process step?|Client sends DHCPREQUEST to server|Server sends DHCPACK first|Client pings gateway|Client sends DNS query|A
+4091|Which protocol provides congestion control for TCP?|TCP itself via algorithms like Reno/CUBIC|UDP|ICMP|ARP|A
+4092|Which is purpose of SYN flood attack?|Exhaust server resources by opening many half-open TCP connections|Modify DNS|Steal cookies|Route traffic|A
+4093|Which is common mitigation for SYN flood?|SYN cookies and rate limiting|Open all ports|Disable TCP|Use UDP only|A
+4094|Which is the socket concept composed of?|IP address + port number + protocol|Only IP|Only port|Only protocol|A
+4095|Which is broadcast MAC address?|FF:FF:FF:FF:FF:FF|00:00:00:00:00:00|AA:AA:AA:AA:AA:AA|11:11:11:11:11:11|A
+4096|Which is purpose of 802.1X?|Port-based network access control (authentication)|Routing packets|Encrypting IP|DHCP assignment|A
+4097|Which is common link layer error detection?|CRC (Cyclic Redundancy Check)|MD5|SHA1|AES|A
+4098|Which is typical MTU for Ethernet?|1500 bytes|576 bytes|64 bytes|9000 bytes|A
+4099|Which protocol helps balance load across servers?|Load balancer algorithms (round robin, least connections)|DNS|ARP|ICMP|A
+4100|Which protocol advertises routes between autonomous systems?|BGP|OSPF|RIP|STP|A

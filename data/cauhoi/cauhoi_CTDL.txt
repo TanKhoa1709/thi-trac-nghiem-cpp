@@ -1,0 +1,105 @@
+100
+1001|Cau truc du lieu la gi?|Tap hop cac cau truc|Ly thuyet khong can thiet|Cau truc luu tru va to chuc du lieu|Khong dap an|C
+1002|Cau nao sau day la CTDL tuyen tinh?|Danh sach lien ket|Cay nhi phan|Do thi|Heap|A
+1003|Do phuc tap thoi gian O(n) nghia la?|Thoi gian ty le theo cap so nhan|Thoi gian ty le voi kich thuoc input|Thoi gian khong doi|Khong dap an|B
+1004|Stack hoat dong theo phuong thuc nao?|FIFO|LIFO|Random|Priority|B
+1005|Queue hoat dong theo phuong thuc nao?|LIFO|FIFO|LILO|FIFI|B
+1006|Cau nao la loi ich cua danh sach lien ket?|Truy cap chi so O(1)|Chen va xoa nhanh o giua|Can bo nho lien tuc|Khong the duyet tu trai sang phai|B
+1007|Heap la cau truc du lieu gi?|Dang cay dung de tao priority queue|Danh sach lien ket dac biet|Do thi co huong|Mang mot chieu|A
+1008|Hash table chuc nang chinh la gi?|Luu tru doi tuong theo thu tu|Nhan dang va lay thong tin nhanh bang khoa|Thuc hien sap xep|Mo ta cay|B
+1009|Traversal inorder cua cay nhi phan la thu tu nao?|Root-Left-Right|Left-Root-Right|Left-Right-Root|Right-Left-Root|B
+1010|Traversal preorder la thu tu nao?|Left-Root-Right|Root-Left-Right|Left-Right-Root|Right-Left-Root|B
+1011|Traversal postorder la thu tu nao?|Left-Right-Root|Root-Left-Right|Left-Root-Right|Right-Left-Root|A
+1012|Which structure is best for LIFO operations?|Queue|Stack|Tree|Graph|B
+1013|Which structure is best for FIFO operations?|Stack|Queue|Heap|HashTable|B
+1014|Binary search tree property?|Left <= node < Right|Left < node < Right|Left > node|No order|B
+1015|Balanced tree reduces what?|Memory usage|Time complexity height to O(log n)|Number of nodes|Number of edges|B
+1016|Which sort uses divide and conquer?|Insertion sort|Merge sort|Bubble sort|Selection sort|B
+1017|Which is not comparison sort?|Merge sort|Counting sort|Quick sort|Heap sort|B
+1018|Graph can be represented by?|Adjacency matrix|Adjacency list|Edge list|All above|D
+1019|Dijkstra's algorithm finds?|Minimum spanning tree|Shortest path from source to all|Topological order|Sorting|B
+1020|Which is a spanning tree algorithm?|Dijkstra|Kruskal|BFS|Binary Search|B
+1021|Which uses LIFO to check balanced parentheses?|Queue|Stack|Hash table|Tree|B
+1022|Amortized cost of dynamic array append?|O(n)|O(1)|O(log n)|O(n log n)|B
+1023|Which is true about linked list?|Contiguous memory|Non-contiguous nodes with pointers|Fixed size|Sorted only|B
+1024|Which sort is worst-case O(n^2) but average O(n log n)?|Merge sort|Quick sort|Heap sort|Counting sort|B
+1025|Complexity of binary search on sorted array?|O(n)|O(log n)|O(n log n)|O(1)|B
+1026|AVL tree is type of?|Self-balancing BST|Heap|Hash table|Graph|A
+1027|Red-Black tree ensures?|Strict balance|Height O(log n)|No duplicates|O(1) insert|B
+1028|Which is used for LRU cache implementation commonly?|Stack|Queue|Doubly linked list + hashmap|Binary tree|C
+1029|What does 'push' on stack do?|Remove element|Add element to top|Add element to bottom|Peek element|B
+1030|What does 'pop' on stack do?|Add element|Remove top element|Sort elements|Check empty|B
+1031|Which is best for priority scheduling?|Stack|Heap|Queue|Linked list|B
+1032|Which traversal gives sorted order in BST?|Preorder|Inorder|Postorder|Level order|B
+1033|Which is true for array access?|O(n) access by index|O(1) access by index|No random access|Only sequential|B
+1034|Which is disadvantage of array?|Fixed size once allocated|Dynamic growth without realloc|Slow index access|High pointer overhead|A
+1035|Which is advantage of linked list over array?|Random access|Lower memory per element|Easier insertion/deletion in middle|Contiguous memory|C
+1036|Which is true for hash collisions?|Never happen|Handled by chaining or open addressing|Cause program crash|Prevented by BST|B
+1037|Which is used to detect cycles in graph?|Dijkstra|Floyd|DFS with visited|Kruskal|C
+1038|Topological sort applies to which graphs?|Undirected|Directed Acyclic Graphs|Cyclic directed|Weighted graphs|B
+1039|Which algorithm finds MST?|Dijkstra|Kruskal|Bellman-Ford|DFS|B
+1040|Which structure supports efficient insert at end?|Array with realloc|Linked list tail pointer|Binary tree|Hash table|B
+1041|BFS explores graph by?|Depth first|Breadth first|Random|Priority order|B
+1042|DFS uses which data structure?|Queue|Stack (implicit or explicit)|Heap|Hash set|B
+1043|Which is not a tree property?|Connected and acyclic|Exactly one path between nodes|Has cycles|Has root|C
+1044|Which is a complete binary tree?|All levels full except possibly last, left-filled|All nodes have two children|No null children allowed|Only root|A
+1045|Which sort is stable?|Quick sort (typical)|Merge sort|Heap sort|Selection sort|B
+1046|Which algorithm uses partitioning?|Merge sort|Quick sort|Insertion sort|Selection sort|B
+1047|Which is used to implement recursive function call stack?|Queue|Stack|Heap|Tree|B
+1048|Which data structure for undo feature?|Queue|Stack|Tree|Graph|B
+1049|Which is characteristic of doubly linked list?|Nodes have two pointers (prev, next)|Only next pointer|Contiguous memory|No pointers|A
+1050|Which is false about binary heap?|Complete binary tree|Heap property parent >= children (max-heap)|Used for priority queue|Has random access by key|D
+1051|Which algorithm finds shortest path with negative edges allowed?|Dijkstra|Bellman-Ford|Kruskal|Prim|B
+1052|Which of these sorts in-place?|Merge sort|Quick sort|Counting sort|Radix sort|B
+1053|Which is external sorting useful for?|Small data fits in memory|Large data on disk|Sorting linked list only|Sorting graphs|B
+1054|Which structure best for adjacency of sparse graph?|Adjacency matrix|Adjacency list|Edge list as array|Heap|B
+1055|Which is BFS applications?|Shortest path in unweighted graph|Sorting numbers|Balancing tree|Hashing|A
+1056|Which of these is not traversal order?|Inorder|Preorder|Postorder|Outorder|D
+1057|Which supports constant-time push/pop from both ends?|Array|Deque|Stack|Binary tree|B
+1058|Which is used to implement recursion?|Heap|Stack|Queue|Linked list|B
+1059|Which is dynamic array advantage?|Fixed size|Amortized O(1) append|No reallocations ever|O(n^2) access|B
+1060|Which finds connected components in undirected graph?|DFS|Dijkstra|Kruskal|Prim|A
+1061|Which data structure best for undo-redo with middle access?|Array|Doubly linked list|Stack only|Queue|B
+1062|Which is not a property of hash functions?|Deterministic mapping|Uniform distribution|Cryptographic strength always|Fast to compute|C
+1063|Which technique reduces complexity by reusing computations?|Greedy|Dynamic programming|Divide and conquer|Backtracking|B
+1064|Which algorithmic paradigm uses recursion and combine step?|Divide and conquer|Greedy|DP|Brute force|A
+1065|Which structure for implementing open addressing?|Hash table with probe sequences|Binary tree|Linked list|Priority queue|A
+1066|Which is used to detect cycle in directed graph?|Kahn's algorithm|DFS with recursion stack|Union-Find|All of above|B
+1067|Union-Find data structure used in which algorithm?|Dijkstra|Kruskal|Bellman-Ford|Floyd-Warshall|B
+1068|Which is NP problem example?|Sorting|Primality testing|Traveling Salesman (decision)|Binary search|C
+1069|Which method sorts by repeatedly swapping adjacent out-of-order elements?|Bubble sort|Merge sort|Quick sort|Heap sort|A
+1070|Which sort selects minimum and places at start?|Selection sort|Insertion sort|Merge sort|Bubble sort|A
+1071|Which algorithm maintains sorted prefix?|Insertion sort|Heap sort|Counting sort|Radix sort|A
+1072|Which is best-case O(n) sorting?|Bubble sort|Quick sort|Merge sort|Insertion sort (on nearly sorted)|D
+1073|Which is stable and linear for small k range?|Counting sort|Quick sort|Heap sort|Merge sort|A
+1074|Which data structure for implementing adjacency matrix?|2D array|Linked list|Hash table|Tree|A
+1075|Which is advantage of adjacency list over matrix for sparse graph?|Less memory|Faster edge existence check always|Simpler to implement|Supports weighted edges only|A
+1076|Which search guarantees shortest path in unweighted graph?|BFS|DFS|Dijkstra|A*|A
+1077|Which is used for topological sorting?|DFS or Kahn's algorithm|Dijkstra|Bellman-Ford|Prim|A
+1078|Which provides O(1) average access?|Hash table|Binary search tree|Linked list|Queue|A
+1079|Which uses rolling hash in string search?|KMP|Rabin-Karp|Boyer-Moore|Aho-Corasick|B
+1080|Which algorithm finds longest common prefix efficiently?|Brute force|Suffix array/lcp|Bubble sort|Quick sort|B
+1081|Which tree is perfect if all internal nodes have two children and leaves same depth?|Complete tree|Full tree|Perfect binary tree|Skewed tree|C
+1082|Which structure avoids rehashing by resizing?|Dynamic array underlying hash|Fixed hash table|Tree map|Skip list|A
+1083|Which is true for skip lists?|Deterministic|Probabilistic structure with levels|get O(log n) average|Both B and C|D
+1084|Which is used for range queries and updates?|Segment tree|Hash table|Array|Queue|A
+1085|Fenwick tree (BIT) used for?|Prefix sums and updates|Sorting|Graph traversal|Hashing|A
+1086|Which algorithm finds articulation points?|Tarjan's algorithm|Dijkstra|Kruskal|Prim|A
+1087|Which solves single-source shortest path in weighted graph without negative edges?|Dijkstra|Bellman-Ford|Floyd-Warshall|Kruskal|A
+1088|Which algorithm finds strongly connected components?|Kosaraju or Tarjan|Dijkstra|Prim|Kahn|A
+1089|Which is characteristic of a DAG?|Has cycles|No cycles and directional edges|Undirected edges only|All nodes same degree|B
+1090|Which returns elements in level order for tree?|Preorder|Inorder|Postorder|Breadth-first traversal|D
+1091|Which is used in Huffman coding?|Priority queue (heap)|Stack|Queue|Hash table|A
+1092|Which data structure used in A* search to pick next node?|Priority queue|Stack|Queue|Linked list|A
+1093|Which sorts nearly sorted array best?|Heap sort|Insertion sort|Bubble sort|Selection sort|B
+1094|Which structure for implementing undo stack with redo?|Two stacks|Queue and stack|Linked list only|Array only|A
+1095|Which is used for concurrency-safe append?|Locking around vector|Lock-free queue|Global interpreter lock|All of above|D
+1096|Which is used to implement associative array in C++ STL?|vector|map/unordered_map|list|set|B
+1097|Which uses hashing with balanced trees in buckets (C++17)?|unordered_map|map|unordered_map with node-based|unordered_map with buckets using trees|D
+1098|Which data structure supports get-min in O(1) and insert in O(log n)?|Stack|Min-heap|Queue|Hash map|B
+1099|Which allows amortized O(1) time for push and pop back?|std::vector|std::list|std::deque|std::set|A
+1100|Which ensures unique keys if used as map key?|unordered_map allows duplicates|map enforces unique keys|vector enforces unique|list enforces unique|B
+3
+1001|Cau truc du lieu la gi?|Tap hop cac cau truc|Ly thuyet khong can thiet|Cau truc luu tru va to chuc du lieu|Khong dap an|C
+1002|Cau nao sau day la CTDL tuyen tinh?|Danh sach lien ket|Cay nhi phan|Do thi|Heap|A
+1003|Do phuc tap thoi gian O(n) nghia la?|Thoi gian ty le theo cap so nhan|Thoi gian ty le voi kich thuoc input|Thoi gian khong doi|Khong dap an|B

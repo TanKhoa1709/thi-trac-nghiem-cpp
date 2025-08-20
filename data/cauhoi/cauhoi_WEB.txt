@@ -1,0 +1,101 @@
+100
+8001|HTML là viết tắt của gì?|HyperText Markup Language|HighText Machine Language|Hyperlink and Text Markup|Home Tool Markup|A
+8002|Thẻ HTML dùng để tạo cấu trúc nào trên web?|Nội dung và cấu trúc tài liệu|Giao thức mạng|Cơ sở dữ liệu|Server-side routing|A
+8003|CSS dùng để làm gì?|Định kiểu (style) cho nội dung HTML|Lưu trữ dữ liệu|Xây dựng API|Quản lý server|A
+8004|Flexbox chủ yếu giải quyết vấn đề gì trong CSS?|Bố cục theo một chiều và căn chỉnh phần tử|Tối ưu ảnh|Quản lý font|Routing|A
+8005|Grid layout trong CSS tốt cho?|Bố cục 2 chiều phức tạp|Tối ưu truy vấn SQL|Bảo mật session|Gửi email|A
+8006|JavaScript thường chạy ở đâu trên web truyền thống?|Trình duyệt (client-side)|Chỉ trên server|Trong cơ sở dữ liệu|Trên router|A
+8007|Node.js là gì?|Môi trường chạy JavaScript trên server|Một framework CSS|Một cơ sở dữ liệu NoSQL|Một kiểu file HTML|A
+8008|HTTP là giao thức ở lớp nào của mô hình mạng?|Ứng dụng (Application layer)|Mạng (Network layer)|Vận chuyển (Transport layer)|Vật lý (Physical)|A
+8009|HTTP request method dùng để lấy tài nguyên là gì?|GET|POST|PUT|DELETE|A
+8010|HTTP POST dùng để làm gì?|Gửi dữ liệu tới server để tạo/điều chỉnh tài nguyên|Lấy dữ liệu|Xóa dữ liệu|Chỉ dùng cho tải file|A
+8011|Status code 200 nghĩa là gì?|OK (thành công)|Not Found|Server Error|Redirect|A
+8012|Status code 404 nghĩa là gì?|Not Found (không tìm thấy)|Unauthorized|Forbidden|Internal Server Error|A
+8013|Status code 500 nghĩa là gì?|Internal Server Error (lỗi server)|Bad Request|Not Implemented|Service Unavailable|A
+8014|RESTful API tuân thủ nguyên tắc nào?|Sử dụng HTTP verbs và resource URIs|Luôn trả về HTML|Chỉ dùng SOAP|Không dùng HTTP|A
+8015|CORS (Cross-Origin Resource Sharing) giải quyết vấn đề gì?|Quyền truy cập tài nguyên giữa các nguồn khác nhau|Tối ưu CSS|Nén hình ảnh|Quản lý cookie|A
+8016|Cookie dùng để gì trên web?|Lưu trữ dữ liệu nhỏ phía client, thường dùng cho session|Lưu trữ trên server|Thay thế database|Nén tài liệu|A
+8017|LocalStorage khác cookie ở điểm nào?|Lưu trữ lớn hơn, không gửi tự động trong HTTP request|Gửi trong mỗi request|Chỉ dùng trên server|Chỉ cho cookie bảo mật|A
+8018|Session server-side thường dùng gì để theo dõi người dùng?|Session ID lưu ở cookie và dữ liệu lưu trên server|Session lưu trên client không an toàn|Không dùng cookie|Dùng chỉ token trong header|A
+8019|JWT (JSON Web Token) thường dùng để?|Xác thực và truyền thông tin giữa client và server dạng token|Lưu trữ file|Thiết kế giao diện|Truy vấn DB|A
+8020|HTTPS khác HTTP ở điểm nào?|HTTPS mã hóa lớp truyền tải với TLS/SSL|HTTPS là phiên bản mới không mã hóa|HTTPS dùng cổng khác nhưng không mã hóa|HTTPS chỉ cho API|A
+8021|TLS dùng để làm gì?|Mã hóa và xác thực kênh truyền giữa client và server|Tăng tốc CPU|Tạo database|Xóa cookies|A
+8022|Sự khác biệt giữa TLS và SSL là gì?|TLS là phiên bản tiến hóa, SSL cũ và không an toàn|TLS không mã hóa|SSL là modern protocol|Không khác gì|A
+8023|What is XSS (Cross-Site Scripting)?|Kỹ thuật chèn script độc hại vào trang web để tấn công người dùng|Tấn công SQL database|Tấn công vật lý server|Kiểm thử hiệu năng|A
+8024|Cách hiệu quả ngăn XSS là gì?|Escape/encode output và validate input|Mã hóa database|Dùng only GET requests|Disable CSS|A
+8025|What is CSRF (Cross-Site Request Forgery)?|Gian lận yêu cầu từ trang khác khiến user thực hiện hành động không mong muốn|Lỗi SQL injection|Phishing email|DDoS attack|A
+8026|Phòng CSRF bằng cách nào?|Sử dụng anti-CSRF token và kiểm tra Origin/Referer headers|Chỉ dùng GET|Tắt cookie|Mã hóa CSS|A
+8027|SQL Injection tấn công bằng gì?|Chèn SQL độc hại vào input để thao túng truy vấn|Chèn script JS|Phát tán virus|Xóa file CSS|A
+8028|Ngăn SQL Injection hiệu quả nhất bằng?|Prepared statements / parameterized queries|Concatenate strings to build SQL|Escape JSON only|Use client-side validation|A
+8029|Content Security Policy (CSP) giúp gì?|Hạn chế nguồn tài nguyên được load để giảm rủi ro XSS|Tăng kích thước cookie|Tăng tốc HTTP|Mã hóa DB|A
+8030|SPA (Single Page Application) có đặc điểm?|Tải một trang HTML duy nhất và cập nhật nội dung động qua JS|Mỗi route tải 1 HTML mới|Luôn SEO-friendly|Không dùng JavaScript|A
+8031|SSR (Server-Side Rendering) lợi ích gì so với SPA?|Cải thiện SEO và thời gian tải nội dung ban đầu|Luôn chậm hơn SPA|Không hỗ trợ dynamic content|Không dùng templates|A
+8032|What is Progressive Web App (PWA)?|Ứng dụng web có tính năng giống native: offline, installable, push notification|Một framework CSS|Chỉ dành cho desktop|Chỉ dùng cho backend|A
+8033|Service Worker dùng cho gì?|Quản lý cache và hỗ trợ offline cho PWA|Chạy SQL trên client|Thay thế cookie|Tạo database|A
+8034|What does HTTP/2 introduce?|Multiplexing, header compression, server push|Only bigger header|Remove encryption|Single connection per request|A
+8035|Which improves load performance with HTTP/2?|Multiplexing nhiều request trên một kết nối TCP|Use many separate connections|Disable TLS|Use uncompressed headers|A
+8036|What is WebSocket used for?|Kênh giao tiếp hai chiều liên tục giữa client và server|Chỉ gửi GET|Tương tự AJAX polling|Only for file upload|A
+8037|AJAX là viết tắt cho gì?|Asynchronous JavaScript and XML|Automatic JSON and XML|Advanced JavaScript and XHTML|Alernative JavaScript API|A
+8038|Fetch API so với XMLHttpRequest ưu điểm là gì?|API hiện đại, promise-based, cú pháp dễ dùng|Chậm hơn XMLHttpRequest|Không hỗ trợ JSON|Không tương thích|A
+8039|Which header indicates content type of response?|Content-Type|Accept|Host|User-Agent|A
+8040|Which header used to control caching?|Cache-Control|Content-Encoding|Authorization|Cookie|A
+8041|How to force a browser to download a file instead of display?|Set Content-Disposition: attachment header|Use Content-Type: text/html|Use HTTP 404|Use GET param download=1|A
+8042|Which is HTTPS port by default?|443|80|21|25|A
+8043|Which HTML element is semantic for navigation?|nav|div|span|section|A
+8044|What does ARIA attributes help with?|Cải thiện truy cập cho người dùng khuyết tật (accessibility)|Tăng tốc CSS|Backup DB|Optimize images|A
+8045|Which is responsive design technique?|Media queries, flexible grids và fluid images|Use fixed pixel layout only|Only use big images|Disable CSS on mobile|A
+8046|What is mobile-first design?|Thiết kế ưu tiên trải nghiệm mobile, sau đó mở rộng cho desktop|Chỉ cho desktop|Ignore mobile users|Only use desktop CSS|A
+8047|Which image format tốt cho ảnh có nhiều màu và nén tốt?|JPEG|GIF|BMP|TXT|A
+8048|Which image format hỗ trợ transparency vector và scale tốt?|SVG|JPEG|BMP|TIFF|A
+8049|What is lazy loading?|Load hình/asset khi cần hiển thị để giảm thời gian tải ban đầu|Load everything at once|Delete images after use|Preload all assets|A
+8050|Which is purpose of bundle tools like Webpack?|Bundle, transpile và tối ưu asset cho production|Run SQL queries|Serve TLS certificates|Manage cookies|A
+8051|Transpilation (Babel) dùng để?|Chuyển mã ES6+ về ES5 để tương thích trình duyệt cũ|Nén hình ảnh|Tạo database schema|Xóa CSS|A
+8052|What is TypeScript feature?|Superset của JavaScript có kiểu tĩnh (static types)|Replacement for CSS|Database engine|Image processing tool|A
+8053|Which is CSS preprocessor example?|Sass/SCSS|React|Express|Postgres|A
+8054|What does responsive images srcset do?|Cho phép trình duyệt chọn image phù hợp với kích thước màn hình|Compress images on server|Convert images to text|Encrypt images|A
+8055|Which HTTP header used for authentication with bearer token?|Authorization: Bearer <token>|Authentication: Token|Cookie: session|X-Auth-Token only|A
+8056|OAuth2 is primarily for what?|Ủy quyền (authorization) cho bên thứ ba truy cập tài nguyên thay mặt user|Mật mã hóa dữ liệu|Lưu trữ session|Thiết kế CSS|A
+8057|Which OAuth2 grant type suitable for server-to-server?|Client Credentials|Implicit|Authorization Code (without PKCE)|Resource Owner Password|A
+8058|What is OpenID Connect used for?|Xác thực người dùng dựa trên OAuth2|Encrypting transport|Replacing TLS|Indexing search|A
+8059|What is rate limiting used to prevent?|Abuse và DoS bằng cách giới hạn số request|Caching static assets|Improving SEO|Compressing images|A
+8060|Which is common CSRF protection when using cookies for auth?|Use same-site cookie flag và anti-CSRF token|Disable TLS|Use insecure cookies|Only client-side validation|A
+8061|SameSite cookie flag có thể là giá trị nào?|Strict, Lax hoặc None|On/Off only|True/False only|Public/Private only|A
+8062|What is HTTP cookie 'Secure' attribute do?|Chỉ gửi cookie qua kết nối HTTPS|CORS control|Encrypt cookie value|Compress cookie|A
+8063|What is HTTP cookie 'HttpOnly' attribute do?|Không cho JavaScript truy cập cookie (giúp giảm rủi ro XSS)|Lưu cookie trên server only|Tự hủy sau 1 phút|Mã hóa cookie|A
+8064|What does 'progressive enhancement' mean?|Cung cấp chức năng cơ bản cho mọi trình duyệt, thêm nâng cao cho trình duyệt hỗ trợ|Only support modern browsers|Use only JS|Ignore accessibility|A
+8065|Which is benefit of server-side rendering for SEO?|Cung cấp nội dung đầy đủ cho crawler khi load ban đầu|Always slower|Make site dynamic only|Disable caching|A
+8066|What is API versioning reason?|Tránh phá vỡ clients khi thay đổi API contract|Increase server load only|Remove auth|Make DB smaller|A
+8067|Which is HTTP method idempotent?|PUT và GET (lặp lại không gây thay đổi thêm sau lần đầu)|POST is idempotent|DELETE not idempotent|PATCH always idempotent|A
+8068|What is HATEOAS in REST?|Hypermedia as the Engine of Application State, link-driven APIs|GraphQL only|Authentication scheme|CSS framework|A
+8069|GraphQL advantage over REST?|Client có thể yêu cầu chính xác dữ liệu cần lấy, giảm overfetch/underfetch|Always faster than REST|No need to secure|Only for static sites|A
+8070|GraphQL downside?|Có thể phức tạp hơn cho caching và bảo mật nếu không thiết kế đúng|Không thể query nested data|Không support mutations|Không support subscriptions|A
+8071|What is difference between cookie-based session and token-based auth?|Cookie usually server-stored session, token được client giữ và gửi kèm|Same thing|Cookies always safer|Tokens cannot expire|A
+8072|What is helmet.js used for in Node.js apps?|Thiết lập header bảo mật HTTP (CSP, HSTS, X-Frame-Options, ...)|Manage DB migrations|Handle file uploads|Compress assets|A
+8073|What is rate-limiting header helpful for?|Cho client biết còn bao nhiêu request trước khi bị giới hạn|Compress images|Encrypt payload|Manage cookies|A
+8074|Which is common file upload handling concern?|Validate file type/size and scan for malware|Always store uploaded file path in DB plain|Never check file size|Allow any executable types|A
+8075|Which technique helps protect against clickjacking?|Set X-Frame-Options header or frame-ancestors CSP|Use large images|Disable JS|Use only GET|A
+8076|What is HSTS header do?|Yêu cầu trình duyệt chỉ kết nối HTTPS trong một khoảng thời gian xác định|Disable cookies|Enable HTTP only|Compress responses|A
+8077|What is 'preflight' request in CORS?|OPTIONS request browser gửi trước khi thực hiện request thực sự để kiểm tra quyền|A GET request|A POST with body|A cookie-only request|A
+8078|What is web accessibility (a11y) goal?|Đảm bảo trang web có thể sử dụng bởi mọi người, bao gồm người khuyết tật|Only for SEO|Only for performance|Only for mobile|A
+8079|Which HTML attribute dùng để hỗ trợ screen readers?|aria-label hoặc role attributes|data-test|onclick only|style only|A
+8080|What is SSRF (Server-Side Request Forgery)?|Server bị lừa thực hiện request nội bộ/ngoại vi do input không kiểm tra|Client-only attack|XSS variant|DDoS only|A
+8081|Prevent SSRF bằng gì?|Validate/whitelist các URL và block request tới mạng nội bộ|Allow any URL|Use client-side check only|Encode URL only|A
+8082|What is content negotiation in HTTP?|Client và server quyết định format response dựa trên headers (Accept)|Only for cookies|Only for caching|Only for TLS|A
+8083|Which is benefit of HTTP caching?|Giảm tải server và tăng tốc phản hồi cho client|Always stale data|Reduce security|Increase size of assets|A
+8084|What is 'etag' used for?|Xác định phiên bản của tài nguyên để hỗ trợ caching conditional|Encrypt payload|Manage cookies|Version DB schema|A
+8085|Which is way to improve Time to First Byte (TTFB)?|Optimize server processing, use CDN và cache|Increase image size|Use more fonts|Disable caching|A
+8086|What is CDN (Content Delivery Network) used for?|Phân phối tài nguyên tĩnh gần người dùng để giảm latency|Store secrets|Run database queries|Manage sessions|A
+8087|Which is important for secure file uploads?|Store uploads outside webroot và đổi tên file tránh path traversal|Trust original filenames|Allow any file type|Execute uploaded files|A
+8088|What is path traversal vulnerability?|Kẻ tấn công truy cập file ngoài thư mục dự định bằng các chuỗi như ../|SQL injection variant|Only for images|Only in CSS|A
+8089|Which HTTP method is used for partial update?|PATCH|PUT|POST|DELETE|A
+8090|What is webhooks purpose?|Server-to-server callbacks để thông báo sự kiện từ service này tới service khác|Client polling only|Compress images|Serve static files|A
+8091|Which header can force browser caching behaviour|Cache-Control|Set-Cookie|Authorization|User-Agent|A
+8092|What is 'minification' in web assets?|Loại bỏ ký tự thừa và rút gọn code để giảm kích thước tệp|Encrypt files|Convert to binary|Add comments|A
+8093|What is 'tree shaking' in bundlers?|Loại bỏ code không bao giờ được sử dụng để giảm bundle size|Add extra code|Compress images|Minify CSS only|A
+8094|What is progressive enhancement vs graceful degradation?|PE: bắt đầu với base chức năng rồi thêm nâng cao; GD: thiết kế cho full-feature rồi giảm dần|Same concept|Unrelated terms|Only about CSS|A
+8095|Which is state management library for front-end?|Redux (ví dụ)|Express|Django|Postgres|A
+8096|Which is benefit of using HTTPS for all pages?|Ngăn man-in-the-middle và bảo vệ integrity/confidentiality|Only improves SEO|No security benefit|Only for login pages|A
+8097|What is 'viewport' meta tag used for?|Kiểm soát cách trang hiển thị trên thiết bị di động (scale/width)|Manage cookies|Encrypt responses|Change server port|A
+8098|What is web performance metric 'Largest Contentful Paint' (LCP)?|Thời gian tới khi phần nội dung lớn nhất trên viewport được render|Time to first byte|Total load time|Number of requests|A
+8099|What is 'First Input Delay' (FID)?|Thời gian trễ phản hồi đến tương tác đầu tiên của người dùng|Total load time|Memory usage|Number of assets|A
+8100|Which practice improves security of third-party scripts?|Load minimally, use Subresource Integrity (SRI), and limit privileges|Load all scripts from any source|Inline eval scripts|Disable CSP|A
