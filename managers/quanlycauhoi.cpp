@@ -12,7 +12,7 @@ QuanLyCauHoi::QuanLyCauHoi(const char *ma, int minId, int maxId) {
     // Copy at most 15 characters to leave space for null-terminator
     std::strncpy(this->maMon, ma, sizeof(this->maMon) - 1);
     this->maMon[15] = '\0'; // Ensure null-termination
-    
+
     // Initialize ID range
     this->minId = minId;
     this->maxId = maxId;
@@ -145,8 +145,7 @@ void QuanLyCauHoi::layNgauNhien(DynamicArray<CauHoi *> &result, int soLuong) {
 
     // Initialize used array
     for (int i = 0; i < allQuestions.size(); i++) {
-        bool v = false;
-        used.add(v);
+        used.addCopy(false);
     }
 
     for (int i = 0; i < soLuong; i++) {
@@ -155,8 +154,7 @@ void QuanLyCauHoi::layNgauNhien(DynamicArray<CauHoi *> &result, int soLuong) {
             randomIndex = rand() % allQuestions.size();
         } while (used.get(randomIndex));
 
-        bool v = true;
-        used.set(randomIndex, v);
+        used.setCopy(randomIndex, true);
         result.add(allQuestions.get(randomIndex));
     }
 }

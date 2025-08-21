@@ -22,14 +22,21 @@ private:
     }
 
 public:
-    DynamicArray(int initial_capacity = 10)
-        : capacity(initial_capacity), current_size(0) {
+    DynamicArray(int initial_capacity = 10) :
+        capacity(initial_capacity), current_size(0) {
         data = new T[capacity];
     }
 
     ~DynamicArray() { delete[] data; }
 
     void add(T &value) {
+        if (current_size >= capacity) {
+            resize();
+        }
+        data[current_size++] = value;
+    }
+
+    void addCopy(T value) {
         if (current_size >= capacity) {
             resize();
         }
@@ -51,6 +58,20 @@ public:
         }
     }
 
+    void removeIndex(int index) {
+        if (index < 0 || index >= current_size) {
+            throw std::out_of_range("Index out of bounds");
+        }
+
+        data[index] = T(); // Reset the value
+
+        // Shift elements left
+        for (int i = index; i < current_size - 1; i++) {
+            data[i] = data[i + 1];
+        }
+        current_size--;
+    }
+
     T &get(int index) {
         if (index < 0 || index >= current_size) {
             throw std::out_of_range("Index out of bounds");
@@ -59,6 +80,13 @@ public:
     }
 
     void set(int index, T &value) {
+        if (index < 0 || index >= current_size) {
+            throw std::out_of_range("Index out of bounds");
+        }
+        data[index] = value;
+    }
+
+    void setCopy(int index, T value) {
         if (index < 0 || index >= current_size) {
             throw std::out_of_range("Index out of bounds");
         }
