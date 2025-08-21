@@ -104,7 +104,7 @@ int QuanLyCauHoi::taoMaCauHoiNgauNhien() {
     return newId;
 }
 
-int QuanLyCauHoi::taoMaCauHoiMoi(int minId = 1, int maxId = 10000) {
+int QuanLyCauHoi::taoMaCauHoiMoi(int minId, int maxId) {
     if (minId < 1 || maxId < minId) {
         throw std::invalid_argument("Loi tao ma cau hoi: minId phai >= 1 va maxId phai >= minId");
     }
