@@ -8,10 +8,14 @@
 #include <sstream>
 
 // Constructor
-QuanLyCauHoi::QuanLyCauHoi(const char *ma) {
+QuanLyCauHoi::QuanLyCauHoi(const char *ma, int minId, int maxId) {
     // Copy at most 15 characters to leave space for null-terminator
     std::strncpy(this->maMon, ma, sizeof(this->maMon) - 1);
     this->maMon[15] = '\0'; // Ensure null-termination
+    
+    // Initialize ID range
+    this->minId = minId;
+    this->maxId = maxId;
 }
 
 // Destructor
@@ -92,20 +96,7 @@ bool QuanLyCauHoi::xoa(int maCauHoi) {
 
 // Generate random unique question ID
 int QuanLyCauHoi::taoMaCauHoiNgauNhien() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1000, 999999);
-
-    int newId;
-    do {
-        newId = dis(gen);
-    } while (tim(newId) != nullptr); // Ensure uniqueness
-
-    return newId;
-}
-
-int QuanLyCauHoi::taoMaCauHoiMoi(int minId, int maxId) {
-    if (minId < 1 || maxId < minId) {
+    if (this->minId < 1 || this->maxId < this->minId) {
         throw std::invalid_argument("Loi tao ma cau hoi: minId phai >= 1 va maxId phai >= minId");
     }
 
@@ -129,7 +120,7 @@ int QuanLyCauHoi::taoMaCauHoiMoi(int minId, int maxId) {
         return findId(mid + 1, high);
     };
 
-    int newId = findId(minId, maxId);
+    int newId = findId(this->minId, this->maxId);
     if (newId == -1) {
         throw std::runtime_error("Khong con ID trong pham vi cho phep");
     }
@@ -139,7 +130,6 @@ int QuanLyCauHoi::taoMaCauHoiMoi(int minId, int maxId) {
 // Get random questions
 void QuanLyCauHoi::layNgauNhien(DynamicArray<CauHoi *> &result, int soLuong) {
     DynamicArray<CauHoi *> allQuestions;
-
     danhSach(allQuestions);
 
     if (soLuong >= allQuestions.size()) {
@@ -149,39 +139,26 @@ void QuanLyCauHoi::layNgauNhien(DynamicArray<CauHoi *> &result, int soLuong) {
         return;
     }
 
-    // Create indices array and shuffle
-    DynamicArray<int> indices;
+    // Simple random selection without duplicates
+    srand(time(nullptr));
+    DynamicArray<bool> used;
+
+    // Initialize used array
     for (int i = 0; i < allQuestions.size(); i++) {
-        indices.add(i);
+        bool v = false;
+        used.add(v);
     }
 
-    // Use proper random seeding with current time
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    // Add additional entropy using current time
-    auto now = std::chrono::high_resolution_clock::now();
-    auto time_seed = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
-    gen.seed(static_cast<unsigned int>(time_seed ^ rd()));
-
-    // Fisher-Yates shuffle algorithm for better randomness
-    for (int i = indices.size() - 1; i > 0; i--) {
-        std::uniform_int_distribution<> dis(0, i);
-        int j = dis(gen);
-
-        // Swap indices[i] and indices[j]
-        int temp = indices.get(i);
-        indices.set(i, indices.get(j));
-        indices.set(j, temp);
-    }
-
-    // Take first soLuong questions
     for (int i = 0; i < soLuong; i++) {
-        int index = indices.get(i);
-        result.add(allQuestions.get(index));
-    }
+        int randomIndex;
+        do {
+            randomIndex = rand() % allQuestions.size();
+        } while (used.get(randomIndex));
 
-    return;
+        bool v = true;
+        used.set(randomIndex, v);
+        result.add(allQuestions.get(randomIndex));
+    }
 }
 
 // Save to file
@@ -201,8 +178,8 @@ void QuanLyCauHoi::saveToFile() {
     for (int i = 0; i < allQuestions.size(); i++) {
         CauHoi *question = allQuestions.get(i);
         file << question->getMaCauHoi() << "|" << question->getNoiDung() << "|" << question->getLuaChonA() << "|"
-             << question->getLuaChonB() << "|" << question->getLuaChonC() << "|" << question->getLuaChonD() << "|"
-             << question->getDapAnDung() << std::endl;
+                << question->getLuaChonB() << "|" << question->getLuaChonC() << "|" << question->getLuaChonD() << "|"
+                << question->getDapAnDung() << std::endl;
     }
 
     file.close();

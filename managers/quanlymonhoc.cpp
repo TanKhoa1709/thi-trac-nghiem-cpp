@@ -46,6 +46,11 @@ bool QuanLyMonHoc::them(MonHoc &monHoc) {
         return false;
     }
 
+    // Auto-assign subject index if not set
+    if (monHoc.getSubjectIndex() < 0) {
+        monHoc.setSubjectIndex(danhSachMonHoc.size());
+    }
+
     danhSachMonHoc.add(monHoc);
     return true;
 }
@@ -91,7 +96,8 @@ void QuanLyMonHoc::saveToFile() {
 
     for (size_t i = 0; i < danhSachMonHoc.size(); i++) {
         MonHoc &monHoc = danhSachMonHoc.get(i);
-        file << monHoc.getMaMon() << "|" << monHoc.getTenMon() << std::endl;
+        file << monHoc.getMaMon() << "|" << monHoc.getTenMon() << "|" 
+             << monHoc.getSubjectIndex() << std::endl;
     }
 
     file.close();
@@ -120,10 +126,28 @@ void QuanLyMonHoc::loadFromFile() {
         std::getline(file, line);
 
         std::stringstream ss(line);
-        std::string maMon, tenMon;
+        std::string token;
+        DynamicArray<std::string> tokens;
 
-        if (std::getline(ss, maMon, '|') && std::getline(ss, tenMon)) {
-            MonHoc *monHoc = new MonHoc(maMon.c_str(), tenMon);
+        // Split by |
+        while (std::getline(ss, token, '|')) {
+            tokens.add(token);
+        }
+
+        if (tokens.size() >= 3) {
+            // Format mới: maMon|tenMon|subjectIndex
+            std::string maMon = tokens.get(0);
+            std::string tenMon = tokens.get(1);
+            int subjectIndex = std::stoi(tokens.get(2));
+            MonHoc *monHoc = new MonHoc(maMon.c_str(), tenMon, subjectIndex);
+            danhSachMonHoc.add(*monHoc);
+        } else if (tokens.size() >= 2) {
+            // Backward compatibility: maMon|tenMon (format cũ)
+            std::string maMon = tokens.get(0);
+            std::string tenMon = tokens.get(1);
+            // Tự động assign subjectIndex dựa trên thứ tự hiện tại
+            int subjectIndex = danhSachMonHoc.size();
+            MonHoc *monHoc = new MonHoc(maMon.c_str(), tenMon, subjectIndex);
             danhSachMonHoc.add(*monHoc);
         }
     }

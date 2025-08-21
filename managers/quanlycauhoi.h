@@ -12,11 +12,13 @@
 class QuanLyCauHoi {
 private:
     char maMon[16]; // Mã môn học
+    int minId; // ID tối thiểu cho câu hỏi
+    int maxId; // ID tối đa cho câu hỏi
     BinarySearchTree<CauHoi> cayQuanLyCauHoi; // Cây BST quản lý câu hỏi
 
 public:
     // Constructors & Destructor
-    explicit QuanLyCauHoi(const char *maMon);
+    explicit QuanLyCauHoi(const char *maMon, int minId = 1, int maxId = 10000);
 
     ~QuanLyCauHoi();
 
