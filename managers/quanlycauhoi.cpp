@@ -233,20 +233,20 @@ void QuanLyCauHoi::loadFromFile() {
 
         std::stringstream ss(line);
         std::string token;
-        std::vector<std::string> tokens;
+        DynamicArray<std::string> tokens;
 
         while (std::getline(ss, token, '|')) {
-            tokens.push_back(token);
+            tokens.add(token);
         }
 
         if (tokens.size() == 7) {
-            int maCauHoi = std::stoi(tokens[0]);
-            std::string noiDung = tokens[1];
-            std::string luaChonA = tokens[2];
-            std::string luaChonB = tokens[3];
-            std::string luaChonC = tokens[4];
-            std::string luaChonD = tokens[5];
-            char dapAnDung = tokens[6][0];
+            int maCauHoi = std::stoi(tokens.get(0));
+            std::string noiDung = tokens.get(1);
+            std::string luaChonA = tokens.get(2);
+            std::string luaChonB = tokens.get(3);
+            std::string luaChonC = tokens.get(4);
+            std::string luaChonD = tokens.get(5);
+            char dapAnDung = tokens.get(6)[0];
 
             CauHoi *question = new CauHoi(maCauHoi, noiDung, luaChonA, luaChonB, luaChonC, luaChonD, dapAnDung);
             cayQuanLyCauHoi.add(*question);

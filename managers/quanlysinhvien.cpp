@@ -132,23 +132,23 @@ void QuanLySinhVien::loadFromFile() {
 
         std::stringstream ss(line);
         std::string token;
-        std::vector<std::string> tokens;
+        DynamicArray<std::string> tokens;
 
         while (std::getline(ss, token, '|')) {
-            tokens.push_back(token);
+            tokens.add(token);
         }
 
         if (tokens.size() == 5) {
-            std::string maSV = tokens[0];
+            std::string maSV = tokens.get(0);
             std::cout << "Loaded student: " << maSV << std::endl;
             // Chuyển maSV sang in hoa
             for (char &c: maSV)
                 c = std::toupper(static_cast<unsigned char>(c));
 
-            std::string ho = tokens[1];
-            std::string ten = tokens[2];
-            bool phai = (tokens[3] == "1");
-            std::string password = tokens[4];
+            std::string ho = tokens.get(1);
+            std::string ten = tokens.get(2);
+            bool phai = (tokens.get(3) == "1");
+            std::string password = tokens.get(4);
 
             SinhVien *student = new SinhVien(maSV, ho, ten, phai, password);
             danhSachSinhVien.add(*student);
