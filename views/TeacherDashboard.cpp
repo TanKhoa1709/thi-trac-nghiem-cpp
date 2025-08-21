@@ -19,8 +19,8 @@
 #include <cstring>
 #include "../utils/ValidationHelper.h"
 
-TeacherDashboard::TeacherDashboard(QWidget *parent)
-    : QWidget(parent), mainTabs(nullptr), classManager(nullptr), subjectManager(nullptr) {
+TeacherDashboard::TeacherDashboard(QWidget *parent) :
+    QWidget(parent), mainTabs(nullptr), classManager(nullptr), subjectManager(nullptr) {
     setupUI();
     setupConnections();
 }
@@ -60,8 +60,8 @@ void TeacherDashboard::setupUI() {
     bottomLayout->addStretch();
     QPushButton *logoutButton = new QPushButton("Logout");
     logoutButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-        "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #c0392b; }");
+            "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #c0392b; }");
     connect(logoutButton, &QPushButton::clicked, this, &TeacherDashboard::logoutRequested);
     bottomLayout->addWidget(logoutButton);
 
@@ -90,11 +90,11 @@ void TeacherDashboard::setupClassTab() {
     deleteClassButton = new QPushButton("Delete Class");
 
     addClassButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     editClassButton->setStyleSheet(
-        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     deleteClassButton->setStyleSheet(
-        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     classButtonLayout->addWidget(addClassButton);
     classButtonLayout->addWidget(editClassButton);
@@ -121,11 +121,11 @@ void TeacherDashboard::setupClassTab() {
     deleteStudentButton = new QPushButton("Delete Student");
 
     addStudentButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     editStudentButton->setStyleSheet(
-        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     deleteStudentButton->setStyleSheet(
-        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     studentButtonLayout->addWidget(addStudentButton);
     studentButtonLayout->addWidget(editStudentButton);
@@ -162,13 +162,13 @@ void TeacherDashboard::setupSubjectTab() {
     manageQuestionsButton = new QPushButton("Manage Questions");
 
     addSubjectButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     editSubjectButton->setStyleSheet(
-        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     deleteSubjectButton->setStyleSheet(
-        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     manageQuestionsButton->setStyleSheet(
-        "QPushButton { background-color: #9b59b6; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #9b59b6; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     buttonLayout->addWidget(addSubjectButton);
     buttonLayout->addWidget(editSubjectButton);
@@ -209,11 +209,11 @@ void TeacherDashboard::setupQuestionTab() {
     deleteQuestionButton = new QPushButton("Delete Question");
 
     addQuestionButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     editQuestionButton->setStyleSheet(
-        "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     deleteQuestionButton->setStyleSheet(
-        "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
+            "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     buttonLayout->addWidget(addQuestionButton);
     buttonLayout->addWidget(editQuestionButton);
@@ -261,12 +261,12 @@ void TeacherDashboard::setupReportsTab() {
     viewDetailsButton = new QPushButton("Xem chi tiết");
 
     generateReportButton->setStyleSheet(
-        "QPushButton { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
+            "QPushButton { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
     exportReportButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
     viewDetailsButton->setStyleSheet(
-        "QPushButton { background-color: #9b59b6; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
-    
+            "QPushButton { background-color: #9b59b6; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
+
     exportReportButton->setEnabled(false); // Enabled after report generation
     viewDetailsButton->setEnabled(false); // Enabled after report generation
 
@@ -393,49 +393,49 @@ void TeacherDashboard::addNewClass() {
     QDialog dialog(this);
     dialog.setWindowTitle("Add New Class");
     dialog.setMinimumSize(400, 200);
-    
+
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
-    
+
     // Class code input
     QLabel *codeLabel = new QLabel("Class Code:");
     QLineEdit *codeEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(codeEdit, InputValidator::CLASS_CODE);
-    
+
     // Class name input
     QLabel *nameLabel = new QLabel("Class Name:");
     QLineEdit *nameEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(nameEdit, InputValidator::PERSON_NAME);
-    
+
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *okButton = new QPushButton("Add Class");
     QPushButton *cancelButton = new QPushButton("Cancel");
-    
+
     okButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
     cancelButton->setStyleSheet(
-        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
-    
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+
     buttonLayout->addStretch();
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
-    
+
     layout->addWidget(codeLabel);
     layout->addWidget(codeEdit);
     layout->addWidget(nameLabel);
     layout->addWidget(nameEdit);
     layout->addLayout(buttonLayout);
-    
+
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
         QString classCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::CLASS_CODE);
         QString className = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::PERSON_NAME);
-        
+
         if (!ValidationHelper::validateClassData(classCode, className)) {
             ValidationHelper::showValidationError(&dialog, "Class Data", "Please check class code and name format.");
             return;
         }
-        
+
         if (classManager) {
             // Create new class following memory management rules
             Lop *lopMoi = new Lop(classCode.toStdString(), className.toStdString());
@@ -449,9 +449,9 @@ void TeacherDashboard::addNewClass() {
             }
         }
     });
-    
+
     connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
-    
+
     if (dialog.exec() == QDialog::Accepted) {
         refreshClassList();
     }
@@ -467,49 +467,49 @@ void TeacherDashboard::addNewStudent() {
     QDialog dialog(this);
     dialog.setWindowTitle("Add New Student");
     dialog.setMinimumSize(450, 300);
-    
+
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
-    
+
     // Student ID input
     QLabel *idLabel = new QLabel("Student ID:");
     QLineEdit *idEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(idEdit, InputValidator::STUDENT_ID);
-    
+
     // Last name input
     QLabel *lastNameLabel = new QLabel("Last Name:");
     QLineEdit *lastNameEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(lastNameEdit, InputValidator::PERSON_NAME);
-    
+
     // First name input
     QLabel *firstNameLabel = new QLabel("First Name:");
     QLineEdit *firstNameEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(firstNameEdit, InputValidator::PERSON_NAME);
-    
+
     // Gender selection
     QLabel *genderLabel = new QLabel("Gender:");
     QComboBox *genderCombo = new QComboBox();
     genderCombo->addItems({"Male", "Female"});
-    
+
     // Password input
     QLabel *passwordLabel = new QLabel("Password:");
     QLineEdit *passwordEdit = new QLineEdit();
     passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
     ValidationHelper::setupInputValidation(passwordEdit, InputValidator::GENERAL_TEXT);
-    
+
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *okButton = new QPushButton("Add Student");
     QPushButton *cancelButton = new QPushButton("Cancel");
-    
+
     okButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
     cancelButton->setStyleSheet(
-        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
-    
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+
     buttonLayout->addStretch();
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
-    
+
     layout->addWidget(idLabel);
     layout->addWidget(idEdit);
     layout->addWidget(lastNameLabel);
@@ -521,7 +521,7 @@ void TeacherDashboard::addNewStudent() {
     layout->addWidget(passwordLabel);
     layout->addWidget(passwordEdit);
     layout->addLayout(buttonLayout);
-    
+
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
         QString studentId = ValidationHelper::sanitizeForModel(idEdit->text(), InputValidator::STUDENT_ID);
@@ -529,12 +529,12 @@ void TeacherDashboard::addNewStudent() {
         QString firstName = ValidationHelper::sanitizeForModel(firstNameEdit->text(), InputValidator::PERSON_NAME);
         QString gender = genderCombo->currentText();
         QString password = ValidationHelper::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL_TEXT);
-        
+
         if (!ValidationHelper::validateStudentData(studentId, lastName, firstName, password)) {
             ValidationHelper::showValidationError(&dialog, "Student Data", "Please check all fields format.");
             return;
         }
-        
+
         Lop *lop = classManager->tim(currentClassCode.toStdString());
         if (lop && lop->getQuanLySinhVien()) {
             // Create new student following memory management rules
@@ -550,9 +550,9 @@ void TeacherDashboard::addNewStudent() {
             }
         }
     });
-    
+
     connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
-    
+
     if (dialog.exec() == QDialog::Accepted) {
         refreshStudentList();
         refreshClassList(); // Update student count
@@ -582,52 +582,54 @@ void TeacherDashboard::addNewSubject() {
     QDialog dialog(this);
     dialog.setWindowTitle("Add New Subject");
     dialog.setMinimumSize(400, 200);
-    
+
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
-    
+
     // Subject code input
     QLabel *codeLabel = new QLabel("Subject Code:");
     QLineEdit *codeEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(codeEdit, InputValidator::SUBJECT_CODE);
-    
+
     // Subject name input
     QLabel *nameLabel = new QLabel("Subject Name:");
     QLineEdit *nameEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(nameEdit, InputValidator::PERSON_NAME);
-    
+
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *okButton = new QPushButton("Add Subject");
     QPushButton *cancelButton = new QPushButton("Cancel");
-    
+
     okButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
     cancelButton->setStyleSheet(
-        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
-    
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+
     buttonLayout->addStretch();
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
-    
+
     layout->addWidget(codeLabel);
     layout->addWidget(codeEdit);
     layout->addWidget(nameLabel);
     layout->addWidget(nameEdit);
     layout->addLayout(buttonLayout);
-    
+
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
         QString subjectCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::SUBJECT_CODE);
         QString subjectName = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::PERSON_NAME);
-        
+
         if (!ValidationHelper::validateSubjectData(subjectCode, subjectName)) {
-            ValidationHelper::showValidationError(&dialog, "Subject Data", "Please check subject code and name format.");
+            ValidationHelper::showValidationError(&dialog, "Subject Data",
+                                                  "Please check subject code and name format.");
             return;
         }
-        
+
         if (subjectManager) {
             // Create new subject following memory management rules
-            MonHoc *monMoi = new MonHoc(subjectCode.toStdString().c_str(), subjectName.toStdString());
+            MonHoc *monMoi = new MonHoc(subjectCode.toStdString().c_str(), subjectName.toStdString(),
+                                        subjectManager->size());
             if (subjectManager->them(*monMoi)) {
                 subjectManager->saveToFile();
                 QMessageBox::information(&dialog, "Success", "Subject added successfully!");
@@ -638,9 +640,9 @@ void TeacherDashboard::addNewSubject() {
             }
         }
     });
-    
+
     connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
-    
+
     if (dialog.exec() == QDialog::Accepted) {
         refreshSubjectList();
         populateSubjectCombo();
@@ -659,7 +661,7 @@ void TeacherDashboard::populateSubjectCombo() {
     for (int i = 0; i < danhSachMon.size(); i++) {
         MonHoc *mon = danhSachMon.get(i);
         QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(
-            QString::fromStdString(mon->getTenMon()));
+                QString::fromStdString(mon->getTenMon()));
         subjectComboForQuestions->addItem(item, QString::fromStdString(mon->getMaMon()));
     }
 }
@@ -748,9 +750,9 @@ void TeacherDashboard::addNewQuestion() {
     QPushButton *cancelButton = new QPushButton("Cancel");
 
     okButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+            "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
     cancelButton->setStyleSheet(
-        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(okButton);
@@ -880,8 +882,8 @@ void TeacherDashboard::deleteClass() {
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
                                        QString("Are you sure you want to delete class '%1 - %2'?\n\n"
-                                           "This will also delete all students in this class and their exam results.\n"
-                                           "This action cannot be undone.")
+                                               "This will also delete all students in this class and their exam results.\n"
+                                               "This action cannot be undone.")
                                        .arg(classCode)
                                        .arg(className),
                                        QMessageBox::Yes | QMessageBox::No,
@@ -1004,13 +1006,13 @@ void TeacherDashboard::deleteStudent() {
 
     QString studentId = item->text();
     QString studentName = QString("%1 %2").arg(studentTable->item(row, 1)->text()).arg(
-        studentTable->item(row, 2)->text());
+            studentTable->item(row, 2)->text());
 
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
                                        QString("Are you sure you want to delete student '%1 - %2'?\n\n"
-                                           "This will also delete all exam results for this student.\n"
-                                           "This action cannot be undone.")
+                                               "This will also delete all exam results for this student.\n"
+                                               "This action cannot be undone.")
                                        .arg(studentId)
                                        .arg(studentName),
                                        QMessageBox::Yes | QMessageBox::No,
@@ -1109,8 +1111,8 @@ void TeacherDashboard::deleteSubject() {
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
                                        QString("Are you sure you want to delete subject '%1 - %2'?\n\n"
-                                           "This will also delete all questions for this subject and related exam results.\n"
-                                           "This action cannot be undone.")
+                                               "This will also delete all questions for this subject and related exam results.\n"
+                                               "This action cannot be undone.")
                                        .arg(subjectCode)
                                        .arg(subjectName),
                                        QMessageBox::Yes | QMessageBox::No,
@@ -1218,9 +1220,9 @@ void TeacherDashboard::editQuestion() {
     QPushButton *cancelButton = new QPushButton("Cancel");
 
     okButton->setStyleSheet(
-        "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+            "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
     cancelButton->setStyleSheet(
-        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(okButton);
@@ -1316,7 +1318,7 @@ void TeacherDashboard::deleteQuestion() {
 
     int reply = QMessageBox::question(this, "Confirm Delete",
                                       QString("Are you sure you want to delete this question?\n\n\"%1\"").arg(
-                                          questionPreview),
+                                              questionPreview),
                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
@@ -1360,7 +1362,7 @@ void TeacherDashboard::populateReportCombos() {
     for (int i = 0; i < danhSachLop.size(); i++) {
         Lop *lop = danhSachLop.get(i);
         QString item = QString("%1 - %2").arg(QString::fromStdString(lop->getMaLop())).arg(
-            QString::fromStdString(lop->getTenLop()));
+                QString::fromStdString(lop->getTenLop()));
         reportClassCombo->addItem(item, QString::fromStdString(lop->getMaLop()));
     }
 
@@ -1372,7 +1374,7 @@ void TeacherDashboard::populateReportCombos() {
     for (int i = 0; i < danhSachMon.size(); i++) {
         MonHoc *mon = danhSachMon.get(i);
         QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(
-            QString::fromStdString(mon->getTenMon()));
+                QString::fromStdString(mon->getTenMon()));
         reportSubjectCombo->addItem(item, QString::fromStdString(mon->getMaMon()));
     }
 }
@@ -1460,7 +1462,7 @@ void TeacherDashboard::exportReport() {
 
     QString fileName = QFileDialog::getSaveFileName(this, "Xuất bảng điểm",
                                                     QString("BangDiem_%1.txt").arg(
-                                                        QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss")),
+                                                            QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss")),
                                                     "Text Files (*.txt);;CSV Files (*.csv)");
 
     if (fileName.isEmpty())
@@ -1535,12 +1537,12 @@ void TeacherDashboard::viewDetailedResults() {
     }
 
     QString studentId = studentIdItem->text();
-    
+
     // Get exam score from selected row
     QTableWidgetItem *scoreItem = reportTable->item(currentRow, 4);
     if (!scoreItem || scoreItem->text() == "Chưa thi") {
-        QMessageBox::information(this, "Chưa có dữ liệu", 
-                                QString("Sinh viên %1 chưa làm bài thi cho môn này.").arg(studentId));
+        QMessageBox::information(this, "Chưa có dữ liệu",
+                                 QString("Sinh viên %1 chưa làm bài thi cho môn này.").arg(studentId));
         return;
     }
 
@@ -1577,7 +1579,7 @@ void TeacherDashboard::viewDetailedResults() {
     if (!questionIds || questionIds->size() == 0) {
         // Fallback to simple text display for old exam results
         QString studentName = QString("%1 %2").arg(reportTable->item(currentRow, 1)->text())
-                                             .arg(reportTable->item(currentRow, 2)->text());
+                .arg(reportTable->item(currentRow, 2)->text());
         QString details = QString("Sinh viên: %1 - %2\nMôn học: %3\nĐiểm: %4/10\nTrạng thái: %5\n\nCâu trả lời: ")
                 .arg(studentId)
                 .arg(studentName)
