@@ -2,7 +2,7 @@
 #include "../utils/DynamicArray.h"
 
 // Default constructor
-DiemThi::DiemThi() : diem(0.0), danhSachCauTraLoi(nullptr) {
+DiemThi::DiemThi() : diem(0.0), danhSachCauTraLoi(nullptr), danhSachCauHoi(nullptr) {
     std::memset(maMon, 0, sizeof(maMon));
 }
 
@@ -11,11 +11,14 @@ DiemThi::DiemThi(const char *maMon, double diem)
     : diem(diem) {
     setMaMon(maMon);
     danhSachCauTraLoi = new DynamicArray<char>();
+    danhSachCauHoi = new DynamicArray<int>();
 }
 
 DiemThi::~DiemThi() {
     delete danhSachCauTraLoi;
     danhSachCauTraLoi = nullptr;
+    delete danhSachCauHoi;
+    danhSachCauHoi = nullptr;
 }
 
 // Validate exam score data

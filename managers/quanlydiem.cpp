@@ -67,6 +67,7 @@ bool QuanLyDiem::sua(DiemThi &diem) {
     // Update the existing score's data (subject code cannot be changed)
     existing->setDiem(diem.getDiem());
     existing->setDanhSachCauTraLoi(diem.getDanhSachCauTraLoi());
+    existing->setDanhSachCauHoi(diem.getDanhSachCauHoi());
 
     return true;
 }
@@ -154,6 +155,16 @@ void QuanLyDiem::saveToFile() {
         for (int j = 0; j < answers->size(); j++) {
             file << answers->get(j);
         }
+        file << "|";
+
+        // Save the question list as comma-separated integers
+        DynamicArray<int> *questions = score.getDanhSachCauHoi();
+        for (int j = 0; j < questions->size(); j++) {
+            file << questions->get(j);
+            if (j < questions->size() - 1) {
+                file << ",";
+            }
+        }
         file << std::endl;
     }
 
@@ -206,6 +217,21 @@ void QuanLyDiem::loadFromFile() {
             for (int j = 0; j < answers.size(); j++) {
                 examScore->getDanhSachCauTraLoi()->add(answers.get(j));
             }
+
+            // Load question list if available (tokens.size() >= 4)
+            if (tokens.size() >= 4) {
+                std::string questionsStr = tokens.get(3);
+                std::stringstream qss(questionsStr);
+                std::string questionToken;
+                
+                while (std::getline(qss, questionToken, ',')) {
+                    if (!questionToken.empty()) {
+                        int questionId = std::stoi(questionToken);
+                        examScore->getDanhSachCauHoi()->add(questionId);
+                    }
+                }
+            }
+
             quanLyDiem.add(*examScore);
         }
     }

@@ -1,4 +1,5 @@
 #include "TeacherDashboard.h"
+#include "DetailedResultsWidget.h"
 #include "../managers/quanlylop.h"
 #include "../managers/quanlymonhoc.h"
 #include "../managers/quanlysinhvien.h"
@@ -16,6 +17,7 @@
 #include <QMessageBox>
 #include <QTextEdit>
 #include <cstring>
+#include "../utils/ValidationHelper.h"
 
 TeacherDashboard::TeacherDashboard(QWidget *parent)
     : QWidget(parent), mainTabs(nullptr), classManager(nullptr), subjectManager(nullptr) {
@@ -256,15 +258,21 @@ void TeacherDashboard::setupReportsTab() {
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     generateReportButton = new QPushButton("Tạo bảng điểm");
     exportReportButton = new QPushButton("Xuất file");
+    viewDetailsButton = new QPushButton("Xem chi tiết");
 
     generateReportButton->setStyleSheet(
         "QPushButton { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
     exportReportButton->setStyleSheet(
         "QPushButton { background-color: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
+    viewDetailsButton->setStyleSheet(
+        "QPushButton { background-color: #9b59b6; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
+    
     exportReportButton->setEnabled(false); // Enabled after report generation
+    viewDetailsButton->setEnabled(false); // Enabled after report generation
 
     buttonLayout->addWidget(generateReportButton);
     buttonLayout->addWidget(exportReportButton);
+    buttonLayout->addWidget(viewDetailsButton);
     buttonLayout->addStretch();
 
     // Report display table
@@ -315,6 +323,7 @@ void TeacherDashboard::setupConnections() {
     // Report management connections
     connect(generateReportButton, &QPushButton::clicked, this, &TeacherDashboard::generateExamScoreReport);
     connect(exportReportButton, &QPushButton::clicked, this, &TeacherDashboard::exportReport);
+    connect(viewDetailsButton, &QPushButton::clicked, this, &TeacherDashboard::viewDetailedResults);
 }
 
 void TeacherDashboard::refreshAllData() {
@@ -380,26 +389,71 @@ void TeacherDashboard::refreshStudentList() {
 }
 
 void TeacherDashboard::addNewClass() {
-    bool ok;
-    QString classCode = QInputDialog::getText(this, "Add New Class", "Class Code:", QLineEdit::Normal, "", &ok);
-    if (!ok || classCode.isEmpty())
-        return;
-
-    QString className = QInputDialog::getText(this, "Add New Class", "Class Name:", QLineEdit::Normal, "", &ok);
-    if (!ok || className.isEmpty())
-        return;
-
-    if (classManager) {
-        // Create new class following memory management rules
-        Lop *lopMoi = new Lop(classCode.toStdString(), className.toStdString());
-        if (classManager->them(*lopMoi)) {
-            classManager->saveToFile();
-            refreshClassList();
-            QMessageBox::information(this, "Success", "Class added successfully!");
-        } else {
-            delete lopMoi; // Clean up if adding failed
-            QMessageBox::warning(this, "Error", "Failed to add class. Class code may already exist.");
+    // Create custom dialog with validation
+    QDialog dialog(this);
+    dialog.setWindowTitle("Add New Class");
+    dialog.setMinimumSize(400, 200);
+    
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
+    
+    // Class code input
+    QLabel *codeLabel = new QLabel("Class Code:");
+    QLineEdit *codeEdit = new QLineEdit();
+    ValidationHelper::setupInputValidation(codeEdit, InputValidator::CLASS_CODE);
+    
+    // Class name input
+    QLabel *nameLabel = new QLabel("Class Name:");
+    QLineEdit *nameEdit = new QLineEdit();
+    ValidationHelper::setupInputValidation(nameEdit, InputValidator::PERSON_NAME);
+    
+    // Buttons
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    QPushButton *okButton = new QPushButton("Add Class");
+    QPushButton *cancelButton = new QPushButton("Cancel");
+    
+    okButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+    
+    layout->addWidget(codeLabel);
+    layout->addWidget(codeEdit);
+    layout->addWidget(nameLabel);
+    layout->addWidget(nameEdit);
+    layout->addLayout(buttonLayout);
+    
+    // Connect buttons
+    connect(okButton, &QPushButton::clicked, [&]() {
+        QString classCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::CLASS_CODE);
+        QString className = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::PERSON_NAME);
+        
+        if (!ValidationHelper::validateClassData(classCode, className)) {
+            ValidationHelper::showValidationError(&dialog, "Class Data", "Please check class code and name format.");
+            return;
         }
+        
+        if (classManager) {
+            // Create new class following memory management rules
+            Lop *lopMoi = new Lop(classCode.toStdString(), className.toStdString());
+            if (classManager->them(*lopMoi)) {
+                classManager->saveToFile();
+                QMessageBox::information(&dialog, "Success", "Class added successfully!");
+                dialog.accept();
+            } else {
+                delete lopMoi; // Clean up if adding failed
+                QMessageBox::warning(&dialog, "Error", "Failed to add class. Class code may already exist.");
+            }
+        }
+    });
+    
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+    
+    if (dialog.exec() == QDialog::Accepted) {
+        refreshClassList();
     }
 }
 
@@ -409,42 +463,99 @@ void TeacherDashboard::addNewStudent() {
         return;
     }
 
-    bool ok;
-    QString studentId = QInputDialog::getText(this, "Add New Student", "Student ID:", QLineEdit::Normal, "", &ok);
-    if (!ok || studentId.isEmpty())
-        return;
-
-    QString lastName = QInputDialog::getText(this, "Add New Student", "Last Name:", QLineEdit::Normal, "", &ok);
-    if (!ok || lastName.isEmpty())
-        return;
-
-    QString firstName = QInputDialog::getText(this, "Add New Student", "First Name:", QLineEdit::Normal, "", &ok);
-    if (!ok || firstName.isEmpty())
-        return;
-
-    QStringList genders = {"Male", "Female"};
-    QString gender = QInputDialog::getItem(this, "Add New Student", "Gender:", genders, 0, false, &ok);
-    if (!ok)
-        return;
-
-    QString password = QInputDialog::getText(this, "Add New Student", "Password:", QLineEdit::Normal, studentId, &ok);
-    if (!ok || password.isEmpty())
-        return;
-
-    Lop *lop = classManager->tim(currentClassCode.toStdString());
-    if (lop && lop->getQuanLySinhVien()) {
-        // Create new student following memory management rules
-        SinhVien *svMoi = new SinhVien(studentId.toStdString(), lastName.toStdString(),
-                                       firstName.toStdString(), gender == "Male", password.toStdString());
-        if (lop->getQuanLySinhVien()->them(*svMoi)) {
-            lop->getQuanLySinhVien()->saveToFile();
-            refreshStudentList();
-            refreshClassList(); // Update student count
-            QMessageBox::information(this, "Success", "Student added successfully!");
-        } else {
-            delete svMoi; // Clean up if adding failed
-            QMessageBox::warning(this, "Error", "Failed to add student. Student ID may already exist.");
+    // Create custom dialog with validation
+    QDialog dialog(this);
+    dialog.setWindowTitle("Add New Student");
+    dialog.setMinimumSize(450, 300);
+    
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
+    
+    // Student ID input
+    QLabel *idLabel = new QLabel("Student ID:");
+    QLineEdit *idEdit = new QLineEdit();
+    ValidationHelper::setupInputValidation(idEdit, InputValidator::STUDENT_ID);
+    
+    // Last name input
+    QLabel *lastNameLabel = new QLabel("Last Name:");
+    QLineEdit *lastNameEdit = new QLineEdit();
+    ValidationHelper::setupInputValidation(lastNameEdit, InputValidator::PERSON_NAME);
+    
+    // First name input
+    QLabel *firstNameLabel = new QLabel("First Name:");
+    QLineEdit *firstNameEdit = new QLineEdit();
+    ValidationHelper::setupInputValidation(firstNameEdit, InputValidator::PERSON_NAME);
+    
+    // Gender selection
+    QLabel *genderLabel = new QLabel("Gender:");
+    QComboBox *genderCombo = new QComboBox();
+    genderCombo->addItems({"Male", "Female"});
+    
+    // Password input
+    QLabel *passwordLabel = new QLabel("Password:");
+    QLineEdit *passwordEdit = new QLineEdit();
+    passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
+    ValidationHelper::setupInputValidation(passwordEdit, InputValidator::GENERAL_TEXT);
+    
+    // Buttons
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    QPushButton *okButton = new QPushButton("Add Student");
+    QPushButton *cancelButton = new QPushButton("Cancel");
+    
+    okButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+    
+    layout->addWidget(idLabel);
+    layout->addWidget(idEdit);
+    layout->addWidget(lastNameLabel);
+    layout->addWidget(lastNameEdit);
+    layout->addWidget(firstNameLabel);
+    layout->addWidget(firstNameEdit);
+    layout->addWidget(genderLabel);
+    layout->addWidget(genderCombo);
+    layout->addWidget(passwordLabel);
+    layout->addWidget(passwordEdit);
+    layout->addLayout(buttonLayout);
+    
+    // Connect buttons
+    connect(okButton, &QPushButton::clicked, [&]() {
+        QString studentId = ValidationHelper::sanitizeForModel(idEdit->text(), InputValidator::STUDENT_ID);
+        QString lastName = ValidationHelper::sanitizeForModel(lastNameEdit->text(), InputValidator::PERSON_NAME);
+        QString firstName = ValidationHelper::sanitizeForModel(firstNameEdit->text(), InputValidator::PERSON_NAME);
+        QString gender = genderCombo->currentText();
+        QString password = ValidationHelper::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL_TEXT);
+        
+        if (!ValidationHelper::validateStudentData(studentId, lastName, firstName, password)) {
+            ValidationHelper::showValidationError(&dialog, "Student Data", "Please check all fields format.");
+            return;
         }
+        
+        Lop *lop = classManager->tim(currentClassCode.toStdString());
+        if (lop && lop->getQuanLySinhVien()) {
+            // Create new student following memory management rules
+            SinhVien *svMoi = new SinhVien(studentId.toStdString(), lastName.toStdString(),
+                                           firstName.toStdString(), gender == "Male", password.toStdString());
+            if (lop->getQuanLySinhVien()->them(*svMoi)) {
+                lop->getQuanLySinhVien()->saveToFile();
+                QMessageBox::information(&dialog, "Success", "Student added successfully!");
+                dialog.accept();
+            } else {
+                delete svMoi; // Clean up if adding failed
+                QMessageBox::warning(&dialog, "Error", "Failed to add student. Student ID may already exist.");
+            }
+        }
+    });
+    
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+    
+    if (dialog.exec() == QDialog::Accepted) {
+        refreshStudentList();
+        refreshClassList(); // Update student count
     }
 }
 
@@ -467,27 +578,72 @@ void TeacherDashboard::refreshSubjectList() {
 }
 
 void TeacherDashboard::addNewSubject() {
-    bool ok;
-    QString subjectCode = QInputDialog::getText(this, "Add New Subject", "Subject Code:", QLineEdit::Normal, "", &ok);
-    if (!ok || subjectCode.isEmpty())
-        return;
-
-    QString subjectName = QInputDialog::getText(this, "Add New Subject", "Subject Name:", QLineEdit::Normal, "", &ok);
-    if (!ok || subjectName.isEmpty())
-        return;
-
-    if (subjectManager) {
-        // Create new subject following memory management rules
-        MonHoc *monMoi = new MonHoc(subjectCode.toStdString().c_str(), subjectName.toStdString());
-        if (subjectManager->them(*monMoi)) {
-            subjectManager->saveToFile();
-            refreshSubjectList();
-            populateSubjectCombo();
-            QMessageBox::information(this, "Success", "Subject added successfully!");
-        } else {
-            delete monMoi; // Clean up if adding failed
-            QMessageBox::warning(this, "Error", "Failed to add subject. Subject code may already exist.");
+    // Create custom dialog with validation
+    QDialog dialog(this);
+    dialog.setWindowTitle("Add New Subject");
+    dialog.setMinimumSize(400, 200);
+    
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
+    
+    // Subject code input
+    QLabel *codeLabel = new QLabel("Subject Code:");
+    QLineEdit *codeEdit = new QLineEdit();
+    ValidationHelper::setupInputValidation(codeEdit, InputValidator::SUBJECT_CODE);
+    
+    // Subject name input
+    QLabel *nameLabel = new QLabel("Subject Name:");
+    QLineEdit *nameEdit = new QLineEdit();
+    ValidationHelper::setupInputValidation(nameEdit, InputValidator::PERSON_NAME);
+    
+    // Buttons
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    QPushButton *okButton = new QPushButton("Add Subject");
+    QPushButton *cancelButton = new QPushButton("Cancel");
+    
+    okButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+        "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+    
+    layout->addWidget(codeLabel);
+    layout->addWidget(codeEdit);
+    layout->addWidget(nameLabel);
+    layout->addWidget(nameEdit);
+    layout->addLayout(buttonLayout);
+    
+    // Connect buttons
+    connect(okButton, &QPushButton::clicked, [&]() {
+        QString subjectCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::SUBJECT_CODE);
+        QString subjectName = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::PERSON_NAME);
+        
+        if (!ValidationHelper::validateSubjectData(subjectCode, subjectName)) {
+            ValidationHelper::showValidationError(&dialog, "Subject Data", "Please check subject code and name format.");
+            return;
         }
+        
+        if (subjectManager) {
+            // Create new subject following memory management rules
+            MonHoc *monMoi = new MonHoc(subjectCode.toStdString().c_str(), subjectName.toStdString());
+            if (subjectManager->them(*monMoi)) {
+                subjectManager->saveToFile();
+                QMessageBox::information(&dialog, "Success", "Subject added successfully!");
+                dialog.accept();
+            } else {
+                delete monMoi; // Clean up if adding failed
+                QMessageBox::warning(&dialog, "Error", "Failed to add subject. Subject code may already exist.");
+            }
+        }
+    });
+    
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+    
+    if (dialog.exec() == QDialog::Accepted) {
+        refreshSubjectList();
+        populateSubjectCombo();
     }
 }
 
@@ -1287,6 +1443,7 @@ void TeacherDashboard::generateExamScoreReport() {
     }
 
     exportReportButton->setEnabled(true);
+    viewDetailsButton->setEnabled(true);
 
     QMessageBox::information(this, "Thành công",
                              QString("Đã tạo bảng điểm cho %1 sinh viên trong lớp %2 - môn %3.")
@@ -1356,4 +1513,97 @@ void TeacherDashboard::exportReport() {
 
     QMessageBox::information(this, "Thành công",
                              QString("Đã xuất bảng điểm thành công:\n%1").arg(fileName));
+}
+
+void TeacherDashboard::viewDetailedResults() {
+    if (reportTable->rowCount() == 0) {
+        QMessageBox::warning(this, "Lỗi", "Không có dữ liệu bảng điểm. Vui lòng tạo bảng điểm trước.");
+        return;
+    }
+
+    int currentRow = reportTable->currentRow();
+    if (currentRow < 0) {
+        QMessageBox::information(this, "Chọn sinh viên", "Vui lòng chọn một sinh viên để xem chi tiết kết quả thi.");
+        return;
+    }
+
+    // Get student ID from selected row
+    QTableWidgetItem *studentIdItem = reportTable->item(currentRow, 0);
+    if (!studentIdItem) {
+        QMessageBox::warning(this, "Lỗi", "Không thể lấy thông tin sinh viên.");
+        return;
+    }
+
+    QString studentId = studentIdItem->text();
+    
+    // Get exam score from selected row
+    QTableWidgetItem *scoreItem = reportTable->item(currentRow, 4);
+    if (!scoreItem || scoreItem->text() == "Chưa thi") {
+        QMessageBox::information(this, "Chưa có dữ liệu", 
+                                QString("Sinh viên %1 chưa làm bài thi cho môn này.").arg(studentId));
+        return;
+    }
+
+    // Get current subject code
+    QString subjectCode = reportSubjectCombo->currentData().toString();
+    QString classCode = reportClassCombo->currentData().toString();
+
+    if (subjectCode.isEmpty() || classCode.isEmpty()) {
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy thông tin môn học hoặc lớp học.");
+        return;
+    }
+
+    // Find the student and their exam result
+    Lop *lop = classManager->tim(classCode.toStdString());
+    if (!lop || !lop->getQuanLySinhVien()) {
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy lớp học hoặc danh sách sinh viên.");
+        return;
+    }
+
+    SinhVien *student = lop->getQuanLySinhVien()->tim(studentId.toStdString());
+    if (!student || !student->getQuanLyDiem()) {
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy sinh viên hoặc dữ liệu điểm thi.");
+        return;
+    }
+
+    DiemThi *examResult = student->getQuanLyDiem()->tim(subjectCode.toStdString().c_str());
+    if (!examResult) {
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy kết quả thi của sinh viên.");
+        return;
+    }
+
+    // Check if we have question IDs (for detailed view)
+    DynamicArray<int> *questionIds = examResult->getDanhSachCauHoi();
+    if (!questionIds || questionIds->size() == 0) {
+        // Fallback to simple text display for old exam results
+        QString studentName = QString("%1 %2").arg(reportTable->item(currentRow, 1)->text())
+                                             .arg(reportTable->item(currentRow, 2)->text());
+        QString details = QString("Sinh viên: %1 - %2\nMôn học: %3\nĐiểm: %4/10\nTrạng thái: %5\n\nCâu trả lời: ")
+                .arg(studentId)
+                .arg(studentName)
+                .arg(reportSubjectCombo->currentText())
+                .arg(scoreItem->text())
+                .arg(scoreItem->text().toDouble() >= 5.0 ? "ĐẬU" : "RỚT");
+
+        DynamicArray<char> *answers = examResult->getDanhSachCauTraLoi();
+        if (answers) {
+            for (int i = 0; i < answers->size(); i++) {
+                details += QString("Câu %1:%2 ").arg(i + 1).arg(answers->get(i));
+            }
+        }
+
+        QMessageBox::information(this, "Chi tiết kết quả", details);
+        return;
+    }
+
+    // Use the new detailed results widget
+    if (!subjectManager) {
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy dữ liệu môn học.");
+        return;
+    }
+
+    DetailedResultsWidget *detailsDialog = new DetailedResultsWidget(this);
+    detailsDialog->showResults(examResult, subjectManager);
+    detailsDialog->exec();
+    delete detailsDialog;
 }

@@ -86,6 +86,8 @@ private slots:
     void generateExamScoreReport();
 
     void exportReport();
+    
+    void viewDetailedResults();
 
 private:
     // UI Components
@@ -125,6 +127,7 @@ private:
     QTableWidget *reportTable;
     QPushButton *generateReportButton;
     QPushButton *exportReportButton;
+    QPushButton *viewDetailsButton;
 
     // Controllers
     QuanLyLop *classManager;

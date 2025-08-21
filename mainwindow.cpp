@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "InputValidator.h"
+#include "ValidationHelper.h"
 #include "controllers/AuthController.h"
 #include "managers/quanlylop.h"
 #include "managers/quanlymonhoc.h"
@@ -11,10 +13,10 @@
 #include "views/StudentDashboard.h"
 #include "views/ExamWidget.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), centralStack(nullptr), loginWidget(nullptr),
-      teacherDashboard(nullptr), studentDashboard(nullptr), examDialog(nullptr), authController(nullptr),
-      classManager(nullptr), subjectManager(nullptr), isTeacher(false), currentStudent(nullptr) {
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent), ui(new Ui::MainWindow), centralStack(nullptr), loginWidget(nullptr),
+    teacherDashboard(nullptr), studentDashboard(nullptr), examDialog(nullptr), authController(nullptr),
+    classManager(nullptr), subjectManager(nullptr), isTeacher(false), currentStudent(nullptr) {
     ui->setupUi(this);
 
     // Set window properties
@@ -135,13 +137,17 @@ void MainWindow::createLoginWidget() {
     userTypeCombo->addItem("Teacher");
     userTypeCombo->addItem("Student");
     userTypeCombo->setStyleSheet("QComboBox { min-width: 200px; padding: 8px; }"
-        "QComboBox QAbstractItemView { max-height: 60px; padding: 8px; }");
+            "QComboBox QAbstractItemView { max-height: 60px; padding: 8px; }");
 
     // Username field
     QLabel *usernameLabel = new QLabel("Username:");
     usernameEdit = new QLineEdit();
     usernameEdit->setPlaceholderText("Enter username/student ID");
     usernameEdit->setStyleSheet("padding: 8px;");
+
+    // Apply input validation
+    ValidationHelper::setupInputValidation(usernameEdit, InputValidator::USERNAME);
+
     connect(usernameEdit, &QLineEdit::textChanged, this, &MainWindow::onUsernameTextChanged);
 
     // Password field
@@ -154,9 +160,9 @@ void MainWindow::createLoginWidget() {
     // Login button
     loginButton = new QPushButton("Login");
     loginButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-        "padding: 10px; font-size: 14px; border: none; border-radius: 5px; "
-        "min-width: 350px; margin-right: 2px; }"
-        "QPushButton:hover { background-color: #2980b9; }");
+            "padding: 10px; font-size: 14px; border: none; border-radius: 5px; "
+            "min-width: 350px; margin-right: 2px; }"
+            "QPushButton:hover { background-color: #2980b9; }");
 
     // Add widgets to form
     // formLayout->addWidget(userTypeLabel);
@@ -172,7 +178,7 @@ void MainWindow::createLoginWidget() {
     formContainer->setLayout(formLayout);
     formContainer->setMaximumWidth(400);
     formContainer->setStyleSheet("QWidget { background-color: white; padding: 30px; "
-        "border-radius: 10px; border: 1px solid #bdc3c7; }");
+            "border-radius: 10px; border: 1px solid #bdc3c7; }");
 
     // Main layout
     layout->addStretch();
@@ -211,12 +217,18 @@ void MainWindow::createStudentDashboard() {
 }
 
 void MainWindow::handleLoginRequest() {
-    QString username = usernameEdit->text().trimmed();
+    QString username = ValidationHelper::sanitizeForModel(usernameEdit->text(), InputValidator::USERNAME);
     QString password = passwordEdit->text();
     QString userType = userTypeCombo->currentText();
 
     if (username.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "Login Error", "Please enter both username and password.");
+        return;
+    }
+
+    // Validate username format
+    if (!InputValidator::isAlphanumeric(username)) {
+        ValidationHelper::showValidationError(this, "Username", "Username must contain only letters and numbers.");
         return;
     }
 

@@ -1,5 +1,6 @@
 #include <QHeaderView>
 #include "StudentDashboard.h"
+#include "DetailedResultsWidget.h"
 #include "../models/sinhvien.h"
 #include "../managers/quanlymonhoc.h"
 #include "../managers/quanlydiem.h"
@@ -270,20 +271,36 @@ void StudentDashboard::viewDetailedScores() {
         return;
     }
 
-    // Show detailed results
-    QString details = QString("Subject: %1\nScore: %2/10\nStatus: %3\n\nAnswers: ")
-            .arg(subjectCode)
-            .arg(QString::number(ketQua->getDiem(), 'f', 2))
-            .arg(getPassFailStatus(ketQua->getDiem()));
+    // Check if we have question IDs (for detailed view)
+    DynamicArray<int> *questionIds = ketQua->getDanhSachCauHoi();
+    if (!questionIds || questionIds->size() == 0) {
+        // Fallback to simple text display for old exam results
+        QString details = QString("Subject: %1\nScore: %2/10\nStatus: %3\n\nAnswers: ")
+                .arg(subjectCode)
+                .arg(QString::number(ketQua->getDiem(), 'f', 2))
+                .arg(getPassFailStatus(ketQua->getDiem()));
 
-    DynamicArray<char> *answers = ketQua->getDanhSachCauTraLoi();
-    if (answers) {
-        for (int i = 0; i < answers->size(); i++) {
-            details += QString("Q%1:%2 ").arg(i + 1).arg(answers->get(i));
+        DynamicArray<char> *answers = ketQua->getDanhSachCauTraLoi();
+        if (answers) {
+            for (int i = 0; i < answers->size(); i++) {
+                details += QString("Q%1:%2 ").arg(i + 1).arg(answers->get(i));
+            }
         }
+
+        QMessageBox::information(this, "Detailed Results", details);
+        return;
     }
 
-    QMessageBox::information(this, "Detailed Results", details);
+    // Use the new detailed results widget
+    if (!subjectManager) {
+        QMessageBox::warning(this, "Error", "Subject manager not available.");
+        return;
+    }
+
+    DetailedResultsWidget *detailsDialog = new DetailedResultsWidget(this);
+    detailsDialog->showResults(ketQua, subjectManager);
+    detailsDialog->exec();
+    delete detailsDialog;
 }
 
 void StudentDashboard::viewProfile() {

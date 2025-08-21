@@ -40,6 +40,8 @@ set(PROJECT_SOURCES
     views/StudentDashboard.h
     views/ExamWidget.cpp
     views/ExamWidget.h
+    views/DetailedResultsWidget.cpp
+    views/DetailedResultsWidget.h
     
     # Models (existing)
     models/cauhoi.cpp
@@ -65,10 +67,14 @@ set(PROJECT_SOURCES
     managers/quanlysinhvien.cpp
     managers/quanlysinhvien.h
     
-    # Utils (header-only)
+    # Utils
     utils/BinaryTree.h
     utils/LinkedList.h
     utils/DynamicArray.h
+    utils/InputValidator.cpp
+    utils/InputValidator.h
+    utils/ValidationHelper.cpp
+    utils/ValidationHelper.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

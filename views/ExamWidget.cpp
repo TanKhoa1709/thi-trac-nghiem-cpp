@@ -15,11 +15,11 @@
 #include <ctime>
 #include <iostream>
 
-ExamWidget::ExamWidget(QWidget *parent)
-    : QDialog(parent), currentSubject(nullptr), currentStudent(nullptr), questions(nullptr), studentAnswers(nullptr),
-      currentQuestionIndex(0), totalQuestions(0), timeRemaining(3600) // 60 minutes default
-      ,
-      totalTime(3600) {
+ExamWidget::ExamWidget(QWidget *parent) :
+    QDialog(parent), currentSubject(nullptr), currentStudent(nullptr), questions(nullptr), studentAnswers(nullptr),
+    currentQuestionIndex(0), totalQuestions(0), timeRemaining(3600) // 60 minutes default
+    ,
+    totalTime(3600) {
     setModal(true);
     setWindowTitle("Exam - Multiple Choice Test");
     resize(1000, 700);
@@ -54,7 +54,7 @@ void ExamWidget::setupUI() {
 
     timerLabel = new QLabel("Time: 60:00");
     timerLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #e74c3c; "
-        "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
+            "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
 
     headerLayout->addWidget(titleLabel);
     headerLayout->addStretch();
@@ -63,8 +63,8 @@ void ExamWidget::setupUI() {
     // Progress bar
     progressBar = new QProgressBar();
     progressBar->setStyleSheet("QProgressBar { border: 2px solid #bdc3c7; border-radius: 5px; "
-        "text-align: center; } "
-        "QProgressBar::chunk { background-color: #3498db; }");
+            "text-align: center; } "
+            "QProgressBar::chunk { background-color: #3498db; }");
 
     // Question display area
     questionScrollArea = new QScrollArea();
@@ -80,8 +80,8 @@ void ExamWidget::setupUI() {
     questionContentLabel = new QLabel("Question content will appear here...");
     questionContentLabel->setWordWrap(true);
     questionContentLabel->setStyleSheet("font-size: 14px; color: #2c3e50; padding: 15px; "
-        "background-color: #f8f9fa; border: 1px solid #dee2e6; "
-        "border-radius: 6px; margin-bottom: 20px;");
+            "background-color: #f8f9fa; border: 1px solid #dee2e6; "
+            "border-radius: 6px; margin-bottom: 20px;");
 
     // Answer options
     answerGroup = new QButtonGroup();
@@ -129,21 +129,21 @@ void ExamWidget::setupUI() {
     cancelButton = new QPushButton("Cancel");
 
     previousButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #7f8c8d; }"
-        "QPushButton:disabled { background-color: #bdc3c7; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #7f8c8d; }"
+            "QPushButton:disabled { background-color: #bdc3c7; }");
 
     nextButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #2980b9; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #2980b9; }");
 
     submitButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #229954; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #229954; }");
 
     cancelButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #c0392b; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #c0392b; }");
 
     navButtonLayout->addWidget(previousButton);
     navButtonLayout->addWidget(nextButton);
@@ -332,7 +332,7 @@ void ExamWidget::updateTimer() {
     // Change color when time is running low (last 5 minutes)
     if (timeRemaining <= 300) {
         timerLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: white; "
-            "background-color: #e74c3c; padding: 8px 12px; border-radius: 4px;");
+                "background-color: #e74c3c; padding: 8px 12px; border-radius: 4px;");
     }
 
     // Auto-submit when time runs out
@@ -361,6 +361,17 @@ void ExamWidget::calculateAndSaveResults() {
     if (studentAnswers) {
         for (int i = 0; i < studentAnswers->size(); i++) {
             ketQuaThi->getDanhSachCauTraLoi()->add(studentAnswers->get(i));
+        }
+    }
+
+    // Add question IDs to the result
+    if (questions) {
+        for (int i = 0; i < questions->size(); i++) {
+            CauHoi *question = questions->get(i);
+            if (question) {
+                int id = question->getMaCauHoi();
+                ketQuaThi->getDanhSachCauHoi()->add(id);
+            }
         }
     }
 
@@ -429,16 +440,16 @@ void ExamWidget::updateQuestionNavigation() {
         // Color coding based on answer status
         if (i < studentAnswers->size() && studentAnswers->get(i) != ' ') {
             questionBtn->setStyleSheet(
-                "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
+                    "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
         } else {
             questionBtn->setStyleSheet(
-                "QPushButton { background-color: #ecf0f1; color: #2c3e50; border: 1px solid #bdc3c7; border-radius: 4px; }");
+                    "QPushButton { background-color: #ecf0f1; color: #2c3e50; border: 1px solid #bdc3c7; border-radius: 4px; }");
         }
 
         // Highlight current question
         if (i == currentQuestionIndex) {
             questionBtn->setStyleSheet(
-                "QPushButton { background-color: #3498db; color: white; border: none; border-radius: 4px; }");
+                    "QPushButton { background-color: #3498db; color: white; border: none; border-radius: 4px; }");
         }
 
         connect(questionBtn, &QPushButton::clicked, [this, i]() { goToQuestion(i); });
@@ -468,8 +479,8 @@ void ExamWidget::updateProgress() {
     int percentage = (answeredQuestions * 100) / questions->size();
     progressBar->setValue(percentage);
     progressBar->setFormat(QString("Progress: %1/%2 questions answered (%p%)")
-        .arg(answeredQuestions)
-        .arg(questions->size()));
+            .arg(answeredQuestions)
+            .arg(questions->size()));
 }
 
 void ExamWidget::goToQuestion(int questionIndex) {

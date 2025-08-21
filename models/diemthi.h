@@ -13,6 +13,7 @@ private:
     char maMon[16]; // Mã môn học
     double diem; // Điểm số
     DynamicArray<char> *danhSachCauTraLoi; // Chi tiết bài thi
+    DynamicArray<int> *danhSachCauHoi; // Chi tiết câu hỏi
 
 public:
     // Constructors & Destructor
@@ -26,6 +27,7 @@ public:
     const char *getMaMon() const { return maMon; }
     double getDiem() const { return diem; }
     DynamicArray<char> *getDanhSachCauTraLoi() { return danhSachCauTraLoi; }
+    DynamicArray<int> *getDanhSachCauHoi() { return danhSachCauHoi; }
 
     // Setters
     void setMaMon(const char *ma) {
@@ -39,6 +41,7 @@ public:
 
     void setDiem(double d) { diem = d; }
     void setDanhSachCauTraLoi(DynamicArray<char> *danhSach) { danhSachCauTraLoi = danhSach; }
+    void setDanhSachCauHoi(DynamicArray<int> *danhSach) { danhSachCauHoi = danhSach; }
 
     // Business logic methods
     bool validate() const;
