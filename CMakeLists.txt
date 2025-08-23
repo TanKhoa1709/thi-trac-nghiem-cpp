@@ -44,36 +44,34 @@ set(PROJECT_SOURCES
         views/DetailedResultsWidget.h
 
         # Models (existing)
-        models/cauhoi.cpp
-        models/cauhoi.h
-        models/diemthi.cpp
-        models/diemthi.h
-        models/lop.cpp
-        models/lop.h
-        models/monhoc.cpp
-        models/monhoc.h
-        models/sinhvien.cpp
-        models/sinhvien.h
+        models/CauHoi.cpp
+        models/CauHoi.h
+        models/DiemThi.cpp
+        models/DiemThi.h
+        models/Lop.cpp
+        models/Lop.h
+        models/MonHoc.cpp
+        models/MonHoc.h
+        models/SinhVien.cpp
+        models/SinhVien.h
 
         # Managers (will be transformed to controllers)
-        managers/quanlycauhoi.cpp
-        managers/quanlycauhoi.h
-        managers/quanlydiem.cpp
-        managers/quanlydiem.h
-        managers/quanlylop.cpp
-        managers/quanlylop.h
-        managers/quanlymonhoc.cpp
-        managers/quanlymonhoc.h
-        managers/quanlysinhvien.cpp
-        managers/quanlysinhvien.h
+        managers/QuanLyCauHoi.cpp
+        managers/QuanLyCauHoi.h
+        managers/QuanLyDiem.cpp
+        managers/QuanLyDiem.h
+        managers/QuanLyLop.cpp
+        managers/QuanLyLop.h
+        managers/QuanLyMonHoc.cpp
+        managers/QuanLyMonHoc.h
+        managers/QuanLySinhVien.cpp
+        managers/QuanLySinhVien.h
 
         # Business Logic Managers
         managers/QuanLyThi.cpp
         managers/QuanLyThi.h
-        managers/ReportUtil.cpp
-        managers/ReportUtil.h
-        managers/thongke.cpp
-        managers/thongke.h
+        managers/ThongKe.cpp
+        managers/ThongKe.h
 
         # Utils
         utils/BinaryTree.h
@@ -110,7 +108,7 @@ endif ()
 target_link_libraries(testqt3 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
+# If you are deveLoping for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 if (${QT_VERSION} VERSION_LESS 6.1.0)
     set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.testqt3)

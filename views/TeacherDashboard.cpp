@@ -5,7 +5,6 @@
 #include "../managers/QuanLySinhVien.h"
 #include "../managers/QuanLyCauHoi.h"
 #include "../managers/QuanLyDiem.h"
-#include "../managers/ReportUtil.h"
 #include "../models/Lop.h"
 #include "../models/MonHoc.h"
 #include "../models/SinhVien.h"
@@ -54,7 +53,6 @@ void TeacherDashboard::setupUI() {
     setupClassTab();
     setupSubjectTab();
     setupQuestionTab();
-    setupReportsTab();
 
     // Logout button
     QHBoxLayout *bottomLayout = new QHBoxLayout();
@@ -225,59 +223,6 @@ void TeacherDashboard::setupQuestionTab() {
     mainTabs->addTab(questionTab, "Quản Lý Câu Hỏi");
 }
 
-void TeacherDashboard::setupReportsTab() {
-    reportsTab = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(reportsTab);
-
-    // Class selection
-    QHBoxLayout *classSelectLayout = new QHBoxLayout();
-    QLabel *classLabel = new QLabel("Chọn lớp:");
-    reportClassCombo = new QComboBox();
-
-    classSelectLayout->addWidget(classLabel);
-    classSelectLayout->addWidget(reportClassCombo);
-    classSelectLayout->addStretch();
-
-    // Subject selection
-    QHBoxLayout *subjectSelectLayout = new QHBoxLayout();
-    QLabel *subjectLabel = new QLabel("Chọn môn học:");
-    reportSubjectCombo = new QComboBox();
-
-    subjectSelectLayout->addWidget(subjectLabel);
-    subjectSelectLayout->addWidget(reportSubjectCombo);
-    subjectSelectLayout->addStretch();
-
-    // Control buttons
-    QHBoxLayout *buttonLayout = new QHBoxLayout();
-    viewDetailsButton = new QPushButton("Xem chi tiết");
-
-    viewDetailsButton->setStyleSheet(
-            "QPushButton { background-color: #9b59b6; color: white; padding: 10px 20px; border: none; border-radius: 5px; }");
-
-    viewDetailsButton->setEnabled(false); // Enabled after report generation
-
-    buttonLayout->addWidget(viewDetailsButton);
-    buttonLayout->addStretch();
-
-    // Report display table
-    QLabel *reportLabel = new QLabel("Kết quả:");
-    reportLabel->setStyleSheet("font-weight: bold; margin-top: 20px;");
-
-    reportTable = new QTableWidget();
-    reportTable->setAlternatingRowColors(true);
-    reportTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-    reportTable->horizontalHeader()->setStretchLastSection(true);
-
-    // Assembly
-    layout->addLayout(classSelectLayout);
-    layout->addLayout(subjectSelectLayout);
-    layout->addLayout(buttonLayout);
-    layout->addWidget(reportLabel);
-    layout->addWidget(reportTable);
-
-    mainTabs->addTab(reportsTab, "Bảng Điểm");
-}
-
 void TeacherDashboard::setupConnections() {
     // Class management connections
     connect(classTable, &QTableWidget::itemSelectionChanged, this, &TeacherDashboard::onClassSelected);
@@ -301,16 +246,12 @@ void TeacherDashboard::setupConnections() {
     connect(addQuestionButton, &QPushButton::clicked, this, &TeacherDashboard::addNewQuestion);
     connect(editQuestionButton, &QPushButton::clicked, this, &TeacherDashboard::editQuestion);
     connect(deleteQuestionButton, &QPushButton::clicked, this, &TeacherDashboard::deleteQuestion);
-
-    // Report management connections
-    connect(viewDetailsButton, &QPushButton::clicked, this, &TeacherDashboard::viewDetailedResults);
 }
 
 void TeacherDashboard::refreshAllData() {
     refreshClassList();
     refreshSubjectList();
     populateSubjectCombo();
-    populateReportCombos();
     refreshQuestionList();
 }
 
@@ -1490,188 +1431,3 @@ Lop *TeacherDashboard::getCurrentClass() {
     }
     return classManager->tim(currentClassCode.toStdString());
 }
-
-// Report Management Functions Implementation
-
-void TeacherDashboard::populateReportCombos() {
-    if (!classManager || !subjectManager)
-        return;
-
-    // Populate class combo
-    reportClassCombo->clear();
-    DynamicArray<Lop *> danhSachLop;
-    classManager->danhSach(danhSachLop);
-
-    for (int i = 0; i < danhSachLop.size(); i++) {
-        Lop *lop = danhSachLop.get(i);
-        QString item = QString("%1 - %2").arg(QString::fromStdString(lop->getMaLop())).arg(
-                QString::fromStdString(lop->getTenLop()));
-        reportClassCombo->addItem(item, QString::fromStdString(lop->getMaLop()));
-    }
-
-    // Populate subject combo
-    reportSubjectCombo->clear();
-    DynamicArray<MonHoc *> danhSachMon;
-    subjectManager->danhSach(danhSachMon);
-
-    for (int i = 0; i < danhSachMon.size(); i++) {
-        MonHoc *mon = danhSachMon.get(i);
-        QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(
-                QString::fromStdString(mon->getTenMon()));
-        reportSubjectCombo->addItem(item, QString::fromStdString(mon->getMaMon()));
-    }
-
-    // Connect combo box changes to auto-generate report
-    connect(reportClassCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &TeacherDashboard::onReportSelectionChanged);
-    connect(reportSubjectCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &TeacherDashboard::onReportSelectionChanged);
-}
-
-void TeacherDashboard::generateExamScoreReport() {
-    QString classCode = reportClassCombo->currentData().toString();
-    QString subjectCode = reportSubjectCombo->currentData().toString();
-
-    if (classCode.isEmpty() || subjectCode.isEmpty()) {
-        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn lớp và môn học.");
-        return;
-    }
-
-    if (!classManager || !subjectManager) {
-        QMessageBox::warning(this, "Lỗi", "Không tìm thấy dữ liệu lớp hoặc môn học.");
-        return;
-    }
-
-    Lop *lop = classManager->tim(classCode.toStdString());
-    MonHoc *mon = subjectManager->tim(subjectCode.toStdString().c_str());
-
-    if (!lop || !mon) {
-        QMessageBox::warning(this, "Lỗi", "Không tìm thấy lớp hoặc môn học được chọn.");
-        return;
-    }
-
-    // Generate report data using ReportManager
-    currentReportData = ReportUtil::generateExamScoreReport(lop, mon);
-
-    // Setup table headers
-    QStringList headers = {"MSSV", "Họ", "Tên", "Giới tính", "Điểm thi"};
-    reportTable->setColumnCount(headers.size());
-    reportTable->setHorizontalHeaderLabels(headers);
-
-    // Populate table with report data
-    reportTable->setRowCount(currentReportData.students.size());
-
-    for (int i = 0; i < currentReportData.students.size(); i++) {
-        const ReportUtil::DiemThiSV &student = currentReportData.students.get(i);
-
-        reportTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(student.maSinhVien)));
-        reportTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(student.ho)));
-        reportTable->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(student.ten)));
-        reportTable->setItem(i, 3, new QTableWidgetItem(student.phai ? "Nam" : "Nữ"));
-        reportTable->setItem(i, 4, new QTableWidgetItem(QString::fromStdString(student.examScore)));
-    }
-
-    viewDetailsButton->setEnabled(true);
-}
-
-void TeacherDashboard::onReportSelectionChanged() {
-    // Auto-generate report when both class and subject are selected
-    if (reportClassCombo->currentIndex() >= 0 && reportSubjectCombo->currentIndex() >= 0) {
-        generateExamScoreReport();
-    }
-}
-
-void TeacherDashboard::viewDetailedResults() {
-    if (currentReportData.students.size() == 0) {
-        QMessageBox::warning(this, "Lỗi", "Không có dữ liệu bảng điểm. Vui lòng tạo bảng điểm trước.");
-        return;
-    }
-
-    int currentRow = reportTable->currentRow();
-    if (currentRow < 0) {
-        QMessageBox::information(this, "Chọn sinh viên", "Vui lòng chọn một sinh viên để xem chi tiết kết quả thi.");
-        return;
-    }
-
-    if (currentRow >= currentReportData.students.size()) {
-        QMessageBox::warning(this, "Lỗi", "Dữ liệu không hợp lệ.");
-        return;
-    }
-
-    const ReportUtil::DiemThiSV &studentData = currentReportData.students.get(currentRow);
-    QString studentId = QString::fromStdString(studentData.maSinhVien);
-    QString examScore = QString::fromStdString(studentData.examScore);
-
-    if (examScore == "Chưa thi") {
-        QMessageBox::information(this, "Chưa có dữ liệu",
-                                 QString("Sinh viên %1 chưa làm bài thi cho môn này.").arg(studentId));
-        return;
-    }
-
-    // Get current subject code
-    QString subjectCode = reportSubjectCombo->currentData().toString();
-    QString classCode = reportClassCombo->currentData().toString();
-
-    if (subjectCode.isEmpty() || classCode.isEmpty()) {
-        QMessageBox::warning(this, "Lỗi", "Không tìm thấy thông tin môn học hoặc lớp học.");
-        return;
-    }
-
-    // Find the student and their exam result
-    Lop *lop = classManager->tim(classCode.toStdString());
-    if (!lop || !lop->getQuanLySinhVien()) {
-        QMessageBox::warning(this, "Lỗi", "Không tìm thấy lớp học hoặc danh sách sinh viên.");
-        return;
-    }
-
-    SinhVien *student = lop->getQuanLySinhVien()->tim(studentId.toStdString());
-    if (!student || !student->getQuanLyDiem()) {
-        QMessageBox::warning(this, "Lỗi", "Không tìm thấy sinh viên hoặc dữ liệu điểm thi.");
-        return;
-    }
-
-    DiemThi *examResult = student->getQuanLyDiem()->tim(subjectCode.toStdString().c_str());
-    if (!examResult) {
-        QMessageBox::warning(this, "Lỗi", "Không tìm thấy kết quả thi của sinh viên.");
-        return;
-    }
-
-    // Check if we have question IDs (for detailed view)
-    DynamicArray<int> *questionIds = examResult->getDanhSachCauHoi();
-    if (!questionIds || questionIds->size() == 0) {
-        // Fallback to simple text display for old exam results
-        QString studentName = QString("%1 %2").arg(QString::fromStdString(studentData.ho))
-                .arg(QString::fromStdString(studentData.ten));
-        QString details = QString("Sinh viên: %1 - %2\nMôn học: %3\nĐiểm: %4\nTrạng thái: %5\n\nCâu trả lời: ")
-                .arg(studentId)
-                .arg(studentName)
-                .arg(reportSubjectCombo->currentText())
-                .arg(examScore)
-                .arg(ReportUtil::isValidScore(studentData.examScore) && std::stod(studentData.examScore) >= 5.0
-                         ? "ĐẬU"
-                         : "RỚT");
-
-        DynamicArray<char> *answers = examResult->getDanhSachCauTraLoi();
-        if (answers) {
-            for (int i = 0; i < answers->size(); i++) {
-                details += QString("Câu %1:%2 ").arg(i + 1).arg(answers->get(i));
-            }
-        }
-
-        QMessageBox::information(this, "Chi tiết kết quả", details);
-        return;
-    }
-
-    // Use the new detailed results widget
-    if (!subjectManager) {
-        QMessageBox::warning(this, "Lỗi", "Không tìm thấy dữ liệu môn học.");
-        return;
-    }
-
-    DetailedResultsWidget *detailsDialog = new DetailedResultsWidget(this);
-    detailsDialog->showResults(examResult, subjectManager);
-    detailsDialog->exec();
-    delete detailsDialog;
-}
-
-

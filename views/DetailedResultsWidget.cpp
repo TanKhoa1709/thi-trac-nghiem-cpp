@@ -204,9 +204,10 @@ void DetailedResultsWidget::showResults(DiemThi *examResult, QuanLyMonHoc *manag
         return;
     }
 
-    // Update title and score
-    titleLabel->setText(QString("Exam Results: %1").arg(QString::fromStdString(subject->getTenMon())));
-    setWindowTitle(QString("Detailed Results - %1").arg(QString::fromStdString(subject->getTenMon())));
+    // Update title and score with proper encoding
+    QString subjectName = QString::fromUtf8(subject->getTenMon().c_str());
+    titleLabel->setText(QString("Exam Results: %1").arg(subjectName));
+    setWindowTitle(QString("Detailed Results - %1").arg(subjectName));
     scoreLabel->setText(QString("Score: %1/10").arg(QString::number(examScore, 'f', 2)));
 
     // Set score label color based on pass/fail
@@ -218,31 +219,31 @@ void DetailedResultsWidget::showResults(DiemThi *examResult, QuanLyMonHoc *manag
             "background-color: #fdf2f2; padding: 8px 12px; border-radius: 4px;");
     }
 
-    // Copy student answers
+    // Copy student answers with null check
     studentAnswers = new DynamicArray<char>();
     DynamicArray<char> *resultAnswers = examResult->getDanhSachCauTraLoi();
-    if (resultAnswers) {
+    if (resultAnswers && resultAnswers->size() > 0) {
         for (int i = 0; i < resultAnswers->size(); i++) {
             studentAnswers->add(resultAnswers->get(i));
         }
     }
 
-    // Copy question IDs
+    // Copy question IDs with null check
     questionIds = new DynamicArray<int>();
     DynamicArray<int> *resultQuestionIds = examResult->getDanhSachCauHoi();
-    if (resultQuestionIds) {
+    if (resultQuestionIds && resultQuestionIds->size() > 0) {
         for (int i = 0; i < resultQuestionIds->size(); i++) {
             questionIds->add(resultQuestionIds->get(i));
         }
     }
 
-    totalQuestions = questionIds->size();
+    totalQuestions = questionIds ? questionIds->size() : 0;
     currentQuestionIndex = 0;
 
     // Load questions based on IDs
     loadQuestionsFromIds();
 
-    if (questions->size() == 0) {
+    if (!questions || questions->size() == 0) {
         QMessageBox::warning(this, "Warning", "No questions found for this exam result.");
         reject();
         return;
@@ -258,7 +259,7 @@ void DetailedResultsWidget::showResults(DiemThi *examResult, QuanLyMonHoc *manag
 }
 
 void DetailedResultsWidget::loadQuestionsFromIds() {
-    if (!subjectManager || !questionIds) {
+    if (!subjectManager || !questionIds || !currentResult) {
         return;
     }
 
@@ -270,12 +271,14 @@ void DetailedResultsWidget::loadQuestionsFromIds() {
         return;
     }
 
-    // Load questions by ID
+    // Load questions by ID with bounds checking
     for (int i = 0; i < questionIds->size(); i++) {
         int questionId = questionIds->get(i);
-        CauHoi *question = subject->getQuanLyCauHoi()->tim(questionId);
-        if (question) {
-            questions->add(question);
+        if (questionId > 0) {  // Ensure valid question ID
+            CauHoi *question = subject->getQuanLyCauHoi()->tim(questionId);
+            if (question) {
+                questions->add(question);
+            }
         }
     }
 }
@@ -403,7 +406,7 @@ void DetailedResultsWidget::updateQuestionNavigation() {
         delete item;
     }
 
-    if (!questions)
+    if (!questions || !studentAnswers)
         return;
 
     // Create grid layout for question buttons
@@ -413,10 +416,17 @@ void DetailedResultsWidget::updateQuestionNavigation() {
         QPushButton *questionBtn = new QPushButton(QString::number(i + 1));
         questionBtn->setFixedSize(30, 30);
 
-        // Color coding based on correctness
-        char studentAnswer = (i < studentAnswers->size()) ? studentAnswers->get(i) : ' ';
+        // Color coding based on correctness with bounds checking
+        char studentAnswer = ' ';
+        if (studentAnswers && i < studentAnswers->size()) {
+            studentAnswer = studentAnswers->get(i);
+        }
+        
         CauHoi *question = questions->get(i);
-        char correctAnswer = question ? question->getDapAnDung() : ' ';
+        char correctAnswer = ' ';
+        if (question) {
+            correctAnswer = question->getDapAnDung();
+        }
 
         bool isCorrect = (studentAnswer == correctAnswer && studentAnswer != ' ');
         bool isAnswered = (studentAnswer != ' ');

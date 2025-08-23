@@ -12,8 +12,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-#include "ReportUtil.h"
-
 // Forward declarations
 class QuanLyLop;
 class QuanLyMonHoc;
@@ -89,13 +87,6 @@ private slots:
 
     void deleteQuestion();
 
-    // Report management
-    void generateExamScoreReport();
-
-    void viewDetailedResults();
-
-    void onReportSelectionChanged();
-
 private:
     // UI Components
     QTabWidget *mainTabs;
@@ -127,13 +118,6 @@ private:
     QPushButton *editQuestionButton;
     QPushButton *deleteQuestionButton;
 
-    // Reports Tab
-    QWidget *reportsTab;
-    QComboBox *reportClassCombo;
-    QComboBox *reportSubjectCombo;
-    QTableWidget *reportTable;
-    QPushButton *viewDetailsButton;
-
     // Controllers
     QuanLyLop *classManager;
     QuanLyMonHoc *subjectManager;
@@ -142,8 +126,6 @@ private:
     QString currentClassCode;
     QString currentSubjectCode;
 
-    // Current report data
-    ReportUtil::BaoCao currentReportData;
 
     // Setup methods
     void setupUI();
@@ -154,19 +136,14 @@ private:
 
     void setupQuestionTab();
 
-    void setupReportsTab();
-
     void setupConnections();
 
     // Helper methods
     void populateSubjectCombo();
 
-    void populateReportCombos();
-
     MonHoc *getCurrentSubject();
 
     Lop *getCurrentClass();
-
 
 };
 
