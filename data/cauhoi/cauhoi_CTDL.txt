@@ -99,7 +99,3 @@
 98|Which data structure supports get-min in O(1) and insert in O(log n)?|Stack|Min-heap|Queue|Hash map|B
 99|Which allows amortized O(1) time for push and pop back?|std::vector|std::list|std::deque|std::set|A
 100|Which ensures unique keys if used as map key?|unordered_map allows duplicates|map enforces unique keys|vector enforces unique|list enforces unique|B
-3
-1|Cau truc du lieu la gi?|Tap hop cac cau truc|Ly thuyet khong can thiet|Cau truc luu tru va to chuc du lieu|Khong dap an|C
-2|Cau nao sau day la CTDL tuyen tinh?|Danh sach lien ket|Cay nhi phan|Do thi|Heap|A
-3|Do phuc tap thoi gian O(n) nghia la?|Thoi gian ty le theo cap so nhan|Thoi gian ty le voi kich thuoc input|Thoi gian khong doi|Khong dap an|B

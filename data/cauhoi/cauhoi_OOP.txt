@@ -99,7 +99,3 @@
 10097|Which is correct about lvalue and rvalue references?|T& lvalue, T&& rvalue|T&& lvalue, T& rvalue|Both same|Neither|A
 10098|Which is benefit of move semantics?|Avoid unnecessary copies and reuse resources|Always avoid copying at all cost|Delete objects faster|Prevent allocation|A
 10099|Which is recommended modern C++ practice?|Prefer smart pointers and RAII|Use raw pointers everywhere|Avoid classes|Use globals only|A
-3
-10000|OOP la viet tat cua?|Object Oriented Programming|Operating On Process|Order Of Priority|Only One Program|A
-10001|Tinh chat nao khong thuoc OOP?|Dong goi|Ke thua|Doi san|Da hinh|C
-10002|Interface trong OOP la gi?|Hop dong cac phuong thuc|Lop cu the|Bien toan cuc|Ham thong thuong|A
