@@ -11,7 +11,8 @@ struct TreeNode {
     TreeNode *left;
     TreeNode *right;
 
-    TreeNode(T &value) : data(value), left(nullptr), right(nullptr), size(1) {
+    TreeNode(T &value) :
+        size(1), data(value), left(nullptr), right(nullptr) {
     }
 };
 
@@ -117,7 +118,8 @@ private:
     }
 
 public:
-    BinarySearchTree() : root(nullptr) {
+    BinarySearchTree() :
+        root(nullptr) {
     }
 
     ~BinarySearchTree() { clear(); }
@@ -140,15 +142,6 @@ public:
     void clear() {
         clearHelper(root);
         root = nullptr;
-    }
-
-    T *getKth(int k) {
-        if (k < 0 || k >= size()) {
-            throw std::out_of_range("Index out of bounds");
-        }
-
-        TreeNode<T> *node = getKth(root, k);
-        return node ? &node->data : nullptr;
     }
 
     void inOrderTraversal(std::function<void(T &)> callback) {

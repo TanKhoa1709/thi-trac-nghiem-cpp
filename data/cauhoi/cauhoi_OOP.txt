@@ -1,105 +1,105 @@
 100
-2001|OOP la viet tat cua?|Object Oriented Programming|Operating On Process|Order Of Priority|Only One Program|A
-2002|Tinh chat nao khong thuoc OOP?|Dong goi|Ke thua|Doi san|Da hinh|C
-2003|Interface trong OOP la gi?|Hop dong cac phuong thuc|Lop cu the|Bien toan cuc|Ham thong thuong|A
-2004|Encapsulation mean?|Hide internal state and expose methods|Inherit from base|Overload operators|None|A
-2005|Polymorphism allows?|Multiple forms of function/method behavior|Single implementation only|No inheritance|Only templates|A
-2006|Which is example of inheritance?|Class Dog : public Animal|int a = 5;|for loop|Stack usage|A
-2007|Constructor is?|Method to destroy object|Method to initialize object|Same as destructor|Operator overloading|B
-2008|Destructor called when?|Object goes out of scope or deleted|Object created|Program starts|None|A
-2009|Virtual function used for?|Static binding|Dynamic dispatch at runtime|Compile-time optimization|Memory allocation|B
-2010|Pure virtual function marks class as?|Template class|Abstract class|Final class|Static class|B
-2011|Which is not OOP concept?|Encapsulation|Polymorphism|Recursion|Inheritance|C
-2012|Operator overloading in C++ allows?|Changing syntax|Define custom behavior for operators|Change compiler|None|B
-2013|Which keyword for inheritance access?|public|private|protected|All above|D
-2014|What does 'this' pointer represent?|Pointer to class type|Pointer to current object|Pointer to function|Null|B
-2015|Which is method overloading?|Same name different params|Same name same params|Different name same params|Not allowed|A
-2016|Which is method overriding?|Derived provides new implementation for base virtual method|Same as overloading|Change function prototype|None|A
-2017|Friend function can access?|Private members|Only public members|Only protected|No members|A
-2018|Which is benefit of RAII?|Resource acquisition is initialization|Manual free required|No constructors|No destructors|A
-2019|Which is runtime polymorphism?|Virtual functions|Templates|Macros|Inline functions|A
-2020|Which is compile-time polymorphism?|Function templates and overloads|Virtual functions|Runtime type identification|Exceptions|A
-2021|Which is not valid for class members?|private|public|global|protected|C
-2022|Default copy constructor does what?|Shallow copy|Deep copy|Move semantics|Deletes object|A
-2023|Rule of Three involves?|Constructor, Destructor, Copy assignment|Only constructor|Only destructor|Only copy|A
-2024|When to declare copy constructor private?|To prevent copying|To improve performance|To allow copying|None|A
-2025|Which is good for polymorphic deletion?|Delete via base pointer requires virtual destructor|Base destructor non-virtual|No destructor needed|Delete via derived pointer only|A
-2026|Which is function pointer type?|int*|void(*)()|std::string|class|B
-2027|Which provides encapsulation?|Private members and public getters/setters|Only public members|Global variables|Macros|A
-2028|Which avoids object slicing?|Use pointers or references to base|Copy objects by value|Use int type|Use arrays|A
-2029|Which feature supports dynamic binding?|Virtual functions|Templates|Inline functions|Const methods|A
-2030|Which is not recommended in constructor?|Throwing exceptions sometimes okay|Allocating resources needed|Calling virtual functions that expect overridden behavior|Initializing members|C
-2031|What is abstract class?|Contains at least one pure virtual function|Only static methods|No methods|Final class|A
-2032|Which is technique for code reuse?|Inheritance|Rewriting code|Copy-paste|Global functions|A
-2033|Which is advantage of composition over inheritance?|Better encapsulation and flexibility|Harder to manage|Less reusable|Slower|A
-2034|Which allows multiple inheritance in C++?|Yes|No|Only single inheritance|Depends on compiler|A
-2035|Name mangling affects?|Linkage for overloaded functions|Runtime behavior|Memory allocation|Exceptions|A
-2036|Which keyword disallows further inheritance?|final|sealed|override|virtual|A
-2037|Which is virtual destructor purpose?|Ensure derived destructor called|Prevent instantiation|Optimize performance|None|A
-2038|Which is typical for singleton pattern?|Single instance|Multiple instances|Factory of instances|Prototype cloning|A
-2039|Which is object factory pattern?|Creates objects without exposing concrete classes|Deletes objects|Copies objects|None|A
-2040|Which is S.O.L.I.D principle related to class design?|Single responsibility|Simple loops|Stack overflow|Data race|A
-2041|Which to avoid memory leaks?|Use smart pointers or RAII|Never allocate memory|Use raw pointers everywhere|Ignore destructors|A
-2042|Which smart pointer for unique ownership?|std::unique_ptr|std::shared_ptr|std::weak_ptr|raw pointer|A
-2043|Which smart pointer allows shared ownership?|std::shared_ptr|std::unique_ptr|int*|static pointer|A
-2044|Which avoids cyclic reference leak with shared_ptr?|weak_ptr|unique_ptr|raw pointer|malloc|A
-2045|Which is member initializer list used for?|Initialize members before body|Assign in body|Call destructor|Allocate heap|A
-2046|Which is not allowed in abstract class?|Instantiate directly|Have constructors|Have static members|Have inline methods|A
-2047|Which is polymorphism example?|Base* p = new Derived(); p->virtualMethod();|int a=0;|cout<<"x";|None|A
-2048|Which allows compile-time interface?|Templates|Virtual functions|Runtime polymorphism|Exceptions|A
-2049|Which avoids code duplication among similar classes?|Template or inheritance|Copy paste|Macros only|None|A
-2050|Which method of C++ strings is for concatenation?|+ operator or append|push_back only|insert only|erase only|A
-2051|Which is correct about copy assignment operator?|Default is shallow copy for non-pointer members|Always deep copy|Deletes object|Never used|A
-2052|Which keyword marks method cannot be overridden further?|final|override|virtual|sealed|A
-2053|Which is runtime type info in C++?|typeid and dynamic_cast|templates|macros|inline functions|A
-2054|Which is used for polymorphic cloning?|virtual clone() method|copy constructor only|operator= only|static methods|A
-2055|Which is correct about interfaces in C++?|Abstract classes with pure virtuals|Built-in interface keyword exists|Cannot be implemented|Same as struct|A
-2056|Which is not recommended to be public?|Data members|Utility functions|Factory methods|Constructors|A
-2057|Which is approach to handle errors in constructors?|Throw exception or set fail state|Return error code|No error handling|Use global state|A
-2058|Which is 'diamond problem' associated with?|Multiple inheritance|Templates|Overloading|Namespaces|A
-2059|Which C++ feature helps avoid diamond problem issues?|virtual inheritance|function overloading|namespaces|templates|A
-2060|Which enables method resolution for overloaded functions?|Parameter types|Return type only|Function name only|Namespace|A
-2061|Which is effect of making copy constructor deleted?|Cannot copy objects of class|Cannot assign|Cannot construct|None|A
-2062|Which keyword to restrict implicit conversions?|explicit|static|volatile|mutable|A
-2063|Which type erasure technique supports polymorphism?|std::function or interfaces|Templates only|Macros only|Global variables|A
-2064|Which supports runtime plugin architectures?|Virtual functions and dynamic loading|Templates only|Macros|Inline functions|A
-2065|Which should be avoided in headers?|Large function definitions causing slow compile|Small inline functions|Constexpr|Templates|A
-2066|Which is true about friend classes?|Can access private/protected members of another class|Cannot access|Only in same namespace|Deprecated|A
-2067|Which helps prevent object slicing when returning base by value?|Return pointer or reference|Return by value|Use int|Use float|A
-2068|Which feature makes code generic at compile time?|Templates|Virtual functions|Runtime polymorphism|Exceptions|A
-2069|Which is used for dependency injection?|Interfaces and factories|Global variables|Static methods|Macros|A
-2070|Which is correct for operator new overloaded?|Allocates memory and may call constructor|Only calls constructor|Only allocates stack memory|Deletes object|A
-2071|Which avoids race conditions in object creation (singleton)?|Use mutex or call_once|Do nothing|Use global variables unsafely|Use raw pointers|A
-2072|Which type of casting is safe at runtime for polymorphic types?|dynamic_cast|static_cast|reinterpret_cast|const_cast|A
-2073|Which is compile-time cast?|static_cast|dynamic_cast|reinterpret_cast|const_cast|A
-2074|Which allows implicit upcast?|Derived* to Base*|Base* to Derived*|int to double|double to int|A
-2075|Which keyword to enforce overriding?|override|final|virtual|protected|A
-2076|Which approach improves testability?|Dependency injection and interfaces|Tight coupling|Global state|Macros|A
-2077|Which is SOLID 'O' principle?|Open/Closed principle|Single responsibility|Liskov substitution|Dependency inversion|A
-2078|Which method signature indicates const correctness?|int get() const|int get()|void f() const|Both A and C|A
-2079|Which is expensive to copy by value?|Large objects with resources|Primitive ints|Chars|Short strings|A
-2080|Which is correct about virtual table (vtable)?|Used for runtime dispatch of virtual functions|Used for templates|Used for exceptions|Used for inline functions|A
-2081|Which is used to prevent memory leak for cyclic structures?|std::weak_ptr|std::unique_ptr|raw pointer|malloc|A
-2082|Which allows customizing copy behavior?|Define copy constructor and assignment|Default ones never used|Only move operator|Only destructor|A
-2083|Which is RAII benefit?|Automatic resource cleanup in destructors|Manual free required|No destructors|Only for stack memory|A
-2084|Which is function signature for move constructor?|ClassName(ClassName&& other)|ClassName(const ClassName& other)|ClassName& operator=(const ClassName&)|A
-2085|Which is noexcept useful for?|Optimizations and move operations|Always safe to throw exceptions|Disable exceptions|None|A
-2086|Which is used to implement polymorphic copy?|virtual clone() const|copy constructor only|assignment operator only|swap only|A
-2087|Which indicates method overriding?|virtual and same signature in derived class|template usage|overloading only|different name|A
-2088|Which is advantage of inlining small functions?|Reduce call overhead|Increase dynamic dispatch|Prevent compilation|Decrease readability only|A
-2089|What keyword in C++ hides base class overloads?|using|virtual|override|reinterpret_cast|A
-2090|Which helps manage APIs and avoid name collisions?|Namespaces|Macros|Global variables|Inline functions|A
-2091|Which is used for unit testing in C++ often?|Google Test or Catch2|JUnit|PyTest|RSpec|A
-2092|Which ensures deterministic destruction order for members?|Declared order in class|Alphabetical order|Random order|Compiler dependent|A
-2093|Which is advisable for heavy-copy objects?|Implement move semantics|Rely on copy only|Avoid moving|No constructors|A
-2094|Which indicates exception specification modern C++?|noexcept|throw()|throw(type)|deprecated|A
-2095|Which prevents slicing when passing polymorphic objects?|Use references or pointers|Pass by value|Use int|Use array|A
-2096|Which is best practice for header-only libraries?|Keep functions small and inline|Put large implementations in headers|Use using namespace std;|Macro-heavy code|A
-2097|Which allows CRTP pattern?|Templates and inheritance|Virtual functions only|Macros only|Global variables|A
-2098|Which is correct about lvalue and rvalue references?|T& lvalue, T&& rvalue|T&& lvalue, T& rvalue|Both same|Neither|A
-2099|Which is benefit of move semantics?|Avoid unnecessary copies and reuse resources|Always avoid copying at all cost|Delete objects faster|Prevent allocation|A
-2100|Which is recommended modern C++ practice?|Prefer smart pointers and RAII|Use raw pointers everywhere|Avoid classes|Use globals only|A
+10000|OOP la viet tat cua?|Object Oriented Programming|Operating On Process|Order Of Priority|Only One Program|A
+10001|Tinh chat nao khong thuoc OOP?|Dong goi|Ke thua|Doi san|Da hinh|C
+10002|Interface trong OOP la gi?|Hop dong cac phuong thuc|Lop cu the|Bien toan cuc|Ham thong thuong|A
+10003|Encapsulation mean?|Hide internal state and expose methods|Inherit from base|Overload operators|None|A
+10004|Polymorphism allows?|Multiple forms of function/method behavior|Single implementation only|No inheritance|Only templates|A
+10005|Which is example of inheritance?|Class Dog : public Animal|int a = 5;|for loop|Stack usage|A
+10006|Constructor is?|Method to destroy object|Method to initialize object|Same as destructor|Operator overloading|B
+10007|Destructor called when?|Object goes out of scope or deleted|Object created|Program starts|None|A
+10008|Virtual function used for?|Static binding|Dynamic dispatch at runtime|Compile-time optimization|Memory allocation|B
+10009|Pure virtual function marks class as?|Template class|Abstract class|Final class|Static class|B
+10010|Which is not OOP concept?|Encapsulation|Polymorphism|Recursion|Inheritance|C
+10011|Operator overloading in C++ allows?|Changing syntax|Define custom behavior for operators|Change compiler|None|B
+10012|Which keyword for inheritance access?|public|private|protected|All above|D
+10013|What does 'this' pointer represent?|Pointer to class type|Pointer to current object|Pointer to function|Null|B
+10014|Which is method overloading?|Same name different params|Same name same params|Different name same params|Not allowed|A
+10015|Which is method overriding?|Derived provides new implementation for base virtual method|Same as overloading|Change function prototype|None|A
+10016|Friend function can access?|Private members|Only public members|Only protected|No members|A
+10017|Which is benefit of RAII?|Resource acquisition is initialization|Manual free required|No constructors|No destructors|A
+10018|Which is runtime polymorphism?|Virtual functions|Templates|Macros|Inline functions|A
+10019|Which is compile-time polymorphism?|Function templates and overloads|Virtual functions|Runtime type identification|Exceptions|A
+10020|Which is not valid for class members?|private|public|global|protected|C
+10021|Default copy constructor does what?|Shallow copy|Deep copy|Move semantics|Deletes object|A
+10022|Rule of Three involves?|Constructor, Destructor, Copy assignment|Only constructor|Only destructor|Only copy|A
+10023|When to declare copy constructor private?|To prevent copying|To improve performance|To allow copying|None|A
+10024|Which is good for polymorphic deletion?|Delete via base pointer requires virtual destructor|Base destructor non-virtual|No destructor needed|Delete via derived pointer only|A
+10025|Which is function pointer type?|int*|void(*)()|std::string|class|B
+10026|Which provides encapsulation?|Private members and public getters/setters|Only public members|Global variables|Macros|A
+10027|Which avoids object slicing?|Use pointers or references to base|Copy objects by value|Use int type|Use arrays|A
+10028|Which feature supports dynamic binding?|Virtual functions|Templates|Inline functions|Const methods|A
+10029|Which is not recommended in constructor?|Throwing exceptions sometimes okay|Allocating resources needed|Calling virtual functions that expect overridden behavior|Initializing members|C
+10030|What is abstract class?|Contains at least one pure virtual function|Only static methods|No methods|Final class|A
+10031|Which is technique for code reuse?|Inheritance|Rewriting code|Copy-paste|Global functions|A
+10032|Which is advantage of composition over inheritance?|Better encapsulation and flexibility|Harder to manage|Less reusable|Slower|A
+10033|Which allows multiple inheritance in C++?|Yes|No|Only single inheritance|Depends on compiler|A
+10034|Name mangling affects?|Linkage for overloaded functions|Runtime behavior|Memory allocation|Exceptions|A
+10035|Which keyword disallows further inheritance?|final|sealed|override|virtual|A
+10036|Which is virtual destructor purpose?|Ensure derived destructor called|Prevent instantiation|Optimize performance|None|A
+10037|Which is typical for singleton pattern?|Single instance|Multiple instances|Factory of instances|Prototype cloning|A
+10038|Which is object factory pattern?|Creates objects without exposing concrete classes|Deletes objects|Copies objects|None|A
+10039|Which is S.O.L.I.D principle related to class design?|Single responsibility|Simple loops|Stack overflow|Data race|A
+10040|Which to avoid memory leaks?|Use smart pointers or RAII|Never allocate memory|Use raw pointers everywhere|Ignore destructors|A
+10041|Which smart pointer for unique ownership?|std::unique_ptr|std::shared_ptr|std::weak_ptr|raw pointer|A
+10042|Which smart pointer allows shared ownership?|std::shared_ptr|std::unique_ptr|int*|static pointer|A
+10043|Which avoids cyclic reference leak with shared_ptr?|weak_ptr|unique_ptr|raw pointer|malloc|A
+10044|Which is member initializer list used for?|Initialize members before body|Assign in body|Call destructor|Allocate heap|A
+10045|Which is not allowed in abstract class?|Instantiate directly|Have constructors|Have static members|Have inline methods|A
+10046|Which is polymorphism example?|Base* p = new Derived(); p->virtualMethod();|int a=0;|cout<<"x";|None|A
+10047|Which allows compile-time interface?|Templates|Virtual functions|Runtime polymorphism|Exceptions|A
+10048|Which avoids code duplication among similar classes?|Template or inheritance|Copy paste|Macros only|None|A
+10049|Which method of C++ strings is for concatenation?|+ operator or append|push_back only|insert only|erase only|A
+10050|Which is correct about copy assignment operator?|Default is shallow copy for non-pointer members|Always deep copy|Deletes object|Never used|A
+10051|Which keyword marks method cannot be overridden further?|final|override|virtual|sealed|A
+10052|Which is runtime type info in C++?|typeid and dynamic_cast|templates|macros|inline functions|A
+10053|Which is used for polymorphic cloning?|virtual clone() method|copy constructor only|operator= only|static methods|A
+10054|Which is correct about interfaces in C++?|Abstract classes with pure virtuals|Built-in interface keyword exists|Cannot be implemented|Same as struct|A
+10055|Which is not recommended to be public?|Data members|Utility functions|Factory methods|Constructors|A
+10056|Which is approach to handle errors in constructors?|Throw exception or set fail state|Return error code|No error handling|Use global state|A
+10057|Which is 'diamond problem' associated with?|Multiple inheritance|Templates|Overloading|Namespaces|A
+10058|Which C++ feature helps avoid diamond problem issues?|virtual inheritance|function overloading|namespaces|templates|A
+10059|Which enables method resolution for overloaded functions?|Parameter types|Return type only|Function name only|Namespace|A
+10060|Which is effect of making copy constructor deleted?|Cannot copy objects of class|Cannot assign|Cannot construct|None|A
+10061|Which keyword to restrict implicit conversions?|explicit|static|volatile|mutable|A
+10062|Which type erasure technique supports polymorphism?|std::function or interfaces|Templates only|Macros only|Global variables|A
+10063|Which supports runtime plugin architectures?|Virtual functions and dynamic loading|Templates only|Macros|Inline functions|A
+10064|Which should be avoided in headers?|Large function definitions causing slow compile|Small inline functions|Constexpr|Templates|A
+10065|Which is true about friend classes?|Can access private/protected members of another class|Cannot access|Only in same namespace|Deprecated|A
+10066|Which helps prevent object slicing when returning base by value?|Return pointer or reference|Return by value|Use int|Use float|A
+10067|Which feature makes code generic at compile time?|Templates|Virtual functions|Runtime polymorphism|Exceptions|A
+10068|Which is used for dependency injection?|Interfaces and factories|Global variables|Static methods|Macros|A
+10069|Which is correct for operator new overloaded?|Allocates memory and may call constructor|Only calls constructor|Only allocates stack memory|Deletes object|A
+10070|Which avoids race conditions in object creation (singleton)?|Use mutex or call_once|Do nothing|Use global variables unsafely|Use raw pointers|A
+10071|Which type of casting is safe at runtime for polymorphic types?|dynamic_cast|static_cast|reinterpret_cast|const_cast|A
+10072|Which is compile-time cast?|static_cast|dynamic_cast|reinterpret_cast|const_cast|A
+10073|Which allows implicit upcast?|Derived* to Base*|Base* to Derived*|int to double|double to int|A
+10074|Which keyword to enforce overriding?|override|final|virtual|protected|A
+10075|Which approach improves testability?|Dependency injection and interfaces|Tight coupling|Global state|Macros|A
+10076|Which is SOLID 'O' principle?|Open/Closed principle|Single responsibility|Liskov substitution|Dependency inversion|A
+10077|Which method signature indicates const correctness?|int get() const|int get()|void f() const|Both A and C|A
+10078|Which is expensive to copy by value?|Large objects with resources|Primitive ints|Chars|Short strings|A
+10079|Which is correct about virtual table (vtable)?|Used for runtime dispatch of virtual functions|Used for templates|Used for exceptions|Used for inline functions|A
+10080|Which is used to prevent memory leak for cyclic structures?|std::weak_ptr|std::unique_ptr|raw pointer|malloc|A
+10081|Which allows customizing copy behavior?|Define copy constructor and assignment|Default ones never used|Only move operator|Only destructor|A
+10082|Which is RAII benefit?|Automatic resource cleanup in destructors|Manual free required|No destructors|Only for stack memory|A
+10083|Which is function signature for move constructor?|ClassName(ClassName&& other)|ClassName(const ClassName& other)|ClassName& operator=(const ClassName&)|A
+10084|Which is noexcept useful for?|Optimizations and move operations|Always safe to throw exceptions|Disable exceptions|None|A
+10085|Which is used to implement polymorphic copy?|virtual clone() const|copy constructor only|assignment operator only|swap only|A
+10086|Which indicates method overriding?|virtual and same signature in derived class|template usage|overloading only|different name|A
+10087|Which is advantage of inlining small functions?|Reduce call overhead|Increase dynamic dispatch|Prevent compilation|Decrease readability only|A
+10088|What keyword in C++ hides base class overloads?|using|virtual|override|reinterpret_cast|A
+10089|Which helps manage APIs and avoid name collisions?|Namespaces|Macros|Global variables|Inline functions|A
+10090|Which is used for unit testing in C++ often?|Google Test or Catch2|JUnit|PyTest|RSpec|A
+10091|Which ensures deterministic destruction order for members?|Declared order in class|Alphabetical order|Random order|Compiler dependent|A
+10092|Which is advisable for heavy-copy objects?|Implement move semantics|Rely on copy only|Avoid moving|No constructors|A
+10093|Which indicates exception specification modern C++?|noexcept|throw()|throw(type)|deprecated|A
+10094|Which prevents slicing when passing polymorphic objects?|Use references or pointers|Pass by value|Use int|Use array|A
+10095|Which is best practice for header-only libraries?|Keep functions small and inline|Put large implementations in headers|Use using namespace std;|Macro-heavy code|A
+10096|Which allows CRTP pattern?|Templates and inheritance|Virtual functions only|Macros only|Global variables|A
+10097|Which is correct about lvalue and rvalue references?|T& lvalue, T&& rvalue|T&& lvalue, T& rvalue|Both same|Neither|A
+10098|Which is benefit of move semantics?|Avoid unnecessary copies and reuse resources|Always avoid copying at all cost|Delete objects faster|Prevent allocation|A
+10099|Which is recommended modern C++ practice?|Prefer smart pointers and RAII|Use raw pointers everywhere|Avoid classes|Use globals only|A
 3
-2001|OOP la viet tat cua?|Object Oriented Programming|Operating On Process|Order Of Priority|Only One Program|A
-2002|Tinh chat nao khong thuoc OOP?|Dong goi|Ke thua|Doi san|Da hinh|C
-2003|Interface trong OOP la gi?|Hop dong cac phuong thuc|Lop cu the|Bien toan cuc|Ham thong thuong|A
+10000|OOP la viet tat cua?|Object Oriented Programming|Operating On Process|Order Of Priority|Only One Program|A
+10001|Tinh chat nao khong thuoc OOP?|Dong goi|Ke thua|Doi san|Da hinh|C
+10002|Interface trong OOP la gi?|Hop dong cac phuong thuc|Lop cu the|Bien toan cuc|Ham thong thuong|A

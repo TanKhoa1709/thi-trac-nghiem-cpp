@@ -1,101 +1,101 @@
 100
-7001|Mô hình dữ liệu quan hệ (Relational model) định nghĩa gì chính?|Tập hợp các quan hệ (bảng) với các thuộc tính|Tập tin văn bản|Cấu trúc cây|Mạng các node|A
-7002|Khóa chính (primary key) có tác dụng gì?|Xác định duy nhất mỗi bản ghi trong bảng|Lưu trữ mật khẩu|Kết nối tới mạng|Giảm kích thước bảng|A
-7003|Khóa ngoại (foreign key) để làm gì?|Liên kết một bảng với bảng khác để đảm bảo tính toàn vẹn tham chiếu|Lưu trữ mật khẩu|Tăng tốc truy vấn|Nén dữ liệu|A
-7004|1NF (First Normal Form) yêu cầu gì?|Mỗi ô chứa một giá trị nguyên tử (không lặp)|Không có khóa chính|Tất cả quan hệ phải có index|Bảng chỉ có 1 dòng|A
-7005|2NF yêu cầu gì thêm so với 1NF?|Không có phụ thuộc một phần của khóa nguyên|Không có khóa ngoại|Không có các view|Tất cả là NULL|A
-7006|3NF (Third Normal Form) nhằm loại bỏ gì?|Phụ thuộc chuyển tiếp (transitive dependency)|Phụ thuộc hàm đơn|Khóa composite|Index trùng lặp|A
-7007|BCNF (Boyce-Codd NF) mạnh hơn 3NF vì sao?|Mọi phụ thuộc hàm phải do khóa siêu (superkey) quy định|Không dùng khóa|Không cho phép NULL|Yêu cầu index|A
-7008|Functional dependency (phụ thuộc hàm) là gì?|Một tập thuộc tính xác định giá trị thuộc tính khác trong quan hệ|Một dạng index|Một kiểu dữ liệu|Một trigger|A
-7009|Normalisation lợi ích chính là gì?|Giảm dư thừa và tránh bất thường cập nhật|Tăng kích thước DB|Làm dữ liệu mơ hồ|Loại bỏ backup|A
-7010|Denormalization thường dùng khi nào?|Khi cần hiệu năng đọc cao (OLAP/Reporting)|Khi cần giảm dung lượng|Khi muốn sao lưu|Khi muốn giảm tốc độ|A
-7011|ACID trong giao dịch gồm các tính chất nào?|Atomicity, Consistency, Isolation, Durability|Availability, Consistency, Isolation, Durability|Atomicity, Compression, Isolation, Durability|Authenticate, Consistency, Integrity, Durability|A
-7012|Atomicity nghĩa là gì trong ACID?|Giao dịch được thực hiện toàn bộ hoặc không thực hiện gì|Dữ liệu luôn nhất quán|Giao dịch không được thấy bởi others|Dữ liệu được lưu trên ổ cứng|A
-7013|Durability nghĩa là gì?|Sau commit, thay đổi được bền vững kể cả lỗi hệ thống|Giao dịch có thể rollback|Luôn luôn có backup|Dữ liệu chỉ tồn tại trong RAM|A
-7014|Isolation mức độ nào là mạnh nhất?|Serializable|Read Committed|Read Uncommitted|Repeatable Read|A
-7015|Phenomena 'phantom read' xảy ra khi nào?|Khi một giao dịch đọc tập bản ghi rồi lần sau đọc thấy thêm/bớt bản ghi do giao dịch khác chèn/xóa|Khi đọc cùng hàng nhiều lần|Khi db down|Khi commit fail|A
-7016|Lost update là gì?|Hai giao dịch cùng cập nhật cùng dữ liệu, 1 cập nhật bị mất|Truy vấn SELECT thất bại|Giao dịch không commit|Lỗi syntax SQL|A
-7017|Isolation level 'Read Uncommitted' cho phép gì?|Dirty reads (đọc bản ghi chưa commit)|Không cho phép phantom|Giải quyết deadlock|Tăng durability|A
-7018|MVCC (Multi-Version Concurrency Control) làm gì?|Giữ nhiều phiên bản của dữ liệu để tăng đồng thời và tránh locks|Xóa tất cả version|Chỉ dùng cho NoSQL|Lưu trữ logs|A
-7019|Locking pessimistic vs optimistic: khi dùng optimistic?|Khi xung đột hiếm và đọc nhiều hơn ghi|Khi nhiều ghi đồng thời|Khi không cần concurrency|Khi luôn deadlock|A
-7020|What does 'index' not help with?|Tăng tốc cập nhật hàng loạt (bulk insert) đáng kể|Tăng tốc truy vấn WHERE|Tăng tốc JOIN|Hỗ trợ ORDER BY|A
-7021|B-tree index thích hợp cho loại truy vấn nào?|Truy vấn range và so sánh|Truy vấn full-text only|Lưu trữ blob|Chạy trigger|A
-7022|Hash index tốt cho?|So sánh bằng (=) nhanh|Truy vấn range|ORDER BY|Grouped aggregates|A
-7023|Clustered index ảnh hưởng gì tới dữ liệu trên đĩa?|Sắp xếp dữ liệu vật lý theo khóa của index|Tạo backup|Thay đổi kiểu dữ liệu|Xóa các bản ghi|A
-7024|Non-clustered index là gì?|Index riêng phân biệt với sắp xếp vật lý bảng|Index sắp xếp vật lý chính|Không tồn tại|Index của file system|A
-7025|Covering index nghĩa là?|Index chứa tất cả cột cần thiết cho truy vấn, tránh lookup|Index dùng để cache|Index dành cho backup|Index cho metadata|A
-7026|Explain plan dùng để làm gì?|Hiện chiến lược truy vấn để tối ưu hóa|Tạo báo cáo|Ghi log giao dịch|Quản lý người dùng|A
-7027|Query optimizer quyết định dựa trên?|Chi phí ước tính và thống kê về dữ liệu|Only index names|Only table row count|Only CPU speed|A
-7028|Statistic trong DB giúp gì?|Cung cấp ước tính phân bố dữ liệu cho optimizer|Lưu mật khẩu|Tăng storage|Ghi nhật ký lỗi|A
-7029|SQL JOIN loại nào trả tất cả hàng từ bảng trái và khớp nếu có?|LEFT JOIN (LEFT OUTER JOIN)|INNER JOIN|RIGHT JOIN|CROSS JOIN|A
-7030|INNER JOIN trả về gì?|Các bản ghi khớp giữa hai bảng|Tất cả hàng của bảng trái dù không khớp|Tất cả hàng của bảng phải|Tích Descartes của hai bảng|A
-7031|CROSS JOIN tạo kết quả như thế nào?|Tích Đề-các (Cartesian product) giữa hai bảng|Chỉ matching rows|Tự động loại duplicates|Chỉ một hàng|A
-7032|SQL injection phòng bằng cách nào hiệu quả nhất?|Sử dụng prepared statements / parameterized queries|Xây dựng SQL bằng nối chuỗi|Che dấu input bằng HTML|Dùng base64 encode input|A
-7033|Normalization có thể gây chi phí gì cho hiệu năng?|Tăng số JOIN khi truy vấn dữ liệu, làm chậm đọc|Giảm số lượng bảng|Tự động index|Tăng kích thước record|A
-7034|Transaction log (WAL) có nhiệm vụ?|Ghi lại thay đổi để phục hồi và đảm bảo durability|Lưu cache kết quả truy vấn|Chỉ chứa schema|Lưu mật khẩu|A
-7035|Checkpoint trong DB dùng để làm gì?|Ghi trạng thái ổn định của DB và giảm công việc khi recovery|Tăng latency cho mỗi query|Xóa index|Tăng kích thước transaction log|A
-7036|Deadlock là gì?|Hai hay nhiều giao dịch chờ nhau giữ resource mà không thể tiếp tục|Giao dịch bị timeout|Truy vấn chậm|Lỗi mạng|A
-7037|Biện pháp giải deadlock thường là?|Database phát hiện và chọn 1 giao dịch 'victim' để rollback|Luôn restart DB|Xóa table|Commit tất cả giao dịch|A
-7038|Two-phase commit (2PC) dùng cho gì?|Đảm bảo commit phân tán đồng bộ trên nhiều node|Tăng tốc truy vấn local|Backup dữ liệu|Giảm latency|A
-7039|CAP theorem nói rằng trong hệ phân tán bạn không thể có cùng lúc?|Consistency, Availability và Partition tolerance|Concurrency, Accuracy, Performance|Compression, Availability, Performance|Compatibility, Accessibility, Protection|A
-7040|Trong CAP, khi chọn CA (Consistency + Availability) bạn hy sinh gì?|Partition tolerance (không chịu lỗi phân vùng) which is impractical in distributed systems|Latency|Security|Backup|A
-7041|BASE model thường ứng dụng cho hệ nào?|Hệ NoSQL ưu tiên Availability và Partition tolerance|Hệ quan hệ ACID|Hệ tin nhắn tức thời|Hệ tập tin|A
-7042|Sharding là gì?|Chia phân mảnh dữ liệu theo key để phân tán tải|Sao lưu DB|Tạo index|Tăng transaction log|A
-7043|Replication master-slave mục đích?|Sao chép dữ liệu để tăng sẵn sàng và phân tải đọc|Giảm số lượng server|Nén dữ liệu|Chạy bản local|A
-7044|Eventual consistency nghĩa là gì?|Sau khoảng thời gian, bản sao sẽ hội tụ về cùng một trạng thái|Luôn nhất quán ngay lập tức|Không bao giờ đồng bộ|Luôn bị lỗi|A
-7045|Materialized view là gì?|Một view được lưu trữ (cached) như một bảng để tăng tốc truy vấn|Một view ảo không lưu dữ liệu|Một stored procedure|Một trigger|A
-7046|Stored procedure khác gì so với prepared statement?|Là chương trình lưu trong DB có thể chứa logic, còn prepared statement là truy vấn được biên dịch sẵn|Không thể nhận tham số|Chỉ dùng cho backup|Luôn chạy nhanh hơn query|A
-7047|Trigger dùng khi nào?|Tự động chạy khi có sự kiện DML (INSERT/UPDATE/DELETE) trên bảng|Khi chạy SELECT|Khi REINDEX|Khi reboot DB|A
-7048|Foreign key với ON DELETE CASCADE làm gì?|Khi bản ghi cha bị xóa, bản ghi con cũng bị xóa tự động|Không có tác dụng|Thêm bản ghi mới|Rollback giao dịch|A
-7049|Unique constraint đảm bảo gì?|Giá trị trong cột là duy nhất trên các hàng|Cột không thể NULL|Bảng không thể xóa|Index bị disable|A
-7050|Composite key là gì?|Khóa gồm nhiều cột kết hợp để xác định duy nhất bản ghi|Chỉ 1 cột|Index giả|Một kiểu dữ liệu|A
-7051|What is ACID 'Consistency' specifically?|Giao dịch đưa DB từ trạng thái hợp lệ sang trạng thái hợp lệ (tuân thủ ràng buộc)|Tính nhất quán giao thức mạng|Độ nhất quán giữa replicas|Sự nhất quán của logs|A
-7052|Prepared statement giúp phòng chống gì?|SQL injection và tái sử dụng kế hoạch thực thi|Deadlock|Replication lag|Index corruption|A
-7053|Explain what 'covering index' reduces?|Giảm truy cập tới table heap vì index đã chứa tất cả cột cần thiết|Giảm số bản sao|Giảm số commit|Giảm logs|A
-7054|Full-text index phù hợp cho gì?|Tìm kiếm văn bản như MATCH/CONTAINS|Range queries numeric|Joins|OLAP aggregations|A
-7055|Columnar storage tối ưu cho loại workload nào?|OLAP/analytic queries với đọc nhiều cột và ít ghi|OLTP high write|Real-time transactional online store|Streaming writes|A
-7056|Row-oriented store tốt cho?|OLTP transactional workloads|Large-scale analytics|Data warehousing only|Log processing|A
-7057|Star schema trong kho dữ liệu gồm?|Một fact table liên kết nhiều dimension tables|Một single huge table|Chỉ index|Một loại trigger|A
-7058|ETL pipeline làm gì trong kho dữ liệu?|Extract, Transform, Load: chuyển và chuẩn hóa dữ liệu vào DW|Encrypt, Transfer, Log|Execute, Test, Launch|Encode, Transform, Loop|A
-7059|What is normalization drawback for analytics?|Làm phát sinh nhiều JOIN, giảm tốc truy vấn phân tích|Không thể đặt index|Không thể backup|Tăng controlled transactions|A
-7060|Explain 'hot spot' in sharding context.|Một shard chịu quá nhiều ghi/đọc do phân phối key không đều|Shard offline|Replication lag|Backup failure|A
-7061|What is primary use-case of key-value stores?|Cache hoặc store đơn giản theo key khi dữ liệu không cần quan hệ|Complex relational queries|OLAP aggregations|Stored procedures|A
-7062|Document databases (e.g., MongoDB) lưu dữ liệu như thế nào?|Tài liệu JSON/BSON dạng schema-flexible|Bảng cố định như RDBMS|Key-value only|Graph nodes only|A
-7063|Graph databases tốt cho vấn đề nào?|Truy vấn quan hệ phức tạp như social networks|Simple key lookup|OLAP cube|Full-text search|A
-7064|What is index selectivity?|Tỷ lệ phần trăm hàng khác nhau cho giá trị, càng cao càng tốt cho index|Số cột trong bảng|Số index trên table|Số bytes cho mỗi row|A
-7065|What is 'covering index' benefit in queries?|Tránh truy cập table chính, chỉ đọc từ index|Tăng số lần page fault|Tạo deadlock|Thay đổi schema|A
-7066|What causes 'write amplification' in storage engines?|Nhiều ghi vật lý cho 1 ghi logic (ví dụ LSM trees)|Too many indexes|No replication|Large RAM|A
-7067|LSM-tree optimized databases thường cho lợi ích gì?|Ghi nhanh tốt, phù hợp cho write-heavy workloads|Truy vấn complex tốt hơn|NoSQL không dùng index|Không có transactions|A
-7068|Which engine type uses B-tree and supports in-place updates?|Traditional B-tree storage engines (e.g., InnoDB uses B+ tree)|LSM-tree only|Graph engine only|Columnar engine only|A
-7069|What is vacuum (in PostgreSQL) for?|Dọn dẹp bản ghi dead tuples để tái sử dụng không gian|Làm nén index|Tự động backup|Reset password|A
-7070|Explain 'explain analyze' in SQL.|Chạy truy vấn và trả về kế hoạch kèm thời gian thực hiện cho từng bước|Chỉ trả về schema|Tạo index mới|Xóa table|A
-7071|Which isolation level avoids dirty reads but allows non-repeatable reads?|Read Committed|Serializable|Read Uncommitted|Repeatable Read|A
-7072|Serializable isolation đảm bảo gì?|Mô phỏng thực thi tuần tự, ngăn mọi anomaly|Chỉ ngăn dirty read|Chỉ ngăn phantom|Không bảo vệ gì|A
-7073|What is 'write skew' anomaly associated with?|Snapshot isolation allowing non-serializable outcomes|Deadlock only|Loss of commit|Transaction log failure|A
-7074|Which method helps scale reads across replicas?|Read replicas with eventual replication and promoting master for writes|Write splitting only|Use single node|Disable transactions|A
-7075|What is 'materialized view' refresh modes?|On demand (manual) hoặc incremental / scheduled refresh|Always automatic real-time|Never refreshable|Only when DB restarts|A
-7076|Index maintenance overhead includes?|Chi phí khi INSERT/UPDATE/DELETE phải cập nhật index|Only read cost|Only network cost|Only backup cost|A
-7077|What is 'schema migration' concern?|Không làm hỏng dữ liệu, hỗ trợ rollback và tương thích version|Chỉ dùng cho NoSQL|Không cần migration|Luôn an toàn|A
-7078|Which is benefit of connection pooling?|Tái sử dụng kết nối giảm chi phí tạo kết nối mới|Tăng latency|Tạo nhiều kết nối mới|Không phù hợp cho web|A
-7079|What is 'prepared statement' performance benefit besides security?|Kế hoạch thực thi được tái sử dụng, giảm parsing/plan overhead|Tạo deadlock|Làm tăng memory leak|Không có lợi|A
-7080|What is 'cold start' penalty in DB caches?|Truy vấn đầu tiên sau restart không có cache nên chậm hơn|Always fast|Only affects WAL|Only affects indexes|A
-7081|Which is primary cause of slow queries typically?|Thiếu index hoặc thống kê lỗi thời|Overuse of triggers only|Use of primary key only|Too many backups|A
-7082|What is 'EXPLAIN' useful for in SQL?|Hiểu cách optimizer thực thi truy vấn và tìm điểm tối ưu|Encrypt queries|Backup queries|Create users|A
-7083|How to prevent long-running transactions from blocking?|Set timeouts, break into smaller transactions, use lower isolation if safe|Always serialize|Never commit|Disable logging|A
-7084|What is 'temporal data' support in DBs for?|Lưu lịch sử thay đổi dữ liệu theo thời gian (bitemporal/time-travel)|Chỉ lưu hiện tại|Only for logs|Only for cache|A
-7085|Which is common method to implement soft deletes?|Dùng cột flag (is_deleted) thay vì xóa bản ghi vật lý|Delete rows physically only|Archive in another DB only|Rename table|A
-7086|What is 'FK cascade' risk?|Xóa lan truyền có thể xóa nhiều bản ghi không định trước|Không có rủi ro|Luôn an toàn|Tự động backup|A
-7087|Which is typical use-case for OLTP DBs?|Hệ giao dịch trực tuyến như ngân hàng, bán hàng|Large-scale analytics|Data lake|Archive storage|A
-7088|Which is typical use-case for OLAP DBs?|Báo cáo và phân tích với truy vấn phức tạp trên tập lớn dữ liệu|Transactional order entry|Real-time transactions|Session management|A
-7089|What is 'ETL vs ELT' main difference?|ETL transform trước khi load; ELT load thẳng rồi transform trên DW|Same thing|ELT only for OLTP|ETL only for NoSQL|A
-7090|What is 'index-only scan'?|Trình quét dùng index để trả về cột cần thiết mà không chạm table heap|Luôn đọc toàn bộ table|Only for INSERT|Only for UPDATE|A
-7091|Which backup strategy reduce RPO (Recovery Point Objective)?|Tăng tần suất backup hoặc dùng continuous replication|Không backup|Full backup only|One-off snapshot|A
-7092|What is point-in-time recovery (PITR)?|Phục hồi DB đến một thời điểm chính xác sử dụng log của giao dịch|Chỉ restore toàn bộ DB|Chỉ dùng cho snapshots|Chỉ cho NoSQL|A
-7093|What is 'write-ahead logging' (WAL) rule?|Ghi log trước khi thay đổi dữ liệu để đảm bảo recovery|Ghi dữ liệu trước log|Không cần log|Only in memory|A
-7094|Which reduces risk of SQL injection in ORMs?|Sử dụng parameterized queries và tránh concat SQL thủ công|Use raw string concatenation|Use client-side validation only|Use base64 encode|A
-7095|What is 'horizontal partitioning' (sharding) vs vertical partitioning?|Horizontal phân chia hàng; vertical phân chia cột/module|Opposite meanings|Same thing|Only applies to files|A
-7096|Which is benefit of using UUID as primary key?|Không cần coord để sinh key, phù hợp cho phân tán nhưng kích thước lớn hơn|Always faster than integer|Never duplicate|Small storage|A
-7097|What is 'sequential scan' problem on large table?|Nếu thiếu index, truy vấn sẽ quét toàn bộ table gây chậm|Always fastest|Only for small tables|No impact|A
-7098|Which is common optimizer technique to speed joins?|Use appropriate join order, proper indexes, and statistics|Use more triggers|Use bigger transactions|Drop all keys|A
-7099|What is 'hot backup' vs 'cold backup'?|Hot backup nghĩa backup khi DB đang chạy; cold backup khi DB offline|Opposite meanings|Same thing|Only for files|A
-7100|Which practice helps avoid data corruption on power loss?|Use durable storage with fsync on commit, WAL and tested recovery procedures|Disable fsync|Only rely on cache|Never backup|A
+60000|Mô hình dữ liệu quan hệ (Relational model) định nghĩa gì chính?|Tập hợp các quan hệ (bảng) với các thuộc tính|Tập tin văn bản|Cấu trúc cây|Mạng các node|A
+60001|Khóa chính (primary key) có tác dụng gì?|Xác định duy nhất mỗi bản ghi trong bảng|Lưu trữ mật khẩu|Kết nối tới mạng|Giảm kích thước bảng|A
+60002|Khóa ngoại (foreign key) để làm gì?|Liên kết một bảng với bảng khác để đảm bảo tính toàn vẹn tham chiếu|Lưu trữ mật khẩu|Tăng tốc truy vấn|Nén dữ liệu|A
+60003|1NF (First Normal Form) yêu cầu gì?|Mỗi ô chứa một giá trị nguyên tử (không lặp)|Không có khóa chính|Tất cả quan hệ phải có index|Bảng chỉ có 1 dòng|A
+60004|2NF yêu cầu gì thêm so với 1NF?|Không có phụ thuộc một phần của khóa nguyên|Không có khóa ngoại|Không có các view|Tất cả là NULL|A
+60005|3NF (Third Normal Form) nhằm loại bỏ gì?|Phụ thuộc chuyển tiếp (transitive dependency)|Phụ thuộc hàm đơn|Khóa composite|Index trùng lặp|A
+60006|BCNF (Boyce-Codd NF) mạnh hơn 3NF vì sao?|Mọi phụ thuộc hàm phải do khóa siêu (superkey) quy định|Không dùng khóa|Không cho phép NULL|Yêu cầu index|A
+60007|Functional dependency (phụ thuộc hàm) là gì?|Một tập thuộc tính xác định giá trị thuộc tính khác trong quan hệ|Một dạng index|Một kiểu dữ liệu|Một trigger|A
+60008|Normalisation lợi ích chính là gì?|Giảm dư thừa và tránh bất thường cập nhật|Tăng kích thước DB|Làm dữ liệu mơ hồ|Loại bỏ backup|A
+60009|Denormalization thường dùng khi nào?|Khi cần hiệu năng đọc cao (OLAP/Reporting)|Khi cần giảm dung lượng|Khi muốn sao lưu|Khi muốn giảm tốc độ|A
+60010|ACID trong giao dịch gồm các tính chất nào?|Atomicity, Consistency, Isolation, Durability|Availability, Consistency, Isolation, Durability|Atomicity, Compression, Isolation, Durability|Authenticate, Consistency, Integrity, Durability|A
+60011|Atomicity nghĩa là gì trong ACID?|Giao dịch được thực hiện toàn bộ hoặc không thực hiện gì|Dữ liệu luôn nhất quán|Giao dịch không được thấy bởi others|Dữ liệu được lưu trên ổ cứng|A
+60012|Durability nghĩa là gì?|Sau commit, thay đổi được bền vững kể cả lỗi hệ thống|Giao dịch có thể rollback|Luôn luôn có backup|Dữ liệu chỉ tồn tại trong RAM|A
+60013|Isolation mức độ nào là mạnh nhất?|Serializable|Read Committed|Read Uncommitted|Repeatable Read|A
+60014|Phenomena 'phantom read' xảy ra khi nào?|Khi một giao dịch đọc tập bản ghi rồi lần sau đọc thấy thêm/bớt bản ghi do giao dịch khác chèn/xóa|Khi đọc cùng hàng nhiều lần|Khi db down|Khi commit fail|A
+60015|Lost update là gì?|Hai giao dịch cùng cập nhật cùng dữ liệu, 1 cập nhật bị mất|Truy vấn SELECT thất bại|Giao dịch không commit|Lỗi syntax SQL|A
+60016|Isolation level 'Read Uncommitted' cho phép gì?|Dirty reads (đọc bản ghi chưa commit)|Không cho phép phantom|Giải quyết deadlock|Tăng durability|A
+60017|MVCC (Multi-Version Concurrency Control) làm gì?|Giữ nhiều phiên bản của dữ liệu để tăng đồng thời và tránh locks|Xóa tất cả version|Chỉ dùng cho NoSQL|Lưu trữ logs|A
+60018|Locking pessimistic vs optimistic: khi dùng optimistic?|Khi xung đột hiếm và đọc nhiều hơn ghi|Khi nhiều ghi đồng thời|Khi không cần concurrency|Khi luôn deadlock|A
+60019|What does 'index' not help with?|Tăng tốc cập nhật hàng loạt (bulk insert) đáng kể|Tăng tốc truy vấn WHERE|Tăng tốc JOIN|Hỗ trợ ORDER BY|A
+60020|B-tree index thích hợp cho loại truy vấn nào?|Truy vấn range và so sánh|Truy vấn full-text only|Lưu trữ blob|Chạy trigger|A
+60021|Hash index tốt cho?|So sánh bằng (=) nhanh|Truy vấn range|ORDER BY|Grouped aggregates|A
+60022|Clustered index ảnh hưởng gì tới dữ liệu trên đĩa?|Sắp xếp dữ liệu vật lý theo khóa của index|Tạo backup|Thay đổi kiểu dữ liệu|Xóa các bản ghi|A
+60023|Non-clustered index là gì?|Index riêng phân biệt với sắp xếp vật lý bảng|Index sắp xếp vật lý chính|Không tồn tại|Index của file system|A
+60024|Covering index nghĩa là?|Index chứa tất cả cột cần thiết cho truy vấn, tránh lookup|Index dùng để cache|Index dành cho backup|Index cho metadata|A
+60025|Explain plan dùng để làm gì?|Hiện chiến lược truy vấn để tối ưu hóa|Tạo báo cáo|Ghi log giao dịch|Quản lý người dùng|A
+60026|Query optimizer quyết định dựa trên?|Chi phí ước tính và thống kê về dữ liệu|Only index names|Only table row count|Only CPU speed|A
+60027|Statistic trong DB giúp gì?|Cung cấp ước tính phân bố dữ liệu cho optimizer|Lưu mật khẩu|Tăng storage|Ghi nhật ký lỗi|A
+60028|SQL JOIN loại nào trả tất cả hàng từ bảng trái và khớp nếu có?|LEFT JOIN (LEFT OUTER JOIN)|INNER JOIN|RIGHT JOIN|CROSS JOIN|A
+60029|INNER JOIN trả về gì?|Các bản ghi khớp giữa hai bảng|Tất cả hàng của bảng trái dù không khớp|Tất cả hàng của bảng phải|Tích Descartes của hai bảng|A
+60030|CROSS JOIN tạo kết quả như thế nào?|Tích Đề-các (Cartesian product) giữa hai bảng|Chỉ matching rows|Tự động loại duplicates|Chỉ một hàng|A
+60031|SQL injection phòng bằng cách nào hiệu quả nhất?|Sử dụng prepared statements / parameterized queries|Xây dựng SQL bằng nối chuỗi|Che dấu input bằng HTML|Dùng base64 encode input|A
+60032|Normalization có thể gây chi phí gì cho hiệu năng?|Tăng số JOIN khi truy vấn dữ liệu, làm chậm đọc|Giảm số lượng bảng|Tự động index|Tăng kích thước record|A
+60033|Transaction log (WAL) có nhiệm vụ?|Ghi lại thay đổi để phục hồi và đảm bảo durability|Lưu cache kết quả truy vấn|Chỉ chứa schema|Lưu mật khẩu|A
+60034|Checkpoint trong DB dùng để làm gì?|Ghi trạng thái ổn định của DB và giảm công việc khi recovery|Tăng latency cho mỗi query|Xóa index|Tăng kích thước transaction log|A
+60035|Deadlock là gì?|Hai hay nhiều giao dịch chờ nhau giữ resource mà không thể tiếp tục|Giao dịch bị timeout|Truy vấn chậm|Lỗi mạng|A
+60036|Biện pháp giải deadlock thường là?|Database phát hiện và chọn 1 giao dịch 'victim' để rollback|Luôn restart DB|Xóa table|Commit tất cả giao dịch|A
+60037|Two-phase commit (2PC) dùng cho gì?|Đảm bảo commit phân tán đồng bộ trên nhiều node|Tăng tốc truy vấn local|Backup dữ liệu|Giảm latency|A
+60038|CAP theorem nói rằng trong hệ phân tán bạn không thể có cùng lúc?|Consistency, Availability và Partition tolerance|Concurrency, Accuracy, Performance|Compression, Availability, Performance|Compatibility, Accessibility, Protection|A
+60039|Trong CAP, khi chọn CA (Consistency + Availability) bạn hy sinh gì?|Partition tolerance (không chịu lỗi phân vùng) which is impractical in distributed systems|Latency|Security|Backup|A
+60040|BASE model thường ứng dụng cho hệ nào?|Hệ NoSQL ưu tiên Availability và Partition tolerance|Hệ quan hệ ACID|Hệ tin nhắn tức thời|Hệ tập tin|A
+60041|Sharding là gì?|Chia phân mảnh dữ liệu theo key để phân tán tải|Sao lưu DB|Tạo index|Tăng transaction log|A
+60042|Replication master-slave mục đích?|Sao chép dữ liệu để tăng sẵn sàng và phân tải đọc|Giảm số lượng server|Nén dữ liệu|Chạy bản local|A
+60043|Eventual consistency nghĩa là gì?|Sau khoảng thời gian, bản sao sẽ hội tụ về cùng một trạng thái|Luôn nhất quán ngay lập tức|Không bao giờ đồng bộ|Luôn bị lỗi|A
+60044|Materialized view là gì?|Một view được lưu trữ (cached) như một bảng để tăng tốc truy vấn|Một view ảo không lưu dữ liệu|Một stored procedure|Một trigger|A
+60045|Stored procedure khác gì so với prepared statement?|Là chương trình lưu trong DB có thể chứa logic, còn prepared statement là truy vấn được biên dịch sẵn|Không thể nhận tham số|Chỉ dùng cho backup|Luôn chạy nhanh hơn query|A
+60046|Trigger dùng khi nào?|Tự động chạy khi có sự kiện DML (INSERT/UPDATE/DELETE) trên bảng|Khi chạy SELECT|Khi REINDEX|Khi reboot DB|A
+60047|Foreign key với ON DELETE CASCADE làm gì?|Khi bản ghi cha bị xóa, bản ghi con cũng bị xóa tự động|Không có tác dụng|Thêm bản ghi mới|Rollback giao dịch|A
+60048|Unique constraint đảm bảo gì?|Giá trị trong cột là duy nhất trên các hàng|Cột không thể NULL|Bảng không thể xóa|Index bị disable|A
+60049|Composite key là gì?|Khóa gồm nhiều cột kết hợp để xác định duy nhất bản ghi|Chỉ 1 cột|Index giả|Một kiểu dữ liệu|A
+60050|What is ACID 'Consistency' specifically?|Giao dịch đưa DB từ trạng thái hợp lệ sang trạng thái hợp lệ (tuân thủ ràng buộc)|Tính nhất quán giao thức mạng|Độ nhất quán giữa replicas|Sự nhất quán của logs|A
+60051|Prepared statement giúp phòng chống gì?|SQL injection và tái sử dụng kế hoạch thực thi|Deadlock|Replication lag|Index corruption|A
+60052|Explain what 'covering index' reduces?|Giảm truy cập tới table heap vì index đã chứa tất cả cột cần thiết|Giảm số bản sao|Giảm số commit|Giảm logs|A
+60053|Full-text index phù hợp cho gì?|Tìm kiếm văn bản như MATCH/CONTAINS|Range queries numeric|Joins|OLAP aggregations|A
+60054|Columnar storage tối ưu cho loại workload nào?|OLAP/analytic queries với đọc nhiều cột và ít ghi|OLTP high write|Real-time transactional online store|Streaming writes|A
+60055|Row-oriented store tốt cho?|OLTP transactional workloads|Large-scale analytics|Data warehousing only|Log processing|A
+60056|Star schema trong kho dữ liệu gồm?|Một fact table liên kết nhiều dimension tables|Một single huge table|Chỉ index|Một loại trigger|A
+60057|ETL pipeline làm gì trong kho dữ liệu?|Extract, Transform, Load: chuyển và chuẩn hóa dữ liệu vào DW|Encrypt, Transfer, Log|Execute, Test, Launch|Encode, Transform, Loop|A
+60058|What is normalization drawback for analytics?|Làm phát sinh nhiều JOIN, giảm tốc truy vấn phân tích|Không thể đặt index|Không thể backup|Tăng controlled transactions|A
+60059|Explain 'hot spot' in sharding context.|Một shard chịu quá nhiều ghi/đọc do phân phối key không đều|Shard offline|Replication lag|Backup failure|A
+60060|What is primary use-case of key-value stores?|Cache hoặc store đơn giản theo key khi dữ liệu không cần quan hệ|Complex relational queries|OLAP aggregations|Stored procedures|A
+60061|Document databases (e.g., MongoDB) lưu dữ liệu như thế nào?|Tài liệu JSON/BSON dạng schema-flexible|Bảng cố định như RDBMS|Key-value only|Graph nodes only|A
+60062|Graph databases tốt cho vấn đề nào?|Truy vấn quan hệ phức tạp như social networks|Simple key lookup|OLAP cube|Full-text search|A
+60063|What is index selectivity?|Tỷ lệ phần trăm hàng khác nhau cho giá trị, càng cao càng tốt cho index|Số cột trong bảng|Số index trên table|Số bytes cho mỗi row|A
+60064|What is 'covering index' benefit in queries?|Tránh truy cập table chính, chỉ đọc từ index|Tăng số lần page fault|Tạo deadlock|Thay đổi schema|A
+60065|What causes 'write amplification' in storage engines?|Nhiều ghi vật lý cho 1 ghi logic (ví dụ LSM trees)|Too many indexes|No replication|Large RAM|A
+60066|LSM-tree optimized databases thường cho lợi ích gì?|Ghi nhanh tốt, phù hợp cho write-heavy workloads|Truy vấn complex tốt hơn|NoSQL không dùng index|Không có transactions|A
+60067|Which engine type uses B-tree and supports in-place updates?|Traditional B-tree storage engines (e.g., InnoDB uses B+ tree)|LSM-tree only|Graph engine only|Columnar engine only|A
+60068|What is vacuum (in PostgreSQL) for?|Dọn dẹp bản ghi dead tuples để tái sử dụng không gian|Làm nén index|Tự động backup|Reset password|A
+60069|Explain 'explain analyze' in SQL.|Chạy truy vấn và trả về kế hoạch kèm thời gian thực hiện cho từng bước|Chỉ trả về schema|Tạo index mới|Xóa table|A
+60070|Which isolation level avoids dirty reads but allows non-repeatable reads?|Read Committed|Serializable|Read Uncommitted|Repeatable Read|A
+60071|Serializable isolation đảm bảo gì?|Mô phỏng thực thi tuần tự, ngăn mọi anomaly|Chỉ ngăn dirty read|Chỉ ngăn phantom|Không bảo vệ gì|A
+60072|What is 'write skew' anomaly associated with?|Snapshot isolation allowing non-serializable outcomes|Deadlock only|Loss of commit|Transaction log failure|A
+60073|Which method helps scale reads across replicas?|Read replicas with eventual replication and promoting master for writes|Write splitting only|Use single node|Disable transactions|A
+60074|What is 'materialized view' refresh modes?|On demand (manual) hoặc incremental / scheduled refresh|Always automatic real-time|Never refreshable|Only when DB restarts|A
+60075|Index maintenance overhead includes?|Chi phí khi INSERT/UPDATE/DELETE phải cập nhật index|Only read cost|Only network cost|Only backup cost|A
+60076|What is 'schema migration' concern?|Không làm hỏng dữ liệu, hỗ trợ rollback và tương thích version|Chỉ dùng cho NoSQL|Không cần migration|Luôn an toàn|A
+60077|Which is benefit of connection pooling?|Tái sử dụng kết nối giảm chi phí tạo kết nối mới|Tăng latency|Tạo nhiều kết nối mới|Không phù hợp cho web|A
+60078|What is 'prepared statement' performance benefit besides security?|Kế hoạch thực thi được tái sử dụng, giảm parsing/plan overhead|Tạo deadlock|Làm tăng memory leak|Không có lợi|A
+60079|What is 'cold start' penalty in DB caches?|Truy vấn đầu tiên sau restart không có cache nên chậm hơn|Always fast|Only affects WAL|Only affects indexes|A
+60080|Which is primary cause of slow queries typically?|Thiếu index hoặc thống kê lỗi thời|Overuse of triggers only|Use of primary key only|Too many backups|A
+60081|What is 'EXPLAIN' useful for in SQL?|Hiểu cách optimizer thực thi truy vấn và tìm điểm tối ưu|Encrypt queries|Backup queries|Create users|A
+60082|How to prevent long-running transactions from blocking?|Set timeouts, break into smaller transactions, use lower isolation if safe|Always serialize|Never commit|Disable logging|A
+60083|What is 'temporal data' support in DBs for?|Lưu lịch sử thay đổi dữ liệu theo thời gian (bitemporal/time-travel)|Chỉ lưu hiện tại|Only for logs|Only for cache|A
+60084|Which is common method to implement soft deletes?|Dùng cột flag (is_deleted) thay vì xóa bản ghi vật lý|Delete rows physically only|Archive in another DB only|Rename table|A
+60085|What is 'FK cascade' risk?|Xóa lan truyền có thể xóa nhiều bản ghi không định trước|Không có rủi ro|Luôn an toàn|Tự động backup|A
+60086|Which is typical use-case for OLTP DBs?|Hệ giao dịch trực tuyến như ngân hàng, bán hàng|Large-scale analytics|Data lake|Archive storage|A
+60087|Which is typical use-case for OLAP DBs?|Báo cáo và phân tích với truy vấn phức tạp trên tập lớn dữ liệu|Transactional order entry|Real-time transactions|Session management|A
+60088|What is 'ETL vs ELT' main difference?|ETL transform trước khi load; ELT load thẳng rồi transform trên DW|Same thing|ELT only for OLTP|ETL only for NoSQL|A
+60089|What is 'index-only scan'?|Trình quét dùng index để trả về cột cần thiết mà không chạm table heap|Luôn đọc toàn bộ table|Only for INSERT|Only for UPDATE|A
+60090|Which backup strategy reduce RPO (Recovery Point Objective)?|Tăng tần suất backup hoặc dùng continuous replication|Không backup|Full backup only|One-off snapshot|A
+60091|What is point-in-time recovery (PITR)?|Phục hồi DB đến một thời điểm chính xác sử dụng log của giao dịch|Chỉ restore toàn bộ DB|Chỉ dùng cho snapshots|Chỉ cho NoSQL|A
+60092|What is 'write-ahead logging' (WAL) rule?|Ghi log trước khi thay đổi dữ liệu để đảm bảo recovery|Ghi dữ liệu trước log|Không cần log|Only in memory|A
+60093|Which reduces risk of SQL injection in ORMs?|Sử dụng parameterized queries và tránh concat SQL thủ công|Use raw string concatenation|Use client-side validation only|Use base64 encode|A
+60094|What is 'horizontal partitioning' (sharding) vs vertical partitioning?|Horizontal phân chia hàng; vertical phân chia cột/module|Opposite meanings|Same thing|Only applies to files|A
+60095|Which is benefit of using UUID as primary key?|Không cần coord để sinh key, phù hợp cho phân tán nhưng kích thước lớn hơn|Always faster than integer|Never duplicate|Small storage|A
+60096|What is 'sequential scan' problem on large table?|Nếu thiếu index, truy vấn sẽ quét toàn bộ table gây chậm|Always fastest|Only for small tables|No impact|A
+60097|Which is common optimizer technique to speed joins?|Use appropriate join order, proper indexes, and statistics|Use more triggers|Use bigger transactions|Drop all keys|A
+60098|What is 'hot backup' vs 'cold backup'?|Hot backup nghĩa backup khi DB đang chạy; cold backup khi DB offline|Opposite meanings|Same thing|Only for files|A
+60099|Which practice helps avoid data corruption on power loss?|Use durable storage with fsync on commit, WAL and tested recovery procedures|Disable fsync|Only rely on cache|Never backup|A

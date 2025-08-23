@@ -1,101 +1,101 @@
 100
-9001|Kiểm thử phần mềm là gì?|Quá trình đánh giá chất lượng và phát hiện lỗi trong phần mềm|Viết tài liệu|Triển khai hệ thống|Thiết kế UI|A
-9002|Unit test kiểm tra gì?|Các đơn vị nhỏ (hàm/method) độc lập|Toàn bộ hệ thống|Giao diện người dùng|Tốc độ mạng|A
-9003|Integration test tập trung vào?|Tương tác giữa các module/hệ thống|Một hàm riêng lẻ|Giao diện đồ họa|Sao lưu dữ liệu|A
-9004|System test là gì?|Kiểm thử hệ thống hoàn chỉnh trong môi trường giống thực tế|Chỉ test unit|Chỉ test database|Chỉ kiểm tra UI|A
-9005|Acceptance test (UAT) nhằm mục đích?|Xác nhận phần mềm đáp ứng yêu cầu của khách hàng|Tối ưu code|Tăng tốc server|Chạy load test|A
-9006|Regression testing làm gì?|Kiểm tra lại chức năng sau sửa đổi để phát hiện lỗi quay lại|Tự động viết code|Xóa dữ liệu|Tối ưu SQL|A
-9007|Smoke test dùng để?|Kiểm tra nhanh các chức năng chính trước khi test sâu|Thay đổi database|Tạo báo cáo|Chạy performance test|A
-9008|Sanity test khác smoke test ở điểm nào?|Sanity kiểm tra chi tiết hơn một tính năng sau sửa lỗi|Là test performance|Chạy load test|Là unit test|A
-9009|Black-box testing tập trung vào gì?|Đầu vào/đầu ra mà không cần biết cấu trúc bên trong|Dựa vào code|Xem cấu trúc dữ liệu nội bộ|Phân tích heap|A
-9010|White-box testing phụ thuộc vào gì?|Hiểu biết cấu trúc mã nguồn và luồng điều khiển|Chỉ tài liệu|Chỉ GUI|Chỉ performance|A
-9011|Static testing là gì?|Phân tích mã/tài liệu mà không chạy chương trình|Chạy unit tests|Chạy performance tests|Test security|A
-9012|Dynamic testing là gì?|Chạy phần mềm để kiểm tra hành vi|Viết tài liệu|Thiết kế schema|Chạy static analysis|A
-9013|Test case nên chứa những gì?|Mục tiêu, dữ liệu vào, bước, kết quả mong đợi|Chỉ tên tester|Chỉ thời gian chạy|Chỉ code|A
-9014|Test plan mô tả gì?|Phạm vi, chiến lược, tài nguyên và lịch trình kiểm thử|Chỉ kết quả test|Chỉ code|Chỉ interface|A
-9015|Test oracle dùng để làm gì?|Xác định kết quả mong đợi để so sánh với kết quả thực tế|Tạo test data|Tối ưu code|Quản lý user|A
-9016|Boundary value analysis tập trung vào?|Các giá trị biên của input để tìm lỗi|Random testing|Stress testing|Performance tuning|A
-9017|Equivalence partitioning là kỹ thuật gì?|Chia dữ liệu thành các lớp giá trị tương đương để giảm số test cases|Phân tích hiệu năng|Kiểm thử bảo mật|Quét mạng|A
-9018|Exploratory testing là gì?|Tester tìm hiểu và thiết kế test trong quá trình thực thi, ít tài liệu trước|Unit testing|Automation only|Performance testing|A
-9019|Test automation phù hợp khi nào?|Kiểm tra lặp đi lặp lại, regression và test có thể tái sử dụng|Chỉ test mới|Chỉ exploratory|Không dùng cho regression|A
-9020|Selenium là công cụ gì?|Automation cho browser (web UI testing)|Database tool|Performance tool|Build tool|A
-9021|Mock object dùng để làm gì trong testing?|Thay thế phụ thuộc bên ngoài để kiểm soát môi trường test|Thay thế test plan|Thay thế production DB|Tạo UI|A
-9022|Code coverage cho biết gì?|Tỉ lệ mã nguồn được chạy trong quá trình test|Số lỗi đã sửa|Số commit|Số user|A
-9023|Branch coverage kiểm tra gì?|Các nhánh điều kiện đã được thực thi hay chưa|Chỉ dòng code|Chỉ function prototypes|Chỉ comments|A
-9024|Statement coverage là gì?|Tỉ lệ câu lệnh đã được thực thi bởi tests|Tỉ lệ lỗi|Tốc độ chạy|Memory usage|A
-9025|Mutation testing mục đích là gì?|Đánh giá chất lượng test suite bằng cách biến đổi mã và xem test phát hiện được không|Tối ưu DB|Tạo UI|Ghi log|A
-9026|Continuous Integration (CI) có lợi cho testing như thế nào?|Tự động chạy test khi có commit giúp phát hiện lỗi sớm|Chỉ deploy code|Chỉ build docs|Chỉ format code|A
-9027|Test-driven development (TDD) bắt đầu bằng gì?|Viết test case trước khi viết mã thực hiện|Viết tài liệu trước|Viết UI trước|Tạo DB schema trước|A
-9028|Behavior-driven development (BDD) dùng ngôn ngữ gì để mô tả test?|Gherkin (Given/When/Then)|SQL|HTML|CSS|A
-9029|Load testing kiểm tra gì?|Hiệu năng hệ thống dưới tải bình thường/đỉnh|Unit function logic|UI layout|Security flaws|A
-9030|Stress testing dùng để?|Kiểm tra hệ thống khi vượt quá khả năng xử lý để xem cách fail|Test unit logic|Test code style|Test docs|A
-9031|Performance testing mục tiêu?|Đo thời gian phản hồi, throughput và resource utilization|Chỉ kiểm tra security|Chỉ kiểm tra UI|Chỉ kiểm tra DB schema|A
-9032|Endurance (soak) test kiểm tra gì?|Hệ thống chạy lâu để phát hiện rò rỉ bộ nhớ hoặc degradation|Chỉ run unit tests|Chỉ run lint|Chỉ run deploy|A
-9033|Spike testing là gì?|Đột ngột tăng tải lớn để kiểm tra phản ứng hệ thống|Tăng mã nguồn|Tạo UI changes|Xóa DB|A
-9034|Which is non-functional requirement example?|Scalability and performance|Function to add user|Function to send email|Function to login|A
-9035|Security testing kiểm tra gì?|Lỗ hổng bảo mật như SQLi, XSS, CSRF, authentication flaws|UI spacing|Color contrast|Spelling errors|A
-9036|Penetration testing khác vulnerability scan như thế nào?|Pen-test mô phỏng tấn công chủ động, vuln scan liệt kê lỗ hổng|Pen-test chỉ chạy unit tests|Vuln scan là manual only|Pen-test không có exploit|A
-9037|Static code analysis kiểm tra gì?|Pattern lỗi, code smells và rule violations mà không chạy chương trình|Performance metrics|Runtime exceptions|DB state|A
-9038|Dynamic code analysis kiểm tra gì?|Phân tích khi chương trình đang chạy, như profiling và leak detection|Only static issues|Only docs|Only UI|A
-9039|Acceptance criteria quan trọng vì sao?|Xác định rõ khi nào feature được coi là hoàn thành|Tối ưu câu lệnh SQL|Tạo backup|Giảm logs|A
-9040|Test environment nên mô phỏng gì?|Môi trường gần giống production về cấu hình và dữ liệu mẫu|Luôn là localhost dev|Chỉ dùng laptop tester|Chỉ dùng mock data không giống production|A
-9041|Test data quản lý tốt giúp gì?|Giảm flakiness và tái tạo lỗi dễ hơn|Không ảnh hưởng|Tăng lỗi|Giảm security|A
-9042|Flaky test là gì?|Test đôi khi fail mà không do code thay đổi, gây mất tin cậy CI|Test luôn pass|Test never run|Test only for performance|A
-9043|How to reduce flaky tests?|Use stable test data, avoid timing-sensitive assertions and isolate external deps|Add sleeps randomly|Ignore failures|Use more UI interactions|A
-9044|What is test harness?|Bộ công cụ và framework để chạy tests tự động|Production server|IDE only|Database backup tool|A
-9045|Which is example of unit testing framework for C++?|Google Test (gtest)|Selenium|JMeter|Postman|A
-9046|Which tool for API testing supports automated request sequences?|Postman or Newman|GCC|Make|GDB|A
-9047|What is boundary testing example for input 1..10?|Test values 0,1,10,11 and some mid values|Only test 5|Only test 1|Only test 10|A
-9048|What is equivalence partitioning example for age input?|Partition: invalid (<0), child (0-12), adult (13-64), senior (65+)|Only one partition|No partition|Only negative values|A
-9049|Which is white-box technique to ensure path coverage?|Path testing exploring different execution paths|Random testing|Black-box fuzzing|Usability testing|A
-9050|What is fuzz testing used for?|Cung cấp input ngẫu nhiên để tìm crash và lỗ hổng bảo mật|Unit logic only|Load testing only|UI testing only|A
-9051|Which is tool for fuzz testing native apps?|AFL (American Fuzzy Lop)|Selenium|Postman|JMeter|A
-9052|What is 'test pyramid' concept?|Unit tests nhiều nhất, tích hợp trung bình, UI/end-to-end ít nhất|UI tests nhiều nhất|No tests at bottom|Only manual tests|A
-9053|Why prefer more unit tests in pyramid?|Nhanh, dễ duy trì, giúp phát hiện lỗi sớm|Slow and flaky|Expensive to run|Hard to automate|A
-9054|What is 'canary release'?|Phát hành cho 1 tập nhỏ người dùng trước khi roll out toàn bộ để giảm rủi ro|Always release to all users|Only for database schema|Only for docs|A
-9055|Blue-green deployment mục đích?|Cho phép chuyển lưu lượng giữa 2 môi trường tách biệt để rollback nhanh|Always downtime|Increase risk|Delete production|A
-9056|Which is example of non-deterministic test cause?|Race condition hoặc dependency vào thời gian hệ thống|Only deterministic causes|Only static issues|Only syntax errors|A
-9057|How to test concurrency issues?|Use stress tests, specialized tools and thread analysis|Only unit tests|Only static analysis|Only manual QA|A
-9058|What is test data anonymization reason?|Bảo vệ PII khi dùng dữ liệu production trong test|Increase test speed|Make data synthetic only|Always required for performance|A
-9059|What is 'shift-left testing' principle?|Đưa kiểm thử sớm vào vòng đời phát triển để phát hiện lỗi sớm|Testing at the end only|Only in production|Only manual tests|A
-9060|What is 'shift-right testing' principle?|Kiểm thử trong production (canary, monitoring, chaos) để đánh giá thực tế|Only dev testing|Only unit testing|Not related to production|A
-9061|What is chaos engineering used for?|Chủ động gây lỗi/thay đổi môi trường để kiểm tra độ chịu lỗi|Only for unit tests|Only for UI tests|Only for docs|A
-9062|Which is monitoring metric useful after release?|Error rate, latency, throughput and SLO violations|Only CPU usage|Only disk IO|Only memory|A
-9063|What is SLO (Service Level Objective)?|Mục tiêu chất lượng dịch vụ cụ thể (ví dụ 99.9% availability)|Only SLA|Only SLI|Only KPI|A
-9064|What is SLI (Service Level Indicator)?|Metric đo lường như latency, error rate dùng để đánh giá SLO|Only SLO|Only logs|Only alerts|A
-9065|Test data versioning giúp gì?|Tái tạo môi trường test chính xác và đảm bảo tương thích|No benefit|Only for production|Only for logs|A
-9066|Which is test environment isolation best practice?|Use separate DB instances and data sets cho test để tránh can nhiễu|Share production DB|Use same credentials as prod|Always use mock only|A
-9067|Which is technique to detect memory leaks in tests?|Run long-running tests và dùng profilers như Valgrind|Only static analyzer|Only unit tests|Only UI tests|A
-9068|What is 'pearson correlation' irrelevant to testing?|It's a statistics measure, not a standard testing term|Performance metric|Test tool|Test environment|A
-9069|What is 'testability' in software design?|Thiết kế để dễ viết test (loose coupling, DI, small modules)|Only performance|Only security|Only UI|A
-9070|Dependency injection giúp testability như thế nào?|Cho phép thay thế dependency bằng mock khi test|Make code monolithic|Increase coupling|Reduce modularity|A
-9071|Which is example of flaky test due to timing?|Using Thread.sleep and asserting without synchronization|Proper synchronized test|Only unit test|Only integration test|A
-9072|What is 'API contract testing'?|Đảm bảo rằng cả client và server tuân thủ hợp đồng API (schema, fields)|Only UI testing|Only performance testing|Only DB testing|A
-9073|Which is advantage of contract testing?|Phát hiện breaking changes sớm giữa services hợp tác|Increase coupling|Increase latency|Only for monoliths|A
-9074|What is 'shift-left security' (DevSecOps)?|Tích hợp security sớm trong pipeline (SAST, dependency checks)|Only after deploy|Only in QA|Only manual pentest|A
-9075|Which tool for dependency vulnerability scanning?|Dependabot, Snyk, or OWASP Dependency-Check|Selenium|JUnit|GCC|A
-9076|What is SAST vs DAST?|SAST: static analysis of source; DAST: dynamic scanning của running app|Both are same|Only one is needed|Neither useful|A
-9077|What is runtime application self-protection (RASP)?|Công nghệ bảo vệ ứng dụng trong runtime, phát hiện và ngăn hành vi độc hại|Static analysis tool|Only for DB|Only for UI|A
-9078|Which test type validates user interface usability?|Usability testing with real users|Unit testing|Load testing|Security scanning|A
-9079|Accessibility testing ensures gì?|Ứng dụng có thể sử dụng bởi người khuyết tật (screen readers, keyboard nav)|Only for SEO|Only for performance|Only for DB|A
-9080|What is 'test matrics' typo? (intended 'metrics') Why track metrics?|Để đánh giá chất lượng, tốc độ, coverage và trend lỗi theo thời gian|Not useful|Only for management|Only for developers|A
-9081|What is 'defect density'?|Số lỗi trên kích thước phần mềm (ví dụ per KLOC) để đo chất lượng|Only for UI|Only for logs|Only for DB|A
-9082|Which is priority vs severity difference?|Priority: thứ tự xử lý; Severity: mức độ ảnh hưởng khi lỗi xảy ra|Same concept|Irrelevant|Only for performance|A
-9083|What is bug triage?|Quy trình đánh giá, phân loại và ưu tiên sửa lỗi|Only for release|Only for unit tests|Only for CI|A
-9084|Which is common metric for CI pipeline health?|Build success rate, average build time, flaky test rate|Only code coverage|Only number of tests|Only memory usage|A
-9085|What is 'test stub'?|Thay thế thành phần phụ thuộc bằng bản giản lược trả về giá trị cố định|Full mock with behavior|Production DB|Real service|A
-9086|What is 'test spy'?|Mock variant that ghi nhận các tương tác để assert later|Only spy in production|Only for UI|Only for DB|A
-9087|Which is principle of good test case?|Deterministic, nhỏ gọn, độc lập và dễ tái tạo|Flaky and slow|Only manual|Hard to read|A
-9088|What is 'orthogonal array testing'?|Kỹ thuật chọn tập test cases có độ phủ tốt với số test tối thiểu|Random testing|Only for performance|Only for security|A
-9089|Which is example of negative testing?|Truyền input không hợp lệ để kiểm tra xử lý lỗi|Only happy path tests|Only performance tests|Only UI tests|A
-9090|What is 'happy path' test?|Kiểm thử luồng chính khi mọi điều kiện hợp lệ|Negative testing|Exploratory testing|Load testing|A
-9091|What is 'test cleanup' step important?|Đảm bảo trả lại môi trường test ban đầu (xóa dữ liệu test)|Ignore cleanup|Always keep test data|Never reset DB|A
-9092|Which is tool for performance testing of web apps?|JMeter hoặc k6|Selenium only|JUnit only|GDB only|A
-9093|What is 'think time' in load testing?|Thời gian giả lập giữa các hành động của người dùng để mô phỏng hành vi thực|Only response time|Only latency|Only memory|A
-9094|What is 'ramp-up' period trong load test?|Thời gian tăng dần số user ảo để đạt tới tải mục tiêu|Only steady state|Only cooldown|Only single user|A
-9095|What is SLA violation example?|Response time exceed target or high error rate affecting users|Only for internal metrics|Only for logs|Only for backups|A
-9096|Which is technique to validate front-end behavior automatically?|End-to-end tests with Cypress hoặc Selenium|Only unit tests|Only static analysis|Only linting|A
-9097|What is 'headless browser' used for in testing?|Chạy UI tests mà không cần giao diện đồ họa, tiện cho CI|Only for performance|Only for DB|Only for security|A
-9098|Which is reason to mock external payment gateway in tests?|Tránh thao tác thật trên môi trường production và tăng tốc test|Always call real gateway|Never test payments|Ignore payment flow|A
-9099|What is 'test drift' in long-lived test suites?|Khi test expectations lệch dần do thay đổi môi trường hoặc data|Only for performance|Only for UI|Only for DB|A
-9100|Which practice improves reliability of CI pipelines?|Fail fast, isolate tests, parallelize safe tests và fix flaky tests promptly|Ignore flaky tests|Run everything serially|Never automate tests|A
+80000|Kiểm thử phần mềm là gì?|Quá trình đánh giá chất lượng và phát hiện lỗi trong phần mềm|Viết tài liệu|Triển khai hệ thống|Thiết kế UI|A
+80001|Unit test kiểm tra gì?|Các đơn vị nhỏ (hàm/method) độc lập|Toàn bộ hệ thống|Giao diện người dùng|Tốc độ mạng|A
+80002|Integration test tập trung vào?|Tương tác giữa các module/hệ thống|Một hàm riêng lẻ|Giao diện đồ họa|Sao lưu dữ liệu|A
+80003|System test là gì?|Kiểm thử hệ thống hoàn chỉnh trong môi trường giống thực tế|Chỉ test unit|Chỉ test database|Chỉ kiểm tra UI|A
+80004|Acceptance test (UAT) nhằm mục đích?|Xác nhận phần mềm đáp ứng yêu cầu của khách hàng|Tối ưu code|Tăng tốc server|Chạy load test|A
+80005|Regression testing làm gì?|Kiểm tra lại chức năng sau sửa đổi để phát hiện lỗi quay lại|Tự động viết code|Xóa dữ liệu|Tối ưu SQL|A
+80006|Smoke test dùng để?|Kiểm tra nhanh các chức năng chính trước khi test sâu|Thay đổi database|Tạo báo cáo|Chạy performance test|A
+80007|Sanity test khác smoke test ở điểm nào?|Sanity kiểm tra chi tiết hơn một tính năng sau sửa lỗi|Là test performance|Chạy load test|Là unit test|A
+80008|Black-box testing tập trung vào gì?|Đầu vào/đầu ra mà không cần biết cấu trúc bên trong|Dựa vào code|Xem cấu trúc dữ liệu nội bộ|Phân tích heap|A
+80009|White-box testing phụ thuộc vào gì?|Hiểu biết cấu trúc mã nguồn và luồng điều khiển|Chỉ tài liệu|Chỉ GUI|Chỉ performance|A
+80010|Static testing là gì?|Phân tích mã/tài liệu mà không chạy chương trình|Chạy unit tests|Chạy performance tests|Test security|A
+80011|Dynamic testing là gì?|Chạy phần mềm để kiểm tra hành vi|Viết tài liệu|Thiết kế schema|Chạy static analysis|A
+80012|Test case nên chứa những gì?|Mục tiêu, dữ liệu vào, bước, kết quả mong đợi|Chỉ tên tester|Chỉ thời gian chạy|Chỉ code|A
+80013|Test plan mô tả gì?|Phạm vi, chiến lược, tài nguyên và lịch trình kiểm thử|Chỉ kết quả test|Chỉ code|Chỉ interface|A
+80014|Test oracle dùng để làm gì?|Xác định kết quả mong đợi để so sánh với kết quả thực tế|Tạo test data|Tối ưu code|Quản lý user|A
+80015|Boundary value analysis tập trung vào?|Các giá trị biên của input để tìm lỗi|Random testing|Stress testing|Performance tuning|A
+80016|Equivalence partitioning là kỹ thuật gì?|Chia dữ liệu thành các lớp giá trị tương đương để giảm số test cases|Phân tích hiệu năng|Kiểm thử bảo mật|Quét mạng|A
+80017|Exploratory testing là gì?|Tester tìm hiểu và thiết kế test trong quá trình thực thi, ít tài liệu trước|Unit testing|Automation only|Performance testing|A
+80018|Test automation phù hợp khi nào?|Kiểm tra lặp đi lặp lại, regression và test có thể tái sử dụng|Chỉ test mới|Chỉ exploratory|Không dùng cho regression|A
+80019|Selenium là công cụ gì?|Automation cho browser (web UI testing)|Database tool|Performance tool|Build tool|A
+80020|Mock object dùng để làm gì trong testing?|Thay thế phụ thuộc bên ngoài để kiểm soát môi trường test|Thay thế test plan|Thay thế production DB|Tạo UI|A
+80021|Code coverage cho biết gì?|Tỉ lệ mã nguồn được chạy trong quá trình test|Số lỗi đã sửa|Số commit|Số user|A
+80022|Branch coverage kiểm tra gì?|Các nhánh điều kiện đã được thực thi hay chưa|Chỉ dòng code|Chỉ function prototypes|Chỉ comments|A
+80023|Statement coverage là gì?|Tỉ lệ câu lệnh đã được thực thi bởi tests|Tỉ lệ lỗi|Tốc độ chạy|Memory usage|A
+80024|Mutation testing mục đích là gì?|Đánh giá chất lượng test suite bằng cách biến đổi mã và xem test phát hiện được không|Tối ưu DB|Tạo UI|Ghi log|A
+80025|Continuous Integration (CI) có lợi cho testing như thế nào?|Tự động chạy test khi có commit giúp phát hiện lỗi sớm|Chỉ deploy code|Chỉ build docs|Chỉ format code|A
+80026|Test-driven development (TDD) bắt đầu bằng gì?|Viết test case trước khi viết mã thực hiện|Viết tài liệu trước|Viết UI trước|Tạo DB schema trước|A
+80027|Behavior-driven development (BDD) dùng ngôn ngữ gì để mô tả test?|Gherkin (Given/When/Then)|SQL|HTML|CSS|A
+80028|Load testing kiểm tra gì?|Hiệu năng hệ thống dưới tải bình thường/đỉnh|Unit function logic|UI layout|Security flaws|A
+80029|Stress testing dùng để?|Kiểm tra hệ thống khi vượt quá khả năng xử lý để xem cách fail|Test unit logic|Test code style|Test docs|A
+80030|Performance testing mục tiêu?|Đo thời gian phản hồi, throughput và resource utilization|Chỉ kiểm tra security|Chỉ kiểm tra UI|Chỉ kiểm tra DB schema|A
+80031|Endurance (soak) test kiểm tra gì?|Hệ thống chạy lâu để phát hiện rò rỉ bộ nhớ hoặc degradation|Chỉ run unit tests|Chỉ run lint|Chỉ run deploy|A
+80032|Spike testing là gì?|Đột ngột tăng tải lớn để kiểm tra phản ứng hệ thống|Tăng mã nguồn|Tạo UI changes|Xóa DB|A
+80033|Which is non-functional requirement example?|Scalability and performance|Function to add user|Function to send email|Function to login|A
+80034|Security testing kiểm tra gì?|Lỗ hổng bảo mật như SQLi, XSS, CSRF, authentication flaws|UI spacing|Color contrast|Spelling errors|A
+80035|Penetration testing khác vulnerability scan như thế nào?|Pen-test mô phỏng tấn công chủ động, vuln scan liệt kê lỗ hổng|Pen-test chỉ chạy unit tests|Vuln scan là manual only|Pen-test không có exploit|A
+80036|Static code analysis kiểm tra gì?|Pattern lỗi, code smells và rule violations mà không chạy chương trình|Performance metrics|Runtime exceptions|DB state|A
+80037|Dynamic code analysis kiểm tra gì?|Phân tích khi chương trình đang chạy, như profiling và leak detection|Only static issues|Only docs|Only UI|A
+80038|Acceptance criteria quan trọng vì sao?|Xác định rõ khi nào feature được coi là hoàn thành|Tối ưu câu lệnh SQL|Tạo backup|Giảm logs|A
+80039|Test environment nên mô phỏng gì?|Môi trường gần giống production về cấu hình và dữ liệu mẫu|Luôn là localhost dev|Chỉ dùng laptop tester|Chỉ dùng mock data không giống production|A
+80040|Test data quản lý tốt giúp gì?|Giảm flakiness và tái tạo lỗi dễ hơn|Không ảnh hưởng|Tăng lỗi|Giảm security|A
+80041|Flaky test là gì?|Test đôi khi fail mà không do code thay đổi, gây mất tin cậy CI|Test luôn pass|Test never run|Test only for performance|A
+80042|How to reduce flaky tests?|Use stable test data, avoid timing-sensitive assertions and isolate external deps|Add sleeps randomly|Ignore failures|Use more UI interactions|A
+80043|What is test harness?|Bộ công cụ và framework để chạy tests tự động|Production server|IDE only|Database backup tool|A
+80044|Which is example of unit testing framework for C++?|Google Test (gtest)|Selenium|JMeter|Postman|A
+80045|Which tool for API testing supports automated request sequences?|Postman or Newman|GCC|Make|GDB|A
+80046|What is boundary testing example for input 1..10?|Test values 0,1,10,11 and some mid values|Only test 5|Only test 1|Only test 10|A
+80047|What is equivalence partitioning example for age input?|Partition: invalid (<0), child (0-12), adult (13-64), senior (65+)|Only one partition|No partition|Only negative values|A
+80048|Which is white-box technique to ensure path coverage?|Path testing exploring different execution paths|Random testing|Black-box fuzzing|Usability testing|A
+80049|What is fuzz testing used for?|Cung cấp input ngẫu nhiên để tìm crash và lỗ hổng bảo mật|Unit logic only|Load testing only|UI testing only|A
+80050|Which is tool for fuzz testing native apps?|AFL (American Fuzzy Lop)|Selenium|Postman|JMeter|A
+80051|What is 'test pyramid' concept?|Unit tests nhiều nhất, tích hợp trung bình, UI/end-to-end ít nhất|UI tests nhiều nhất|No tests at bottom|Only manual tests|A
+80052|Why prefer more unit tests in pyramid?|Nhanh, dễ duy trì, giúp phát hiện lỗi sớm|Slow and flaky|Expensive to run|Hard to automate|A
+80053|What is 'canary release'?|Phát hành cho 1 tập nhỏ người dùng trước khi roll out toàn bộ để giảm rủi ro|Always release to all users|Only for database schema|Only for docs|A
+80054|Blue-green deployment mục đích?|Cho phép chuyển lưu lượng giữa 2 môi trường tách biệt để rollback nhanh|Always downtime|Increase risk|Delete production|A
+80055|Which is example of non-deterministic test cause?|Race condition hoặc dependency vào thời gian hệ thống|Only deterministic causes|Only static issues|Only syntax errors|A
+80056|How to test concurrency issues?|Use stress tests, specialized tools and thread analysis|Only unit tests|Only static analysis|Only manual QA|A
+80057|What is test data anonymization reason?|Bảo vệ PII khi dùng dữ liệu production trong test|Increase test speed|Make data synthetic only|Always required for performance|A
+80058|What is 'shift-left testing' principle?|Đưa kiểm thử sớm vào vòng đời phát triển để phát hiện lỗi sớm|Testing at the end only|Only in production|Only manual tests|A
+80059|What is 'shift-right testing' principle?|Kiểm thử trong production (canary, monitoring, chaos) để đánh giá thực tế|Only dev testing|Only unit testing|Not related to production|A
+80060|What is chaos engineering used for?|Chủ động gây lỗi/thay đổi môi trường để kiểm tra độ chịu lỗi|Only for unit tests|Only for UI tests|Only for docs|A
+80061|Which is monitoring metric useful after release?|Error rate, latency, throughput and SLO violations|Only CPU usage|Only disk IO|Only memory|A
+80062|What is SLO (Service Level Objective)?|Mục tiêu chất lượng dịch vụ cụ thể (ví dụ 99.9% availability)|Only SLA|Only SLI|Only KPI|A
+80063|What is SLI (Service Level Indicator)?|Metric đo lường như latency, error rate dùng để đánh giá SLO|Only SLO|Only logs|Only alerts|A
+80064|Test data versioning giúp gì?|Tái tạo môi trường test chính xác và đảm bảo tương thích|No benefit|Only for production|Only for logs|A
+80065|Which is test environment isolation best practice?|Use separate DB instances and data sets cho test để tránh can nhiễu|Share production DB|Use same credentials as prod|Always use mock only|A
+80066|Which is technique to detect memory leaks in tests?|Run long-running tests và dùng profilers như Valgrind|Only static analyzer|Only unit tests|Only UI tests|A
+80067|What is 'pearson correlation' irrelevant to testing?|It's a statistics measure, not a standard testing term|Performance metric|Test tool|Test environment|A
+80068|What is 'testability' in software design?|Thiết kế để dễ viết test (loose coupling, DI, small modules)|Only performance|Only security|Only UI|A
+80069|Dependency injection giúp testability như thế nào?|Cho phép thay thế dependency bằng mock khi test|Make code monolithic|Increase coupling|Reduce modularity|A
+80070|Which is example of flaky test due to timing?|Using Thread.sleep and asserting without synchronization|Proper synchronized test|Only unit test|Only integration test|A
+80071|What is 'API contract testing'?|Đảm bảo rằng cả client và server tuân thủ hợp đồng API (schema, fields)|Only UI testing|Only performance testing|Only DB testing|A
+80072|Which is advantage of contract testing?|Phát hiện breaking changes sớm giữa services hợp tác|Increase coupling|Increase latency|Only for monoliths|A
+80073|What is 'shift-left security' (DevSecOps)?|Tích hợp security sớm trong pipeline (SAST, dependency checks)|Only after deploy|Only in QA|Only manual pentest|A
+80074|Which tool for dependency vulnerability scanning?|Dependabot, Snyk, or OWASP Dependency-Check|Selenium|JUnit|GCC|A
+80075|What is SAST vs DAST?|SAST: static analysis of source; DAST: dynamic scanning của running app|Both are same|Only one is needed|Neither useful|A
+80076|What is runtime application self-protection (RASP)?|Công nghệ bảo vệ ứng dụng trong runtime, phát hiện và ngăn hành vi độc hại|Static analysis tool|Only for DB|Only for UI|A
+80077|Which test type validates user interface usability?|Usability testing with real users|Unit testing|Load testing|Security scanning|A
+80078|Accessibility testing ensures gì?|Ứng dụng có thể sử dụng bởi người khuyết tật (screen readers, keyboard nav)|Only for SEO|Only for performance|Only for DB|A
+80079|What is 'test matrics' typo? (intended 'metrics') Why track metrics?|Để đánh giá chất lượng, tốc độ, coverage và trend lỗi theo thời gian|Not useful|Only for management|Only for developers|A
+80080|What is 'defect density'?|Số lỗi trên kích thước phần mềm (ví dụ per KLOC) để đo chất lượng|Only for UI|Only for logs|Only for DB|A
+80081|Which is priority vs severity difference?|Priority: thứ tự xử lý; Severity: mức độ ảnh hưởng khi lỗi xảy ra|Same concept|Irrelevant|Only for performance|A
+80082|What is bug triage?|Quy trình đánh giá, phân loại và ưu tiên sửa lỗi|Only for release|Only for unit tests|Only for CI|A
+80083|Which is common metric for CI pipeline health?|Build success rate, average build time, flaky test rate|Only code coverage|Only number of tests|Only memory usage|A
+80084|What is 'test stub'?|Thay thế thành phần phụ thuộc bằng bản giản lược trả về giá trị cố định|Full mock with behavior|Production DB|Real service|A
+80085|What is 'test spy'?|Mock variant that ghi nhận các tương tác để assert later|Only spy in production|Only for UI|Only for DB|A
+80086|Which is principle of good test case?|Deterministic, nhỏ gọn, độc lập và dễ tái tạo|Flaky and slow|Only manual|Hard to read|A
+80087|What is 'orthogonal array testing'?|Kỹ thuật chọn tập test cases có độ phủ tốt với số test tối thiểu|Random testing|Only for performance|Only for security|A
+80088|Which is example of negative testing?|Truyền input không hợp lệ để kiểm tra xử lý lỗi|Only happy path tests|Only performance tests|Only UI tests|A
+80089|What is 'happy path' test?|Kiểm thử luồng chính khi mọi điều kiện hợp lệ|Negative testing|Exploratory testing|Load testing|A
+80090|What is 'test cleanup' step important?|Đảm bảo trả lại môi trường test ban đầu (xóa dữ liệu test)|Ignore cleanup|Always keep test data|Never reset DB|A
+80091|Which is tool for performance testing of web apps?|JMeter hoặc k6|Selenium only|JUnit only|GDB only|A
+80092|What is 'think time' in load testing?|Thời gian giả lập giữa các hành động của người dùng để mô phỏng hành vi thực|Only response time|Only latency|Only memory|A
+80093|What is 'ramp-up' period trong load test?|Thời gian tăng dần số user ảo để đạt tới tải mục tiêu|Only steady state|Only cooldown|Only single user|A
+80094|What is SLA violation example?|Response time exceed target or high error rate affecting users|Only for internal metrics|Only for logs|Only for backups|A
+80095|Which is technique to validate front-end behavior automatically?|End-to-end tests with Cypress hoặc Selenium|Only unit tests|Only static analysis|Only linting|A
+80096|What is 'headless browser' used for in testing?|Chạy UI tests mà không cần giao diện đồ họa, tiện cho CI|Only for performance|Only for DB|Only for security|A
+80097|Which is reason to mock external payment gateway in tests?|Tránh thao tác thật trên môi trường production và tăng tốc test|Always call real gateway|Never test payments|Ignore payment flow|A
+80098|What is 'test drift' in long-lived test suites?|Khi test expectations lệch dần do thay đổi môi trường hoặc data|Only for performance|Only for UI|Only for DB|A
+80099|Which practice improves reliability of CI pipelines?|Fail fast, isolate tests, parallelize safe tests và fix flaky tests promptly|Ignore flaky tests|Run everything serially|Never automate tests|A

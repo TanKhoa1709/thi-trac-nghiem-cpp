@@ -1,101 +1,101 @@
 100
-5001|He dieu hanh chay o che do nao tren CPU?|Kernel mode (supervisor)|User mode|Virtual mode|Guest mode|A
-5002|System call dung de lam gi?|Cho phep chuong trinh nguoi dung yeu cau dich vu tu kernel|Truy cap thang vao hardware|Thay doi firmware|Tat process|A
-5003|Process va thread khac nhau o dau?|Thread chia se bo nho nhung process co address space rieng|Process chia se bo nho, thread rieng|Thread la mot file|Process la tinh nang RAM|A
-5004|Context switch la gi?|Luu trang thai mot process va tai trang thai process khac|Copy file tu disk|Thay doi kernel|Tao thread moi|A
-5005|Which scheduling policy is preemptive?|Round-robin|First-come first-served (FCFS)|Non-preemptive priority|Batch scheduling|A
-5006|Mutex va semaphore khac nhau nhu the nao?|Mutex la semaphore co gia tri 1 (binary) va dung de bao ve khu vuc critial|Semaphore khong bao gio dung cho sync|Mutex cho thread GUI|Semaphore la file|A
-5007|Deadlock xay ra khi nao?|Khi cac tien trinh ky vong lan nhau de giai phong resource|Khi CPU chay nhanh|Khi RAM het|Khi I/O cham|A
-5008|Four necessary conditions for deadlock khong bao gom?|Mutual exclusion, hold and wait, no preemption, circular wait|Preemption|Mutual exclusion|Circular wait|B
-5009|Virtual memory la gi?|Ket hop bo nho RAM va disk de tao anh bo nho lon hon RAM thuc|Chi RAM|Chi disk|Cache CPU|A
-5010|Paging la gi?|Chia address space thanh cac trang co kich thuoc bang nhau|Chia thanh segment kich thuoc khac nhau|Compress memory|Swap file only|A
-5011|Page table dung de lam gi?|Map virtual page -> physical frame|Encrypt pages|Compress pages|Store file metadata|A
-5012|TLB (Translation Lookaside Buffer) co chuc nang nao?|Luu ban nhap nhanh cac map page->frame de giam thoi gian dich dia chi|Luu file tam|Cap nhat disk|Goi system call|A
-5013|Page fault xay ra khi nao?|Khi trang khong co tren RAM va can duoc load tu disk|Khi CPU loi|Khi disk full|Khi file khong ton tai|A
-5014|Swap space dung de gi?|Luu trang khi RAM khong du|Luu registers|Luu file tam|Luu cac driver|A
-5015|Segmentation khac paging o dau?|Segmentation dung co kich thuoc khac nhau va thuong theo logic chuong trinh|Paging dung segment co kich thuoc khac nhau|Segmentation la paging|No difference|A
-5016|Which is LRU replacement policy?|Least Recently Used page replacement|Most Recently Used|First In First Out|Random|A
-5017|Thrashing xay ra khi nao?|Khi he thong mat nhiều thoi gian cho page fault va khong thuc hien cong viec hieu qua|Khi CPU chay nhanh|Khi I/O cham|Khi file full|A
-5018|File system inode luu gi?|Thong tin metadata cua file nhu owner, mode, block pointers|No data|Only file content|Only timestamps|A
-5019|Which is journaling file system muc dich?|Giam thiệt hại khi crash bang cach ghi metadata vao journal truoc|Tang toc do CPU|Lam code ngan hon|Tang dung luong|A
-5020|Device driver la gi?|Phan mem giao tiep giua kernel va hardware|Phan mem nguoi dung|Script|Bootloader|A
-5021|Interrupt la gi?|Thong bao tu hardware den CPU de xu ly su kien|Yeu cau GUI|File IO|Memory allocation|A
-5022|ISR (Interrupt Service Routine) phai thuc hien nhu the nao?|Nhanh va tra ve de tien trinh khac tiep tuc chay|Chay lau|Thuc hien IO hoan toan|Tat kernel|A
-5023|Polling va interrupt khac nhau o dau?|Polling la kiem tra lien tuc, interrupt la thong bao tu hardware|Polling nhanh hon|Interrupt khong ton CPU|No difference|A
-5024|Which is responsibility of kernel scheduler?|Chon tien trinh/deamon tiep theo de chay tren CPU|Ghi file ra disk|Manage network|Encrypt data|A
-5025|Preemptive scheduling cho phep gi?|Tac dung lay CPU di khoi tien trinh hien tai de dua cho tien trinh khac|Cho phep tien trinh tu dong tat|Tang bo nho|Lam tang I/O|A
-5026|FCFS scheduling tinh toi thieu cho gi?|Simple and fair but may suffer convoy effect|Minimize turnaround always|Minimize waiting always|Optimize IO|A
-5027|Which scheduling reduces average waiting time but is prone to starvation?|Shortest Job First (SJF) non-preemptive|FCFS|Round-robin|Priority with aging|A
-5028|Aging technique dung de lam gi?|Giam nguy co starvation bang cach tang priority theo thoi gian cho doi|Tang throughput|Giam memory|Tang io|A
-5029|Which provides process isolation?|Separate address spaces and MMU protections|Shared global variables only|Same memory for all|No isolation|A
-5030|Pipes in UNIX la gi?|Cach truyen du lieu tu tien trinh nay sang tien trinh khac thong qua kernel buffer|File|Signal|Socket|A
-5031|Named pipes (FIFOs) khac pipe thuong o dau?|Co ten tren filesystem va luu giu qua time|Only in kernel|Only for sockets|No difference|A
-5032|Signals in UNIX duoc su dung cho?|Thong bao su kien nho cho process (e.g., SIGINT)|File IO|Memory management|Disk format|A
-5033|Which signal terminates process by default?|SIGTERM or SIGKILL depends, SIGKILL cannot be caught|SIGKILL cannot be caught|SIGSTOP terminates|SIGHUP terminates|B
-5034|Fork system call lam gi?|Tao mot process moi la ban sao cua process hien tai|Ket thuc process hien tai|Tao thread moi|Mo file|A
-5035|Exec family functions lam gi khi dung sau fork?|Thay doi hinh anh tien trinh hien tai voi mot chuong trinh khac|Ket thuc CPU|Thay doi kernel|None|A
-5036|Zombie process la gi?|Process da ket thuc nhung cha chua thu lai (wait) de nhan exit status|Process dang chay|Process canh bao|Process bi block|A
-5037|Orphan process la gi?|Process cha bi ket thuc truoc, child sap duoc nhan boi init (PID 1)|Process bi killed|Process dieu khien IO|None|A
-5038|Which is role of init/systemd?|Khoi tao he thong va quan ly services|Encrypt disk|Manage user shell|Compile kernel|A
-5039|Virtualization hypervisor co hai loai la gi?|Type 1 (bare-metal) va Type 2 (hosted)|Type A va Type B|Kernel va User|None|A
-5040|Container khac VM o dau?|Container chia se kernel cua host, VM co kernel rieng|Container co kernel rieng|VM la lightweight hon|No difference|A
-5041|Which syscall is used to create thread in Linux low-level?|clone (or pthread_create at higher level)|fork|exec|open|A
-5042|Race condition xay ra khi nao?|Khi tat ca thread truy cap va thay doi chung mot bien khong dong bo|When only reading data|When no concurrency|When using mutex|A
-5043|Condition variable dung de lam gi?|Cho thread cho den dieu kien dat|Replace mutex|Replace semaphore|Block IO|A
-5044|Which primitive is best for mutual exclusion with blocking?|Mutex|Spinlock|Atomic read|Semaphore counting infinite|A
-5045|Spinlock phu hop khi nao?|Khi critical section rat ngan va khong nen block thread|Khi block IO|Khi long compute|No usage|A
-5046|Which provides atomic operations in C++?|std::atomic|std::mutex|volatile|static|A
-5047|Semaphore counting co the dung cho gi?|Quan ly nhieu resource cung luc|Chi danh cho priority|Chi danh cho atomic|Chi danh cho file|A
-5048|Kernel preemption la gi?|Khả năng kernel bi preempted de nâng cao responsivenes|Kernel khong the bi preempted|Kernel always preemptive|No meaning|A
-5049|Real-time OS yeu cau gi?|Deterministic response times and bounded latencies|High throughput only|Low memory only|No drivers|A
-5050|Which scheduling suits soft real-time tasks?|Priority-based with deadlines like EDF or RMS|FCFS only|No scheduling|Random|A
-5051|What is page table entry frame number for?|Identify physical frame containing the page|Store virtual address|Encrypt page|Store filename|A
-5052|Which is demand paging?|Load pages into memory only when referenced by program|Load all pages at start|Never load pages|Swap immediately|A
-5053|Copy-on-write used for which scenario?|Fork optimization to avoid copying pages until modified|Always copy pages eagerly|Never copy pages|Compress pages|A
-5054|Buffer cache in OS dung de gi?|Cache block data from disk to speed up IO|Store CPU registers|Store network packets forever|Replace files|A
-5055|Write-back and write-through are policies for?|Caching write behavior to disk|Scheduling|Paging|Signals|A
-5056|Which API is used for asynchronous IO in POSIX?|aio_* family (aio_read, aio_write)|read|write|open|A
-5057|Which is role of kernel module?|Cho phep nang cap chuc nang kernel dong thoi|Replace user apps|Encrypt kernel|None|A
-5058|Which is watchdog timer used for?|Detect and recover from hangs by rebooting or taking action|Increase CPU speed|Manage memory|Schedule tasks|A
-5059|Which is the effect of disabling interrupts for long time?|Increase interrupt latency and hurt responsiveness|Improve multitasking|Decrease latency|Increase throughput|A
-5060|Which is file descriptor in UNIX?|Integer handle for open files, sockets, pipes|Pointer to file structure|String filename|Process id|A
-5061|Which syscall opens a file?|open (or openat)|read|write|exec|A
-5062|Which syscall reads from file descriptor?|read|open|close|stat|A
-5063|Which syscall writes to file descriptor?|write|open|close|stat|A
-5064|Which syscall closes file descriptor?|close|read|write|open|A
-5065|Which is characteristic of microkernel architecture?|Minimal kernel with services in user space|Everything in kernel|No userspace|Only one service|A
-5066|Monolithic kernel co dac diem nao?|Phan nhieu chuc nang trong kernel space va thong thuong hieu nang tot|None|Only for embedded|Deprecated|A
-5067|Which is advantage of microkernel?|Isolation of services and fault tolerance|Higher performance than monolithic always|No drivers needed|No syscalls|A
-5068|Which is common for embedded OS?|Real-time scheduling and small footprint|Large GUI stacks|High power|Complex virtualization|A
-5069|Which is kernel panic?|Severe kernel error causing stop of system and possible reboot|Application crash only|Network error|Disk full|A
-5070|Which tool can show running processes in Linux interactively?|top or htop|ls|cat|grep|A
-5071|Which command shows open files by processes?|lsof|ls|df|mount|A
-5072|Which is use of cgroups in Linux?|Control resource usage by sets of processes (CPU, memory, IO)|Encrypt groups|Manage users|Schedule tasks only|A
-5073|Which is purpose of namespaces in Linux?|Provide isolation (pid, net, mount, uts...) for containers|Provide encryption|Provide permissions only|Backup files|A
-5074|Which is advantage of tmpfs?|Store files in volatile memory for speed|Persistent storage|Compress files|Network share|A
-5075|Which is role of udev in Linux?|Dynamically manage device nodes in /dev|Manage users|Schedule tasks|Provide GUI|A
-5076|Which syscall returns current process id?|getpid|fork|exec|open|A
-5077|Which syscall waits for child process to change state?|wait or waitpid|getpid|fork|exec|A
-5078|Which is purpose of chroot?|Change apparent root directory for process sandboxing|Change user password|Encrypt file|None|A
-5079|Which syscall changes file permissions?|chmod (via fchmod for fd)|open|read|write|A
-5080|Which syscall creates a new filesystem directory?|mkdir|rmdir|open|close|A
-5081|Which is meaning of SUID bit on executable?|Process runs with file owner's privileges when executed|No effect|Increase speed|Only for directories|A
-5082|Which is role of umask?|Define default permission bits for new files|Delete files|Encrypt files|Backup files|A
-5083|Which mechanism used for IPC (inter-process communication)?|Pipes, message queues, shared memory, sockets|Only sockets|Only files|Only signals|A
-5084|Shared memory requires what for synchronization?|Mutexes or semaphores to avoid race conditions|Nothing|Only files|Only signals|A
-5085|Which scheduling metric aims to maximize CPU utilization and throughput?|Batch systems often aim for throughput|Realtime systems aim for low latency|Interactive systems aim for responsiveness|GUI systems aim for aesthetics|A
-5086|Which is role of device mapper in Linux?|Provide virtual block devices e.g., LVM, dm-crypt|Manage network routes|Manage users|Compile kernel|A
-5087|Which is kernel address space layout randomization (KASLR) used for?|Mitigate exploitability by randomizing kernel base address|Increase speed|Reduce memory|Manage disks|A
-5088|Which is hotplug in kernel context?|Support adding/removing devices at runtime|Only at boot|Never supported|Only virtual devices|A
-5089|Which is role of swapiness parameter in Linux?|Control tendency to swap out pages vs keep in RAM|High -> more swapping, Low -> less|Only for disk speed|For CPU scaling|A
-5090|Which is method to prevent priority inversion?|Priority inheritance|Disable scheduling|Use only low priority tasks|Never use mutex|A
-5091|Which is page coloring used for?|Reduce cache conflict misses by coloring physical pages|Encrypt pages|Compress pages|Map files|A
-5092|Which tool shows memory usage in Linux?|free, vmstat, top|ls|pwd|cd|A
-5093|Which is function of /proc filesystem?|Expose kernel and process info to user space|Store persistent data|Mount network|Compile drivers|A
-5094|Which is function of /sys filesystem?|Provide sysfs interface for kernel objects and device attributes|Store user files|Swap space|Network config|A
-5095|Which is purpose of mlock/munlock syscalls?|Pin pages in RAM to prevent swapping|Encrypt pages|Compress pages|Change owner|A
-5096|Which is advantage of copy-on-write for fork?|Reduce memory usage until pages are modified|Always duplicate memory|Increase swap usage|None|A
-5097|Which is algorithm for disk scheduling optimizing seek time?|Elevator (SCAN) algorithm|FCFS only|Round robin|SJF|A
-5098|Which is block device vs character device difference?|Block devices support buffered I/O (random access), char devices are unbuffered streams|They are same|Only block devices exist|Only char devices exist|A
-5099|Which is function of ioctl syscall?|Device-specific operations and control beyond standard read/write|Open file|Close file|Read file|A
-5100|Which is recommended to handle long-running blocking operations in kernel?|Use worker threads or defer work (workqueue, tasklet) rather than blocking in interrupt context|Block in ISR forever|Disable interrupts permanently|Use busy-wait forever|A
+40000|He dieu hanh chay o che do nao tren CPU?|Kernel mode (supervisor)|User mode|Virtual mode|Guest mode|A
+40001|System call dung de lam gi?|Cho phep chuong trinh nguoi dung yeu cau dich vu tu kernel|Truy cap thang vao hardware|Thay doi firmware|Tat process|A
+40002|Process va thread khac nhau o dau?|Thread chia se bo nho nhung process co address space rieng|Process chia se bo nho, thread rieng|Thread la mot file|Process la tinh nang RAM|A
+40003|Context switch la gi?|Luu trang thai mot process va tai trang thai process khac|Copy file tu disk|Thay doi kernel|Tao thread moi|A
+40004|Which scheduling policy is preemptive?|Round-robin|First-come first-served (FCFS)|Non-preemptive priority|Batch scheduling|A
+40005|Mutex va semaphore khac nhau nhu the nao?|Mutex la semaphore co gia tri 1 (binary) va dung de bao ve khu vuc critial|Semaphore khong bao gio dung cho sync|Mutex cho thread GUI|Semaphore la file|A
+40006|Deadlock xay ra khi nao?|Khi cac tien trinh ky vong lan nhau de giai phong resource|Khi CPU chay nhanh|Khi RAM het|Khi I/O cham|A
+40007|Four necessary conditions for deadlock khong bao gom?|Mutual exclusion, hold and wait, no preemption, circular wait|Preemption|Mutual exclusion|Circular wait|B
+40008|Virtual memory la gi?|Ket hop bo nho RAM va disk de tao anh bo nho lon hon RAM thuc|Chi RAM|Chi disk|Cache CPU|A
+40009|Paging la gi?|Chia address space thanh cac trang co kich thuoc bang nhau|Chia thanh segment kich thuoc khac nhau|Compress memory|Swap file only|A
+40010|Page table dung de lam gi?|Map virtual page -> physical frame|Encrypt pages|Compress pages|Store file metadata|A
+40011|TLB (Translation Lookaside Buffer) co chuc nang nao?|Luu ban nhap nhanh cac map page->frame de giam thoi gian dich dia chi|Luu file tam|Cap nhat disk|Goi system call|A
+40012|Page fault xay ra khi nao?|Khi trang khong co tren RAM va can duoc load tu disk|Khi CPU loi|Khi disk full|Khi file khong ton tai|A
+40013|Swap space dung de gi?|Luu trang khi RAM khong du|Luu registers|Luu file tam|Luu cac driver|A
+40014|Segmentation khac paging o dau?|Segmentation dung co kich thuoc khac nhau va thuong theo logic chuong trinh|Paging dung segment co kich thuoc khac nhau|Segmentation la paging|No difference|A
+40015|Which is LRU replacement policy?|Least Recently Used page replacement|Most Recently Used|First In First Out|Random|A
+40016|Thrashing xay ra khi nao?|Khi he thong mat nhiều thoi gian cho page fault va khong thuc hien cong viec hieu qua|Khi CPU chay nhanh|Khi I/O cham|Khi file full|A
+40017|File system inode luu gi?|Thong tin metadata cua file nhu owner, mode, block pointers|No data|Only file content|Only timestamps|A
+40018|Which is journaling file system muc dich?|Giam thiệt hại khi crash bang cach ghi metadata vao journal truoc|Tang toc do CPU|Lam code ngan hon|Tang dung luong|A
+40019|Device driver la gi?|Phan mem giao tiep giua kernel va hardware|Phan mem nguoi dung|Script|Bootloader|A
+40020|Interrupt la gi?|Thong bao tu hardware den CPU de xu ly su kien|Yeu cau GUI|File IO|Memory allocation|A
+40021|ISR (Interrupt Service Routine) phai thuc hien nhu the nao?|Nhanh va tra ve de tien trinh khac tiep tuc chay|Chay lau|Thuc hien IO hoan toan|Tat kernel|A
+40022|Polling va interrupt khac nhau o dau?|Polling la kiem tra lien tuc, interrupt la thong bao tu hardware|Polling nhanh hon|Interrupt khong ton CPU|No difference|A
+40023|Which is responsibility of kernel scheduler?|Chon tien trinh/deamon tiep theo de chay tren CPU|Ghi file ra disk|Manage network|Encrypt data|A
+40024|Preemptive scheduling cho phep gi?|Tac dung lay CPU di khoi tien trinh hien tai de dua cho tien trinh khac|Cho phep tien trinh tu dong tat|Tang bo nho|Lam tang I/O|A
+40025|FCFS scheduling tinh toi thieu cho gi?|Simple and fair but may suffer convoy effect|Minimize turnaround always|Minimize waiting always|Optimize IO|A
+40026|Which scheduling reduces average waiting time but is prone to starvation?|Shortest Job First (SJF) non-preemptive|FCFS|Round-robin|Priority with aging|A
+40027|Aging technique dung de lam gi?|Giam nguy co starvation bang cach tang priority theo thoi gian cho doi|Tang throughput|Giam memory|Tang io|A
+40028|Which provides process isolation?|Separate address spaces and MMU protections|Shared global variables only|Same memory for all|No isolation|A
+40029|Pipes in UNIX la gi?|Cach truyen du lieu tu tien trinh nay sang tien trinh khac thong qua kernel buffer|File|Signal|Socket|A
+40030|Named pipes (FIFOs) khac pipe thuong o dau?|Co ten tren filesystem va luu giu qua time|Only in kernel|Only for sockets|No difference|A
+40031|Signals in UNIX duoc su dung cho?|Thong bao su kien nho cho process (e.g., SIGINT)|File IO|Memory management|Disk format|A
+40032|Which signal terminates process by default?|SIGTERM or SIGKILL depends, SIGKILL cannot be caught|SIGKILL cannot be caught|SIGSTOP terminates|SIGHUP terminates|B
+40033|Fork system call lam gi?|Tao mot process moi la ban sao cua process hien tai|Ket thuc process hien tai|Tao thread moi|Mo file|A
+40034|Exec family functions lam gi khi dung sau fork?|Thay doi hinh anh tien trinh hien tai voi mot chuong trinh khac|Ket thuc CPU|Thay doi kernel|None|A
+40035|Zombie process la gi?|Process da ket thuc nhung cha chua thu lai (wait) de nhan exit status|Process dang chay|Process canh bao|Process bi block|A
+40036|Orphan process la gi?|Process cha bi ket thuc truoc, child sap duoc nhan boi init (PID 1)|Process bi killed|Process dieu khien IO|None|A
+40037|Which is role of init/systemd?|Khoi tao he thong va quan ly services|Encrypt disk|Manage user shell|Compile kernel|A
+40038|Virtualization hypervisor co hai loai la gi?|Type 1 (bare-metal) va Type 2 (hosted)|Type A va Type B|Kernel va User|None|A
+40039|Container khac VM o dau?|Container chia se kernel cua host, VM co kernel rieng|Container co kernel rieng|VM la lightweight hon|No difference|A
+40040|Which syscall is used to create thread in Linux low-level?|clone (or pthread_create at higher level)|fork|exec|open|A
+40041|Race condition xay ra khi nao?|Khi tat ca thread truy cap va thay doi chung mot bien khong dong bo|When only reading data|When no concurrency|When using mutex|A
+40042|Condition variable dung de lam gi?|Cho thread cho den dieu kien dat|Replace mutex|Replace semaphore|Block IO|A
+40043|Which primitive is best for mutual exclusion with blocking?|Mutex|Spinlock|Atomic read|Semaphore counting infinite|A
+40044|Spinlock phu hop khi nao?|Khi critical section rat ngan va khong nen block thread|Khi block IO|Khi long compute|No usage|A
+40045|Which provides atomic operations in C++?|std::atomic|std::mutex|volatile|static|A
+40046|Semaphore counting co the dung cho gi?|Quan ly nhieu resource cung luc|Chi danh cho priority|Chi danh cho atomic|Chi danh cho file|A
+40047|Kernel preemption la gi?|Khả năng kernel bi preempted de nâng cao responsivenes|Kernel khong the bi preempted|Kernel always preemptive|No meaning|A
+40048|Real-time OS yeu cau gi?|Deterministic response times and bounded latencies|High throughput only|Low memory only|No drivers|A
+40049|Which scheduling suits soft real-time tasks?|Priority-based with deadlines like EDF or RMS|FCFS only|No scheduling|Random|A
+40050|What is page table entry frame number for?|Identify physical frame containing the page|Store virtual address|Encrypt page|Store filename|A
+40051|Which is demand paging?|Load pages into memory only when referenced by program|Load all pages at start|Never load pages|Swap immediately|A
+40052|Copy-on-write used for which scenario?|Fork optimization to avoid copying pages until modified|Always copy pages eagerly|Never copy pages|Compress pages|A
+40053|Buffer cache in OS dung de gi?|Cache block data from disk to speed up IO|Store CPU registers|Store network packets forever|Replace files|A
+40054|Write-back and write-through are policies for?|Caching write behavior to disk|Scheduling|Paging|Signals|A
+40055|Which API is used for asynchronous IO in POSIX?|aio_* family (aio_read, aio_write)|read|write|open|A
+40056|Which is role of kernel module?|Cho phep nang cap chuc nang kernel dong thoi|Replace user apps|Encrypt kernel|None|A
+40057|Which is watchdog timer used for?|Detect and recover from hangs by rebooting or taking action|Increase CPU speed|Manage memory|Schedule tasks|A
+40058|Which is the effect of disabling interrupts for long time?|Increase interrupt latency and hurt responsiveness|Improve multitasking|Decrease latency|Increase throughput|A
+40059|Which is file descriptor in UNIX?|Integer handle for open files, sockets, pipes|Pointer to file structure|String filename|Process id|A
+40060|Which syscall opens a file?|open (or openat)|read|write|exec|A
+40061|Which syscall reads from file descriptor?|read|open|close|stat|A
+40062|Which syscall writes to file descriptor?|write|open|close|stat|A
+40063|Which syscall closes file descriptor?|close|read|write|open|A
+40064|Which is characteristic of microkernel architecture?|Minimal kernel with services in user space|Everything in kernel|No userspace|Only one service|A
+40065|Monolithic kernel co dac diem nao?|Phan nhieu chuc nang trong kernel space va thong thuong hieu nang tot|None|Only for embedded|Deprecated|A
+40066|Which is advantage of microkernel?|Isolation of services and fault tolerance|Higher performance than monolithic always|No drivers needed|No syscalls|A
+40067|Which is common for embedded OS?|Real-time scheduling and small footprint|Large GUI stacks|High power|Complex virtualization|A
+40068|Which is kernel panic?|Severe kernel error causing stop of system and possible reboot|Application crash only|Network error|Disk full|A
+40069|Which tool can show running processes in Linux interactively?|top or htop|ls|cat|grep|A
+40070|Which command shows open files by processes?|lsof|ls|df|mount|A
+40071|Which is use of cgroups in Linux?|Control resource usage by sets of processes (CPU, memory, IO)|Encrypt groups|Manage users|Schedule tasks only|A
+40072|Which is purpose of namespaces in Linux?|Provide isolation (pid, net, mount, uts...) for containers|Provide encryption|Provide permissions only|Backup files|A
+40073|Which is advantage of tmpfs?|Store files in volatile memory for speed|Persistent storage|Compress files|Network share|A
+40074|Which is role of udev in Linux?|Dynamically manage device nodes in /dev|Manage users|Schedule tasks|Provide GUI|A
+40075|Which syscall returns current process id?|getpid|fork|exec|open|A
+40076|Which syscall waits for child process to change state?|wait or waitpid|getpid|fork|exec|A
+40077|Which is purpose of chroot?|Change apparent root directory for process sandboxing|Change user password|Encrypt file|None|A
+40078|Which syscall changes file permissions?|chmod (via fchmod for fd)|open|read|write|A
+40079|Which syscall creates a new filesystem directory?|mkdir|rmdir|open|close|A
+40080|Which is meaning of SUID bit on executable?|Process runs with file owner's privileges when executed|No effect|Increase speed|Only for directories|A
+40081|Which is role of umask?|Define default permission bits for new files|Delete files|Encrypt files|Backup files|A
+40082|Which mechanism used for IPC (inter-process communication)?|Pipes, message queues, shared memory, sockets|Only sockets|Only files|Only signals|A
+40083|Shared memory requires what for synchronization?|Mutexes or semaphores to avoid race conditions|Nothing|Only files|Only signals|A
+40084|Which scheduling metric aims to maximize CPU utilization and throughput?|Batch systems often aim for throughput|Realtime systems aim for low latency|Interactive systems aim for responsiveness|GUI systems aim for aesthetics|A
+40085|Which is role of device mapper in Linux?|Provide virtual block devices e.g., LVM, dm-crypt|Manage network routes|Manage users|Compile kernel|A
+40086|Which is kernel address space layout randomization (KASLR) used for?|Mitigate exploitability by randomizing kernel base address|Increase speed|Reduce memory|Manage disks|A
+40087|Which is hotplug in kernel context?|Support adding/removing devices at runtime|Only at boot|Never supported|Only virtual devices|A
+40088|Which is role of swapiness parameter in Linux?|Control tendency to swap out pages vs keep in RAM|High -> more swapping, Low -> less|Only for disk speed|For CPU scaling|A
+40089|Which is method to prevent priority inversion?|Priority inheritance|Disable scheduling|Use only low priority tasks|Never use mutex|A
+40090|Which is page coloring used for?|Reduce cache conflict misses by coloring physical pages|Encrypt pages|Compress pages|Map files|A
+40091|Which tool shows memory usage in Linux?|free, vmstat, top|ls|pwd|cd|A
+40092|Which is function of /proc filesystem?|Expose kernel and process info to user space|Store persistent data|Mount network|Compile drivers|A
+40093|Which is function of /sys filesystem?|Provide sysfs interface for kernel objects and device attributes|Store user files|Swap space|Network config|A
+40094|Which is purpose of mlock/munlock syscalls?|Pin pages in RAM to prevent swapping|Encrypt pages|Compress pages|Change owner|A
+40095|Which is advantage of copy-on-write for fork?|Reduce memory usage until pages are modified|Always duplicate memory|Increase swap usage|None|A
+40096|Which is algorithm for disk scheduling optimizing seek time?|Elevator (SCAN) algorithm|FCFS only|Round robin|SJF|A
+40097|Which is block device vs character device difference?|Block devices support buffered I/O (random access), char devices are unbuffered streams|They are same|Only block devices exist|Only char devices exist|A
+40098|Which is function of ioctl syscall?|Device-specific operations and control beyond standard read/write|Open file|Close file|Read file|A
+40099|Which is recommended to handle long-running blocking operations in kernel?|Use worker threads or defer work (workqueue, tasklet) rather than blocking in interrupt context|Block in ISR forever|Disable interrupts permanently|Use busy-wait forever|A
