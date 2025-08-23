@@ -1,2 +1,4 @@
 CMakeLists.txt.user
 build
+.cache
+/data/diemthi
