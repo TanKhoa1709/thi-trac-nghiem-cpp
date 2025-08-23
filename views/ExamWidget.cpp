@@ -6,6 +6,8 @@
 #include "../managers/QuanLyCauHoi.h"
 #include "../managers/QuanLyDiem.h"
 #include "../managers/QuanLyThi.h"
+#include "../managers/QuanLyMonHoc.h"
+#include "../managers/ThongKe.h"
 #include "../utils/DynamicArray.h"
 #include <QCloseEvent>
 #include <QGridLayout>
@@ -16,12 +18,13 @@
 #include <ctime>
 #include <iostream>
 
-ExamWidget::ExamWidget(QWidget *parent) : QDialog(parent), currentSubject(nullptr), currentStudent(nullptr),
-                                          questions(nullptr), studentAnswers(nullptr),
-                                          currentQuestionIndex(0), totalQuestions(0),
-                                          timeRemaining(3600) // 60 minutes default
-                                          ,
-                                          totalTime(3600) {
+ExamWidget::ExamWidget(QWidget *parent) :
+    QDialog(parent), currentSubject(nullptr), currentStudent(nullptr),
+    questions(nullptr), studentAnswers(nullptr),
+    currentQuestionIndex(0), totalQuestions(0),
+    timeRemaining(3600) // 60 minutes default
+    ,
+    totalTime(3600) {
     setModal(true);
     setWindowTitle("Exam - Multiple Choice Test");
     resize(1000, 700);
@@ -56,7 +59,7 @@ void ExamWidget::setupUI() {
 
     timerLabel = new QLabel("Time: 60:00");
     timerLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #e74c3c; "
-        "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
+            "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
 
     headerLayout->addWidget(titleLabel);
     headerLayout->addStretch();
@@ -65,8 +68,8 @@ void ExamWidget::setupUI() {
     // Progress bar
     progressBar = new QProgressBar();
     progressBar->setStyleSheet("QProgressBar { border: 2px solid #bdc3c7; border-radius: 5px; "
-        "text-align: center; } "
-        "QProgressBar::chunk { background-color: #3498db; }");
+            "text-align: center; } "
+            "QProgressBar::chunk { background-color: #3498db; }");
 
     // Question display area
     questionScrollArea = new QScrollArea();
@@ -82,8 +85,8 @@ void ExamWidget::setupUI() {
     questionContentLabel = new QLabel("Question content will appear here...");
     questionContentLabel->setWordWrap(true);
     questionContentLabel->setStyleSheet("font-size: 14px; color: #2c3e50; padding: 15px; "
-        "background-color: #f8f9fa; border: 1px solid #dee2e6; "
-        "border-radius: 6px; margin-bottom: 20px;");
+            "background-color: #f8f9fa; border: 1px solid #dee2e6; "
+            "border-radius: 6px; margin-bottom: 20px;");
 
     // Answer options
     answerGroup = new QButtonGroup();
@@ -128,29 +131,36 @@ void ExamWidget::setupUI() {
     previousButton = new QPushButton("← Previous");
     nextButton = new QPushButton("Next →");
     submitButton = new QPushButton("Submit Exam");
+    closeButton = new QPushButton("Close");
     cancelButton = new QPushButton("Cancel");
 
     previousButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #7f8c8d; }"
-        "QPushButton:disabled { background-color: #bdc3c7; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #7f8c8d; }"
+            "QPushButton:disabled { background-color: #bdc3c7; }");
 
     nextButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #2980b9; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #2980b9; }");
 
     submitButton->setStyleSheet("QPushButton { background-color: #27ae60; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #229954; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #229954; }");
+
+    closeButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #c0392b; }");
+    closeButton->setVisible(false); // Hidden by default, shown in results mode
 
     cancelButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #c0392b; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #c0392b; }");
 
     navButtonLayout->addWidget(previousButton);
     navButtonLayout->addWidget(nextButton);
     navButtonLayout->addStretch();
     navButtonLayout->addWidget(submitButton);
+    navButtonLayout->addWidget(closeButton);
     navButtonLayout->addWidget(cancelButton);
 
     // Add to exam layout
@@ -175,6 +185,7 @@ void ExamWidget::setupConnections() {
     connect(previousButton, &QPushButton::clicked, this, &ExamWidget::previousQuestion);
     connect(nextButton, &QPushButton::clicked, this, &ExamWidget::nextQuestion);
     connect(submitButton, &QPushButton::clicked, this, &ExamWidget::submitExam);
+    connect(closeButton, &QPushButton::clicked, this, &ExamWidget::accept);
     connect(cancelButton, &QPushButton::clicked, this, &ExamWidget::reject);
 
     // Answer selection
@@ -211,6 +222,9 @@ void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student)
     currentStudent = student;
     totalQuestions = numQuestions;
     currentQuestionIndex = 0;
+
+    // Switch to exam mode
+    switchToExamMode();
 
     // Setup timer (60 minutes default)
     setupTimer(60);
@@ -272,16 +286,28 @@ void ExamWidget::loadQuestion(int index) {
     optionC->setText(QString("C. %1").arg(QString::fromStdString(question->getLuaChonC())));
     optionD->setText(QString("D. %1").arg(QString::fromStdString(question->getLuaChonD())));
 
-    // Load previous answer if exists
-    if (studentAnswers &&index<studentAnswers->size()) {
-        setSelectedAnswer(studentAnswers->get(index));
+    // Check if we're in results mode (answer options are disabled)
+    bool isResultsMode = !optionA->isEnabled();
+
+    if (isResultsMode) {
+        // Results mode - show student answer and correct answer
+        char studentAnswer = (index < studentAnswers->size()) ? studentAnswers->get(index) : ' ';
+        char correctAnswer = question->getDapAnDung();
+
+        // Highlight answers
+        highlightAnswers(studentAnswer, correctAnswer);
     } else {
-        answerGroup->setExclusive(false);
-        optionA->setChecked(false);
-        optionB->setChecked(false);
-        optionC->setChecked(false);
-        optionD->setChecked(false);
-        answerGroup->setExclusive(true);
+        // Exam mode - load previous answer if exists
+        if (studentAnswers && index < studentAnswers->size()) {
+            setSelectedAnswer(studentAnswers->get(index));
+        } else {
+            answerGroup->setExclusive(false);
+            optionA->setChecked(false);
+            optionB->setChecked(false);
+            optionC->setChecked(false);
+            optionD->setChecked(false);
+            answerGroup->setExclusive(true);
+        }
     }
 
     // Update navigation buttons
@@ -334,7 +360,7 @@ void ExamWidget::updateTimer() {
     // Change color when time is running low (last 5 minutes)
     if (timeRemaining <= 300) {
         timerLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: white; "
-            "background-color: #e74c3c; padding: 8px 12px; border-radius: 4px;");
+                "background-color: #e74c3c; padding: 8px 12px; border-radius: 4px;");
     }
 
     // Auto-submit when time runs out
@@ -362,11 +388,11 @@ void ExamWidget::calculateAndSaveResults() {
     double score = QuanLyThi::calculateScore(*questions, *studentAnswers);
 
     DiemThi *examResult = QuanLyThi::createExamResult(
-        currentSubject->getMaMon(),
-        score,
-        *studentAnswers,
-        *questions
-    );
+            currentSubject->getMaMon(),
+            score,
+            *studentAnswers,
+            *questions
+            );
 
     QuanLyThi::saveExamResult(currentStudent, examResult);
 
@@ -391,23 +417,50 @@ void ExamWidget::updateQuestionNavigation() {
     // Create grid layout for question buttons
     QGridLayout *gridLayout = new QGridLayout();
 
+    // Check if we're in results mode
+    bool isResultsMode = !optionA->isEnabled();
+
     for (int i = 0; i < questions->size(); i++) {
         QPushButton *questionBtn = new QPushButton(QString::number(i + 1));
         questionBtn->setFixedSize(30, 30);
 
-        // Color coding based on answer status
-        if (i < studentAnswers->size() && studentAnswers->get(i) != ' ') {
-            questionBtn->setStyleSheet(
-                "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
+        if (isResultsMode) {
+            // Results mode - color coding based on correctness
+            char studentAnswer = (i < studentAnswers->size()) ? studentAnswers->get(i) : ' ';
+            CauHoi *question = questions->get(i);
+            char correctAnswer = question ? question->getDapAnDung() : ' ';
+
+            bool isCorrect = (studentAnswer == correctAnswer && studentAnswer != ' ');
+            bool isAnswered = (studentAnswer != ' ');
+
+            if (isCorrect) {
+                // Correct answer - green
+                questionBtn->setStyleSheet(
+                        "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
+            } else if (isAnswered) {
+                // Wrong answer - red
+                questionBtn->setStyleSheet(
+                        "QPushButton { background-color: #e74c3c; color: white; border: none; border-radius: 4px; }");
+            } else {
+                // No answer - gray
+                questionBtn->setStyleSheet(
+                        "QPushButton { background-color: #95a5a6; color: white; border: none; border-radius: 4px; }");
+            }
         } else {
-            questionBtn->setStyleSheet(
-                "QPushButton { background-color: #ecf0f1; color: #2c3e50; border: 1px solid #bdc3c7; border-radius: 4px; }");
+            // Exam mode - color coding based on answer status
+            if (i < studentAnswers->size() && studentAnswers->get(i) != ' ') {
+                questionBtn->setStyleSheet(
+                        "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
+            } else {
+                questionBtn->setStyleSheet(
+                        "QPushButton { background-color: #ecf0f1; color: #2c3e50; border: 1px solid #bdc3c7; border-radius: 4px; }");
+            }
         }
 
         // Highlight current question
         if (i == currentQuestionIndex) {
             questionBtn->setStyleSheet(
-                "QPushButton { background-color: #3498db; color: white; border: none; border-radius: 4px; }");
+                    "QPushButton { background-color: #3498db; color: white; border: 2px solid #2980b9; border-radius: 4px; }");
         }
 
         connect(questionBtn, &QPushButton::clicked, [this, i]() { goToQuestion(i); });
@@ -425,13 +478,28 @@ void ExamWidget::updateProgress() {
     if (!questions || !studentAnswers)
         return;
 
-    int answeredQuestions = QuanLyThi::countAnsweredQuestions(*studentAnswers);
-    int percentage = QuanLyThi::calculatePercentage(answeredQuestions, questions->size());
+    // Check if we're in results mode
+    bool isResultsMode = !optionA->isEnabled();
 
-    progressBar->setValue(percentage);
-    progressBar->setFormat(QString("Progress: %1/%2 questions answered (%p%)")
-        .arg(answeredQuestions)
-        .arg(questions->size()));
+    if (isResultsMode) {
+        // Results mode - show correct answers
+        int correctAnswers = QuanLyThi::countCorrectAnswers(*questions, *studentAnswers);
+        int percentage = QuanLyThi::calculatePercentage(correctAnswers, questions->size());
+
+        progressBar->setValue(percentage);
+        progressBar->setFormat(QString("Correct: %1/%2 questions (%p%)")
+                .arg(correctAnswers)
+                .arg(questions->size()));
+    } else {
+        // Exam mode - show answered questions
+        int answeredQuestions = QuanLyThi::countAnsweredQuestions(*studentAnswers);
+        int percentage = QuanLyThi::calculatePercentage(answeredQuestions, questions->size());
+
+        progressBar->setValue(percentage);
+        progressBar->setFormat(QString("Progress: %1/%2 questions answered (%p%)")
+                .arg(answeredQuestions)
+                .arg(questions->size()));
+    }
 }
 
 void ExamWidget::goToQuestion(int questionIndex) {
@@ -494,9 +562,9 @@ bool ExamWidget::confirmCancellation() {
 }
 
 void ExamWidget::closeEvent(QCloseEvent *event) {
-    if (examTimer &&examTimer
-    ->
-    isActive()
+    if (examTimer && examTimer
+        ->
+        isActive()
     ) {
         if (confirmCancellation()) {
             examTimer->stop();
@@ -505,8 +573,7 @@ void ExamWidget::closeEvent(QCloseEvent *event) {
         } else {
             event->ignore();
         }
-    }
-    else {
+    } else {
         event->accept();
     }
 }
@@ -528,5 +595,174 @@ void ExamWidget::resetExam() {
 
     if (examTimer) {
         examTimer->stop();
+    }
+}
+
+void ExamWidget::showExamDetails(SinhVien *student, MonHoc *subject, DiemThi *examResult) {
+    if (!student || !subject || !examResult) {
+        QMessageBox::warning(this, "Error", "Invalid data provided for exam details.");
+        return;
+    }
+
+    switchToResultsMode();
+
+    // Set window title with student and subject info
+    QString title = QString("Exam Details - %1 %2 (%3) - %4")
+            .arg(QString::fromStdString(student->getHo()))
+            .arg(QString::fromStdString(student->getTen()))
+            .arg(QString::fromStdString(student->getMaSinhVien()))
+            .arg(QString::fromStdString(subject->getTenMon()));
+    setWindowTitle(title);
+
+    // Update title label
+    titleLabel->setText(QString("Exam Results - %1").arg(QString::fromStdString(subject->getTenMon())));
+
+    // Show score
+    double examScore = examResult->getDiem();
+    timerLabel->setText(QString("Score: %1/10").arg(QString::number(examScore, 'f', 2)));
+
+    // Load exam data
+    DynamicArray<int> *questionIds = examResult->getDanhSachCauHoi();
+    DynamicArray<char> *resultAnswers = examResult->getDanhSachCauTraLoi();
+
+    if (!questionIds || !resultAnswers) {
+        QMessageBox::warning(this, "Error", "Exam data is incomplete.");
+        return;
+    }
+
+    // Copy student answers
+    studentAnswers = new DynamicArray<char>();
+    for (int i = 0; i < resultAnswers->size(); i++) {
+        studentAnswers->add(resultAnswers->get(i));
+    }
+
+    // Load questions from IDs
+    if (subject && subject->getQuanLyCauHoi()) {
+        questions = new DynamicArray<CauHoi *>();
+
+        for (int i = 0; i < questionIds->size(); i++) {
+            int questionId = questionIds->get(i);
+            if (questionId > 0) {
+                CauHoi *question = subject->getQuanLyCauHoi()->tim(questionId);
+                if (question) {
+                    questions->add(question);
+                }
+            }
+        }
+    }
+
+    // Reset to first question
+    currentQuestionIndex = 0;
+    totalQuestions = questions ? questions->size() : 0;
+
+    if (totalQuestions > 0) {
+        loadQuestion(0);
+        updateQuestionNavigation();
+        updateProgress();
+    }
+
+    // Show the dialog
+    show();
+}
+
+void ExamWidget::switchToResultsMode() {
+    // Disable timer
+    if (examTimer) {
+        examTimer->stop();
+    }
+
+    // Hide timer, show score instead
+    timerLabel->setVisible(true);
+
+    // Disable answer options for view-only mode
+    optionA->setEnabled(false);
+    optionB->setEnabled(false);
+    optionC->setEnabled(false);
+    optionD->setEnabled(false);
+
+    // Show close button, hide submit button
+    submitButton->setVisible(false);
+    closeButton->setVisible(true);
+}
+
+void ExamWidget::switchToExamMode() {
+    // Enable timer
+    if (examTimer) {
+        examTimer->start(1000);
+    }
+
+    // Enable answer options
+    optionA->setEnabled(true);
+    optionB->setEnabled(true);
+    optionC->setEnabled(true);
+    optionD->setEnabled(true);
+
+    // Show submit button, hide close button
+    submitButton->setVisible(true);
+    closeButton->setVisible(false);
+}
+
+void ExamWidget::highlightAnswers(char studentAnswer, char correctAnswer) {
+    // Reset all styles first
+    QString defaultStyle = "QRadioButton { font-size: 13px; color: #2c3e50; padding: 8px; margin: 4px 0px; }";
+    optionA->setStyleSheet(defaultStyle);
+    optionB->setStyleSheet(defaultStyle);
+    optionC->setStyleSheet(defaultStyle);
+    optionD->setStyleSheet(defaultStyle);
+
+    // Clear all selections
+    optionA->setChecked(false);
+    optionB->setChecked(false);
+    optionC->setChecked(false);
+    optionD->setChecked(false);
+
+    // Highlight correct answer (green)
+    QRadioButton *correctOption = nullptr;
+    if (correctAnswer == 'A')
+        correctOption = optionA;
+    else if (correctAnswer == 'B')
+        correctOption = optionB;
+    else if (correctAnswer == 'C')
+        correctOption = optionC;
+    else if (correctAnswer == 'D')
+        correctOption = optionD;
+
+    if (correctOption) {
+        correctOption->setStyleSheet("QRadioButton { font-size: 13px; color: white; padding: 8px; margin: 4px 0px; "
+                "background-color: #27ae60; border-radius: 4px; }");
+        correctOption->setChecked(true);
+    }
+
+    // Highlight student answer if different from correct (red for wrong, already green if correct)
+    if (studentAnswer != correctAnswer && studentAnswer != ' ') {
+        QRadioButton *studentOption = nullptr;
+        if (studentAnswer == 'A')
+            studentOption = optionA;
+        else if (studentAnswer == 'B')
+            studentOption = optionB;
+        else if (studentAnswer == 'C')
+            studentOption = optionC;
+        else if (studentAnswer == 'D')
+            studentOption = optionD;
+
+        if (studentOption && studentOption != correctOption) {
+            studentOption->setStyleSheet("QRadioButton { font-size: 13px; color: white; padding: 8px; margin: 4px 0px; "
+                    "background-color: #e74c3c; border-radius: 4px; }");
+        }
+    }
+}
+
+QString ExamWidget::getAnswerText(char answer) {
+    switch (answer) {
+        case 'A':
+            return "A";
+        case 'B':
+            return "B";
+        case 'C':
+            return "C";
+        case 'D':
+            return "D";
+        default:
+            return "No Answer";
     }
 }

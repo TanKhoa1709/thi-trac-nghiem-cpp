@@ -16,12 +16,14 @@ class MonHoc;
 class CauHoi;
 class SinhVien;
 class DiemThi;
+class QuanLyMonHoc;
 template<typename T>
 class DynamicArray;
 
 /**
- * @brief Exam Widget - Modal dialog for taking exams
+ * @brief Exam Widget - Modal dialog for taking exams and viewing results
  * Provides exam interface with timer and question navigation
+ * Can also display detailed exam results in view-only mode
  */
 class ExamWidget : public QDialog {
     Q_OBJECT
@@ -33,6 +35,8 @@ public:
 
     // Setup exam
     void startExam(MonHoc *subject, int numQuestions, SinhVien *student);
+
+    void showExamDetails(SinhVien *student, MonHoc *subject, DiemThi *examResult);
 
 signals:
     void examCompleted(double score);
@@ -76,7 +80,8 @@ private:
     // Navigation
     QPushButton *previousButton;
     QPushButton *nextButton;
-    QPushButton *submitButton;
+    QPushButton *submitButton;  // For submitting exam
+    QPushButton *closeButton;   // For closing results view
     QPushButton *cancelButton;
 
     // Question navigation panel
@@ -128,6 +133,17 @@ private:
     bool confirmSubmission();
 
     bool confirmCancellation();
+
+    // Results viewing methods (reusing existing UI)
+    void loadQuestionsFromIds();
+
+    void highlightAnswers(char studentAnswer, char correctAnswer);
+
+    QString getAnswerText(char answer);
+
+    void switchToResultsMode();
+
+    void switchToExamMode();
 };
 
 #endif // EXAMWIDGET_H

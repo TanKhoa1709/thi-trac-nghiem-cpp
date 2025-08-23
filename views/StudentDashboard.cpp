@@ -1,6 +1,6 @@
 #include <QHeaderView>
 #include "StudentDashboard.h"
-#include "DetailedResultsWidget.h"
+#include "ExamWidget.h"
 #include "../models/SinhVien.h"
 #include "../managers/QuanLyMonHoc.h"
 #include "../managers/QuanLyDiem.h"
@@ -235,41 +235,21 @@ void StudentDashboard::viewDetailedScores() {
         return;
     }
 
-    DiemThi *ketQua = currentStudent->getQuanLyDiem()->tim(subjectCode.toStdString().c_str());
-    if (!ketQua) {
+    // Get subject information
+    MonHoc *mon = subjectManager->tim(subjectCode.toStdString().c_str());
+    if (!mon) {
+        QMessageBox::warning(this, "Error", "Subject not found.");
+        return;
+    }
+
+    DiemThi *diem = currentStudent->getQuanLyDiem()->tim(subjectCode.toStdString().c_str());
+    if (!diem) {
         QMessageBox::warning(this, "Error", "Exam result not found.");
         return;
     }
 
-    // Check if we have question IDs (for detailed view)
-    DynamicArray<int> *questionIds = ketQua->getDanhSachCauHoi();
-    if (!questionIds || questionIds->size() == 0) {
-        // Fallback to simple text display for old exam results
-        std::string statusText = ThongKe::getPassFailStatus(ketQua->getDiem());
-        QString details = QString("Subject: %1\nScore: %2\nStatus: %3\n\nAnswers: ")
-                .arg(subjectCode)
-                .arg(QString::fromStdString(ThongKe::formatGrade(ketQua->getDiem())))
-                .arg(QString::fromStdString(statusText));
-
-        DynamicArray<char> *answers = ketQua->getDanhSachCauTraLoi();
-        if (answers) {
-            for (int i = 0; i < answers->size(); i++) {
-                details += QString("Q%1:%2 ").arg(i + 1).arg(answers->get(i));
-            }
-        }
-
-        QMessageBox::information(this, "Detailed Results", details);
-        return;
-    }
-
-    // Use the new detailed results widget
-    if (!subjectManager) {
-        QMessageBox::warning(this, "Error", "Subject manager not available.");
-        return;
-    }
-
-    DetailedResultsWidget *detailsDialog = new DetailedResultsWidget(this);
-    detailsDialog->showResults(ketQua, subjectManager);
+    ExamWidget *detailsDialog = new ExamWidget(this);
+    detailsDialog->showExamDetails(currentStudent, mon, diem);
     detailsDialog->exec();
     delete detailsDialog;
 }

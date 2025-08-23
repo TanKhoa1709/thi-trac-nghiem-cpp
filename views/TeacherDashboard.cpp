@@ -1,5 +1,5 @@
 #include "TeacherDashboard.h"
-#include "DetailedResultsWidget.h"
+#include "ExamWidget.h"
 #include "../managers/QuanLyLop.h"
 #include "../managers/QuanLyMonHoc.h"
 #include "../managers/QuanLySinhVien.h"
@@ -18,6 +18,7 @@
 #include <QTextEdit>
 #include <cstring>
 #include "../utils/InputValidator.h"
+#include "../managers/ThongKe.h"
 
 TeacherDashboard::TeacherDashboard(QWidget *parent) :
     QWidget(parent), mainTabs(nullptr), classManager(nullptr), subjectManager(nullptr) {
@@ -53,6 +54,7 @@ void TeacherDashboard::setupUI() {
     setupClassTab();
     setupSubjectTab();
     setupQuestionTab();
+    setupScoreTab();
 
     // Logout button
     QHBoxLayout *bottomLayout = new QHBoxLayout();
@@ -246,6 +248,14 @@ void TeacherDashboard::setupConnections() {
     connect(addQuestionButton, &QPushButton::clicked, this, &TeacherDashboard::addNewQuestion);
     connect(editQuestionButton, &QPushButton::clicked, this, &TeacherDashboard::editQuestion);
     connect(deleteQuestionButton, &QPushButton::clicked, this, &TeacherDashboard::deleteQuestion);
+
+    // Score management connections
+    connect(classComboForScores, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &TeacherDashboard::onClassChangedForScores);
+    connect(subjectComboForScores, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &TeacherDashboard::onSubjectChangedForScores);
+    connect(hideNotTakenCheckBox, &QCheckBox::toggled, this, &TeacherDashboard::onHideNotTakenChanged);
+    connect(viewDetailsButton, &QPushButton::clicked, this, &TeacherDashboard::viewStudentExamDetails);
 }
 
 void TeacherDashboard::refreshAllData() {
@@ -253,6 +263,9 @@ void TeacherDashboard::refreshAllData() {
     refreshSubjectList();
     populateSubjectCombo();
     refreshQuestionList();
+    populateClassComboForScores();
+    populateSubjectComboForScores();
+    refreshScoreList();
 }
 
 void TeacherDashboard::refreshClassList() {
@@ -1430,4 +1443,234 @@ Lop *TeacherDashboard::getCurrentClass() {
         return nullptr;
     }
     return classManager->tim(currentClassCode.toStdString());
+}
+
+void TeacherDashboard::setupScoreTab() {
+    scoreTab = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout(scoreTab);
+
+    // Selection controls
+    QHBoxLayout *selectionLayout = new QHBoxLayout();
+
+    // Class selection
+    QLabel *classLabel = new QLabel("Lớp học:");
+    classComboForScores = new QComboBox();
+    selectionLayout->addWidget(classLabel);
+    selectionLayout->addWidget(classComboForScores);
+
+    // Subject selection
+    QLabel *subjectLabel = new QLabel("Môn học:");
+    subjectComboForScores = new QComboBox();
+    selectionLayout->addWidget(subjectLabel);
+    selectionLayout->addWidget(subjectComboForScores);
+
+    // Hide not taken checkbox
+    hideNotTakenCheckBox = new QCheckBox("Chỉ hiện đã thi");
+    selectionLayout->addWidget(hideNotTakenCheckBox);
+
+    selectionLayout->addStretch();
+
+    // Score table
+    QLabel *scoreLabel = new QLabel("Exam Results");
+    scoreLabel->setStyleSheet("font-weight: bold; margin: 5px;");
+
+    scoreTable = new QTableWidget(0, 5);
+    scoreTable->setHorizontalHeaderLabels({"Student ID", "Last Name", "First Name", "Score", "Status"});
+    scoreTable->horizontalHeader()->setStretchLastSection(true);
+    scoreTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    // View details button
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    viewDetailsButton = new QPushButton("View Exam Details");
+    viewDetailsButton->setStyleSheet(
+            "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    buttonLayout->addWidget(viewDetailsButton);
+    buttonLayout->addStretch();
+
+    layout->addLayout(selectionLayout);
+    layout->addWidget(scoreLabel);
+    layout->addWidget(scoreTable);
+    layout->addLayout(buttonLayout);
+
+    mainTabs->addTab(scoreTab, "Bảng Điểm");
+}
+
+void TeacherDashboard::populateClassComboForScores() {
+    if (!classManager)
+        return;
+
+    classComboForScores->clear();
+    classComboForScores->addItem("Select a class", "");
+
+    DynamicArray<Lop *> danhSachLop;
+    classManager->danhSach(danhSachLop);
+
+    for (int i = 0; i < danhSachLop.size(); i++) {
+        Lop *lop = danhSachLop.get(i);
+        QString item = QString("%1 - %2").arg(QString::fromStdString(lop->getMaLop())).arg(
+                QString::fromStdString(lop->getTenLop()));
+        classComboForScores->addItem(item, QString::fromStdString(lop->getMaLop()));
+    }
+}
+
+void TeacherDashboard::populateSubjectComboForScores() {
+    if (!subjectManager)
+        return;
+
+    subjectComboForScores->clear();
+    subjectComboForScores->addItem("Select a subject", "");
+
+    DynamicArray<MonHoc *> danhSachMon;
+    subjectManager->danhSach(danhSachMon);
+
+    for (int i = 0; i < danhSachMon.size(); i++) {
+        MonHoc *mon = danhSachMon.get(i);
+        QString item = QString("%1 - %2").arg(QString::fromStdString(mon->getMaMon())).arg(
+                QString::fromStdString(mon->getTenMon()));
+        subjectComboForScores->addItem(item, QString::fromStdString(mon->getMaMon()));
+    }
+}
+
+void TeacherDashboard::onClassChangedForScores() {
+    if (classComboForScores->currentIndex() > 0) {
+        currentClassCodeForScores = classComboForScores->currentData().toString();
+        refreshScoreList();
+    } else {
+        currentClassCodeForScores.clear();
+        scoreTable->setRowCount(0);
+    }
+}
+
+void TeacherDashboard::onSubjectChangedForScores() {
+    if (subjectComboForScores->currentIndex() > 0) {
+        currentSubjectCodeForScores = subjectComboForScores->currentData().toString();
+        refreshScoreList();
+    } else {
+        currentSubjectCodeForScores.clear();
+        scoreTable->setRowCount(0);
+    }
+}
+
+void TeacherDashboard::onHideNotTakenChanged() {
+    refreshScoreList();
+}
+
+void TeacherDashboard::refreshScoreList() {
+    scoreTable->setRowCount(0);
+    if (!classManager || !subjectManager ||
+        currentClassCodeForScores.isEmpty() || currentSubjectCodeForScores.isEmpty()) {
+        return;
+    }
+
+    Lop *lop = classManager->tim(currentClassCodeForScores.toStdString());
+    if (!lop || !lop->getQuanLySinhVien()) {
+        return;
+    }
+
+
+    DynamicArray<SinhVien *> danhSachSV;
+    lop->getQuanLySinhVien()->danhSach(danhSachSV);
+
+    int row = 0;
+    for (int i = 0; i < danhSachSV.size(); i++) {
+        SinhVien *sv = danhSachSV.get(i);
+        DiemThi *diem = nullptr;
+
+        if (sv->getQuanLyDiem()) {
+            diem = sv->getQuanLyDiem()->tim(currentSubjectCodeForScores.toStdString().c_str());
+        }
+
+        // Skip if hiding not taken and student hasn't taken the exam
+        if (hideNotTakenCheckBox->isChecked() && !diem) {
+            continue;
+        }
+
+        scoreTable->insertRow(row);
+
+        // Student ID
+        scoreTable->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(sv->getMaSinhVien())));
+
+        // Last Name
+        scoreTable->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(sv->getHo())));
+
+        // First Name
+        scoreTable->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(sv->getTen())));
+
+        // Score
+        if (diem) {
+            QString scoreText = QString::number(diem->getDiem(), 'f', 2);
+            scoreTable->setItem(row, 3, new QTableWidgetItem(scoreText));
+
+            // Status
+            QString statusText = diem->getDiem() >= 5.0 ? "Pass" : "Fail";
+            QTableWidgetItem *statusItem = new QTableWidgetItem(statusText);
+
+            // Color coding
+            if (diem->getDiem() >= 5.0) {
+                statusItem->setBackground(QColor(200, 255, 200)); // Light green
+            } else {
+                statusItem->setBackground(QColor(255, 200, 200)); // Light red
+            }
+            scoreTable->setItem(row, 4, statusItem);
+        } else {
+            scoreTable->setItem(row, 3, new QTableWidgetItem("Chưa thi"));
+            scoreTable->setItem(row, 4, new QTableWidgetItem("Not taken"));
+        }
+        row++;
+    }
+}
+
+void TeacherDashboard::viewStudentExamDetails() {
+    int currentRow = scoreTable->currentRow();
+    if (currentRow < 0) {
+        QMessageBox::warning(this, "Error", "Please select a student to view exam details.");
+        return;
+    }
+
+    QTableWidgetItem *studentIdItem = scoreTable->item(currentRow, 0);
+    if (!studentIdItem) {
+        QMessageBox::warning(this, "Error", "Student ID not found.");
+        return;
+    }
+
+    QString studentId = studentIdItem->text();
+    QTableWidgetItem *scoreItem = scoreTable->item(currentRow, 3);
+
+    if (!scoreItem || scoreItem->text() == "Chưa thi") {
+        QMessageBox::information(this, "No Exam Taken",
+                                 QString("Student %1 has not taken the exam for this subject yet.").arg(studentId));
+        return;
+    }
+
+    // Get student and exam data
+    Lop *lop = classManager->tim(currentClassCodeForScores.toStdString());
+    if (!lop || !lop->getQuanLySinhVien()) {
+        QMessageBox::warning(this, "Error", "Class or student manager not found.");
+        return;
+    }
+
+    SinhVien *sv = lop->getQuanLySinhVien()->tim(studentId.toStdString());
+    if (!sv || !sv->getQuanLyDiem()) {
+        QMessageBox::warning(this, "Error", "Student or score manager not found.");
+        return;
+    }
+
+    DiemThi *diem = sv->getQuanLyDiem()->tim(currentSubjectCodeForScores.toStdString().c_str());
+    if (!diem) {
+        QMessageBox::warning(this, "Error", "Exam result not found.");
+        return;
+    }
+
+    // Get subject information
+    MonHoc *mon = subjectManager->tim(currentSubjectCodeForScores.toStdString().c_str());
+    if (!mon) {
+        QMessageBox::warning(this, "Error", "Subject not found.");
+        return;
+    }
+
+    // Create detailed results dialog using ExamWidget
+    ExamWidget *detailsDialog = new ExamWidget(this);
+    detailsDialog->showExamDetails(sv, mon, diem);
+    detailsDialog->exec();
+    delete detailsDialog;
 }

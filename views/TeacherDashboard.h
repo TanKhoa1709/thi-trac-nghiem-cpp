@@ -11,6 +11,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QCheckBox>
 
 // Forward declarations
 class QuanLyLop;
@@ -87,6 +88,17 @@ private slots:
 
     void deleteQuestion();
 
+    // Score management
+    void refreshScoreList();
+
+    void onClassChangedForScores();
+
+    void onSubjectChangedForScores();
+
+    void onHideNotTakenChanged();
+
+    void viewStudentExamDetails();
+
 private:
     // UI Components
     QTabWidget *mainTabs;
@@ -118,6 +130,14 @@ private:
     QPushButton *editQuestionButton;
     QPushButton *deleteQuestionButton;
 
+    // Score Management Tab
+    QWidget *scoreTab;
+    QComboBox *classComboForScores;
+    QComboBox *subjectComboForScores;
+    QTableWidget *scoreTable;
+    QPushButton *viewDetailsButton;
+    QCheckBox *hideNotTakenCheckBox;
+
     // Controllers
     QuanLyLop *classManager;
     QuanLyMonHoc *subjectManager;
@@ -125,7 +145,8 @@ private:
     // Current selections
     QString currentClassCode;
     QString currentSubjectCode;
-
+    QString currentClassCodeForScores;
+    QString currentSubjectCodeForScores;
 
     // Setup methods
     void setupUI();
@@ -136,10 +157,16 @@ private:
 
     void setupQuestionTab();
 
+    void setupScoreTab();
+
     void setupConnections();
 
     // Helper methods
     void populateSubjectCombo();
+
+    void populateClassComboForScores();
+
+    void populateSubjectComboForScores();
 
     MonHoc *getCurrentSubject();
 

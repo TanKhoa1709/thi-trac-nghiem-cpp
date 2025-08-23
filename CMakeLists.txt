@@ -40,8 +40,6 @@ set(PROJECT_SOURCES
         views/StudentDashboard.h
         views/ExamWidget.cpp
         views/ExamWidget.h
-        views/DetailedResultsWidget.cpp
-        views/DetailedResultsWidget.h
 
         # Models (existing)
         models/CauHoi.cpp
