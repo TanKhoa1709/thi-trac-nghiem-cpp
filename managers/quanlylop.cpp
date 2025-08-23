@@ -75,7 +75,7 @@ bool QuanLyLop::xoa(const std::string &maLop) {
     }
 
     danhSachLop.remove(*lop);
-    return false;
+    return true;
 }
 
 // Save to file
