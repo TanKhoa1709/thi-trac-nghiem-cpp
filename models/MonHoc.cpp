@@ -1,5 +1,5 @@
-#include "monhoc.h"
-#include "../managers/quanlycauhoi.h"
+#include "MonHoc.h"
+#include "../managers/QuanLyCauHoi.h"
 #include <cstring>
 #include <iostream>
 

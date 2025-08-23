@@ -21,108 +21,115 @@ include_directories(views)
 
 
 set(PROJECT_SOURCES
-    # Entry point
-    main.cpp
-    
-    # Main window
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    
-    # Controllers (will be added as we create them)
-    controllers/AuthController.cpp
-    controllers/AuthController.h
-    
-    # Views
-    views/TeacherDashboard.cpp
-    views/TeacherDashboard.h
-    views/StudentDashboard.cpp
-    views/StudentDashboard.h
-    views/ExamWidget.cpp
-    views/ExamWidget.h
-    views/DetailedResultsWidget.cpp
-    views/DetailedResultsWidget.h
-    
-    # Models (existing)
-    models/cauhoi.cpp
-    models/cauhoi.h
-    models/diemthi.cpp
-    models/diemthi.h
-    models/lop.cpp
-    models/lop.h
-    models/monhoc.cpp
-    models/monhoc.h
-    models/sinhvien.cpp
-    models/sinhvien.h
-    
-    # Managers (will be transformed to controllers)
-    managers/quanlycauhoi.cpp
-    managers/quanlycauhoi.h
-    managers/quanlydiem.cpp
-    managers/quanlydiem.h
-    managers/quanlylop.cpp
-    managers/quanlylop.h
-    managers/quanlymonhoc.cpp
-    managers/quanlymonhoc.h
-    managers/quanlysinhvien.cpp
-    managers/quanlysinhvien.h
-    
-    # Utils
-    utils/BinaryTree.h
-    utils/LinkedList.h
-    utils/DynamicArray.h
-    utils/InputValidator.cpp
-    utils/InputValidator.h
-    utils/ValidationHelper.cpp
-    utils/ValidationHelper.h
+        # Entry point
+        main.cpp
+
+        # Main window
+        mainwindow.cpp
+        mainwindow.h
+        mainwindow.ui
+
+        # Controllers (will be added as we create them)
+        controllers/AuthController.cpp
+        controllers/AuthController.h
+
+        # Views
+        views/TeacherDashboard.cpp
+        views/TeacherDashboard.h
+        views/StudentDashboard.cpp
+        views/StudentDashboard.h
+        views/ExamWidget.cpp
+        views/ExamWidget.h
+        views/DetailedResultsWidget.cpp
+        views/DetailedResultsWidget.h
+
+        # Models (existing)
+        models/cauhoi.cpp
+        models/cauhoi.h
+        models/diemthi.cpp
+        models/diemthi.h
+        models/lop.cpp
+        models/lop.h
+        models/monhoc.cpp
+        models/monhoc.h
+        models/sinhvien.cpp
+        models/sinhvien.h
+
+        # Managers (will be transformed to controllers)
+        managers/quanlycauhoi.cpp
+        managers/quanlycauhoi.h
+        managers/quanlydiem.cpp
+        managers/quanlydiem.h
+        managers/quanlylop.cpp
+        managers/quanlylop.h
+        managers/quanlymonhoc.cpp
+        managers/quanlymonhoc.h
+        managers/quanlysinhvien.cpp
+        managers/quanlysinhvien.h
+
+        # Business Logic Managers
+        managers/QuanLyThi.cpp
+        managers/QuanLyThi.h
+        managers/ReportUtil.cpp
+        managers/ReportUtil.h
+        managers/thongke.cpp
+        managers/thongke.h
+
+        # Utils
+        utils/BinaryTree.h
+        utils/LinkedList.h
+        utils/DynamicArray.h
+        utils/InputValidator.cpp
+        utils/InputValidator.h
+
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(testqt3
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
+            MANUAL_FINALIZATION
+            ${PROJECT_SOURCES}
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET testqt3 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
+    # Define target properties for Android with Qt 6 as:
+    #    set_property(TARGET testqt3 APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+    #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+    # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+else ()
+    if (ANDROID)
         add_library(testqt3 SHARED
-            ${PROJECT_SOURCES}
+                ${PROJECT_SOURCES}
         )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
+        # Define properties for Android with Qt 5 after find_package() calls as:
+        #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+    else ()
         add_executable(testqt3
-            ${PROJECT_SOURCES}
+                ${PROJECT_SOURCES}
         )
-    endif()
-endif()
+    endif ()
+endif ()
 
 target_link_libraries(testqt3 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
-if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.testqt3)
-endif()
+if (${QT_VERSION} VERSION_LESS 6.1.0)
+    set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.testqt3)
+endif ()
 set_target_properties(testqt3 PROPERTIES
-    ${BUNDLE_ID_OPTION}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+        ${BUNDLE_ID_OPTION}
+        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+        MACOSX_BUNDLE TRUE
+        WIN32_EXECUTABLE TRUE
 )
 
 include(GNUInstallDirs)
 install(TARGETS testqt3
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        BUNDLE DESTINATION .
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-if(QT_VERSION_MAJOR EQUAL 6)
+if (QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(testqt3)
-endif()
+endif ()

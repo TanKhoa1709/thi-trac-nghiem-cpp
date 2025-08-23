@@ -3,7 +3,7 @@
 
 #include "../utils/BinaryTree.h"
 #include "../utils/DynamicArray.h"
-#include "../models/cauhoi.h"
+#include "../models/CauHoi.h"
 
 /**
  * @brief Quản lý câu hỏi - Cây nhị phân tìm kiếm

@@ -2,7 +2,7 @@
 #define QUANLYSINHVIEN_H
 
 #include <string>
-#include "../models/sinhvien.h"
+#include "../models/SinhVien.h"
 #include "../utils/LinkedList.h"
 #include "../utils/DynamicArray.h"
 

@@ -1,4 +1,4 @@
-#include "diemthi.h"
+#include "DiemThi.h"
 #include "../utils/DynamicArray.h"
 
 // Default constructor

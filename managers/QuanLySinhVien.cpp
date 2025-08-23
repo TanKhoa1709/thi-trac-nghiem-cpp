@@ -1,12 +1,12 @@
-#include "quanlysinhvien.h"
+#include "QuanLySinhVien.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <iostream>
 
 // Constructor
-QuanLySinhVien::QuanLySinhVien(const std::string &maLop)
-    : maLop(maLop) {
+QuanLySinhVien::QuanLySinhVien(const std::string &maLop) :
+    maLop(maLop) {
 }
 
 // Destructor

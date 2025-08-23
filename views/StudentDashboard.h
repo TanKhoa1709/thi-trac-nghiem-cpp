@@ -49,8 +49,6 @@ private slots:
 
     void viewDetailedScores();
 
-    void viewProfile();
-
     void onExamCompleted(double score);
 
 private:
@@ -61,7 +59,6 @@ private:
     // Exam section
     QGroupBox *examGroup;
     QPushButton *takeExamButton;
-    QPushButton *viewProfileButton;
 
     // Scores section
     QGroupBox *scoresGroup;
@@ -83,13 +80,6 @@ private:
     void setupConnections();
 
     void updateStudentInfo();
-
-    void updateStatistics();
-
-    // Helper methods
-    QString formatGrade(double score);
-
-    QString getPassFailStatus(double score);
 };
 
 #endif // STUDENTDASHBOARD_H

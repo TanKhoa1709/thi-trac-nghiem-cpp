@@ -4,7 +4,7 @@
 #include <string>
 #include "../utils/DynamicArray.h"
 #include "../utils/LinkedList.h"
-#include "../models/diemthi.h"
+#include "../models/DiemThi.h"
 
 /**
  * @brief Quản lý điểm thi - Danh sách liên kết đơn

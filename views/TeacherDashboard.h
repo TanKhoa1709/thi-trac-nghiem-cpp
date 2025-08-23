@@ -6,6 +6,13 @@
 #include <QComboBox>
 #include <QInputDialog>
 #include <QFileDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
+#include "ReportUtil.h"
 
 // Forward declarations
 class QuanLyLop;
@@ -85,9 +92,9 @@ private slots:
     // Report management
     void generateExamScoreReport();
 
-    void exportReport();
-    
     void viewDetailedResults();
+
+    void onReportSelectionChanged();
 
 private:
     // UI Components
@@ -125,8 +132,6 @@ private:
     QComboBox *reportClassCombo;
     QComboBox *reportSubjectCombo;
     QTableWidget *reportTable;
-    QPushButton *generateReportButton;
-    QPushButton *exportReportButton;
     QPushButton *viewDetailsButton;
 
     // Controllers
@@ -136,6 +141,9 @@ private:
     // Current selections
     QString currentClassCode;
     QString currentSubjectCode;
+
+    // Current report data
+    ReportUtil::BaoCao currentReportData;
 
     // Setup methods
     void setupUI();
@@ -158,6 +166,8 @@ private:
     MonHoc *getCurrentSubject();
 
     Lop *getCurrentClass();
+
+
 };
 
 #endif // TEACHERDASHBOARD_H

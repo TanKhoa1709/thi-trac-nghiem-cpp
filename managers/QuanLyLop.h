@@ -2,7 +2,7 @@
 #define QUANLYLOP_H
 
 #include <string>
-#include "../models/lop.h"
+#include "../models/Lop.h"
 #include "../utils/DynamicArray.h"
 
 /**

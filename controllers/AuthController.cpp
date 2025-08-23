@@ -1,7 +1,7 @@
 #include "AuthController.h"
-#include "../managers/quanlylop.h"
+#include "../managers/QuanLyLop.h"
 #include "../utils/DynamicArray.h"
-#include "../managers/quanlysinhvien.h"
+#include "../managers/QuanLySinhVien.h"
 #include <iostream>
 
 AuthController::AuthController(QObject *parent)

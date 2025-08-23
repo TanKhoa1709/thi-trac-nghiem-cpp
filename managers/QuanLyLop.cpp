@@ -1,4 +1,4 @@
-#include "quanlylop.h"
+#include "QuanLyLop.h"
 #include <fstream>
 #include <sstream>
 

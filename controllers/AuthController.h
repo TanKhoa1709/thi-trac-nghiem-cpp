@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QString>
-#include "../models/sinhvien.h"
-#include "../managers/quanlydiem.h"
+#include "../models/SinhVien.h"
+#include "../managers/QuanLyDiem.h"
 
 // Forward declarations
 class QuanLyLop;

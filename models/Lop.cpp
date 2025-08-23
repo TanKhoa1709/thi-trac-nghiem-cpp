@@ -1,5 +1,5 @@
-#include "lop.h"
-#include "../managers/quanlysinhvien.h"
+#include "Lop.h"
+#include "../managers/QuanLySinhVien.h"
 
 // Default constructor
 Lop::Lop() : maLop(""), tenLop(""), quanLySinhVien(nullptr) {

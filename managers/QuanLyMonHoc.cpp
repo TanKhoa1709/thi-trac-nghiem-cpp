@@ -1,4 +1,4 @@
-#include "quanlymonhoc.h"
+#include "QuanLyMonHoc.h"
 #include <fstream>
 #include <sstream>
 #include <cstring>

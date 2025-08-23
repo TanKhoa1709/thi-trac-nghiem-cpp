@@ -1,4 +1,4 @@
-#include "cauhoi.h"
+#include "CauHoi.h"
 #include <cctype>
 
 // Default constructor

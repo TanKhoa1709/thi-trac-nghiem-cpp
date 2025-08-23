@@ -1,4 +1,4 @@
-#include "quanlycauhoi.h"
+#include "QuanLyCauHoi.h"
 #include <algorithm>
 #include <chrono>
 #include <cstring>

@@ -1,14 +1,13 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "InputValidator.h"
-#include "ValidationHelper.h"
 #include "controllers/AuthController.h"
-#include "managers/quanlylop.h"
-#include "managers/quanlymonhoc.h"
-#include "managers/quanlycauhoi.h"
-#include "managers/quanlysinhvien.h"
-#include "models/sinhvien.h"
-#include "models/monhoc.h"
+#include "managers/QuanLyLop.h"
+#include "managers/QuanLyMonHoc.h"
+#include "managers/QuanLyCauHoi.h"
+#include "managers/QuanLySinhVien.h"
+#include "models/SinhVien.h"
+#include "models/MonHoc.h"
 #include "views/TeacherDashboard.h"
 #include "views/StudentDashboard.h"
 #include "views/ExamWidget.h"
@@ -146,7 +145,7 @@ void MainWindow::createLoginWidget() {
     usernameEdit->setStyleSheet("padding: 8px;");
 
     // Apply input validation
-    ValidationHelper::setupInputValidation(usernameEdit, InputValidator::CODE);
+    InputValidator::setupInputValidation(usernameEdit, InputValidator::CODE);
 
     connect(usernameEdit, &QLineEdit::textChanged, this, &MainWindow::onUsernameTextChanged);
 
@@ -217,7 +216,7 @@ void MainWindow::createStudentDashboard() {
 }
 
 void MainWindow::handleLoginRequest() {
-    QString username = ValidationHelper::sanitizeForModel(usernameEdit->text(), InputValidator::CODE);
+    QString username = InputValidator::filterInput(usernameEdit->text(), InputValidator::CODE);
     QString password = passwordEdit->text();
     QString userType = userTypeCombo->currentText();
 
@@ -227,8 +226,8 @@ void MainWindow::handleLoginRequest() {
     }
 
     // Validate username format
-    if (!InputValidator::isValidCode(username)) {
-        ValidationHelper::showValidationError(this, "Username", "Username must contain only letters and numbers.");
+    if (!InputValidator::isValid(username, InputValidator::CODE)) {
+        InputValidator::showValidationError(this, "Username", "Username must contain only letters and numbers.");
         return;
     }
 

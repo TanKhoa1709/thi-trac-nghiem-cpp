@@ -112,8 +112,6 @@ private:
 
     void calculateAndSaveResults();
 
-    double calculateScore();
-
     void updateQuestionNavigation();
 
     void updateProgress();

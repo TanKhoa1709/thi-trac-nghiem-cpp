@@ -1,7 +1,7 @@
 #ifndef QUANLYMONHOC_H
 #define QUANLYMONHOC_H
 
-#include "../models/monhoc.h"
+#include "../models/MonHoc.h"
 #include "../utils/DynamicArray.h"
 
 /**

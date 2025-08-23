@@ -1,5 +1,5 @@
-#include "sinhvien.h"
-#include "../managers/quanlydiem.h"
+#include "SinhVien.h"
+#include "../managers/QuanLyDiem.h"
 
 // Default constructor
 SinhVien::SinhVien() : maSinhVien(""), ho(""), ten(""), phai(true),

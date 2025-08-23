@@ -1,9 +1,11 @@
 #include "DetailedResultsWidget.h"
-#include "../models/diemthi.h"
-#include "../models/monhoc.h"
-#include "../models/cauhoi.h"
-#include "../managers/quanlymonhoc.h"
-#include "../managers/quanlycauhoi.h"
+#include "../models/DiemThi.h"
+#include "../models/MonHoc.h"
+#include "../models/CauHoi.h"
+#include "../managers/QuanLyMonHoc.h"
+#include "../managers/QuanLyCauHoi.h"
+#include "../managers/ThongKe.h"
+#include "../managers/QuanLyThi.h"
 #include "../utils/DynamicArray.h"
 #include <QCloseEvent>
 #include <QGridLayout>
@@ -12,10 +14,11 @@
 #include <QBoxLayout>
 #include <iostream>
 
-DetailedResultsWidget::DetailedResultsWidget(QWidget *parent) :
-    QDialog(parent), currentResult(nullptr), subjectManager(nullptr), questions(nullptr),
-    studentAnswers(nullptr), questionIds(nullptr), currentQuestionIndex(0),
-    totalQuestions(0), examScore(0.0) {
+DetailedResultsWidget::DetailedResultsWidget(QWidget *parent) : QDialog(parent), currentResult(nullptr),
+                                                                subjectManager(nullptr), questions(nullptr),
+                                                                studentAnswers(nullptr), questionIds(nullptr),
+                                                                currentQuestionIndex(0),
+                                                                totalQuestions(0), examScore(0.0) {
     setModal(true);
     setWindowTitle("Detailed Exam Results");
     resize(1000, 700);
@@ -50,7 +53,7 @@ void DetailedResultsWidget::setupUI() {
 
     scoreLabel = new QLabel("Score: 0/10");
     scoreLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #27ae60; "
-            "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
+        "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
 
     headerLayout->addWidget(titleLabel);
     headerLayout->addStretch();
@@ -59,8 +62,8 @@ void DetailedResultsWidget::setupUI() {
     // Progress bar
     progressBar = new QProgressBar();
     progressBar->setStyleSheet("QProgressBar { border: 2px solid #bdc3c7; border-radius: 5px; "
-            "text-align: center; } "
-            "QProgressBar::chunk { background-color: #3498db; }");
+        "text-align: center; } "
+        "QProgressBar::chunk { background-color: #3498db; }");
 
     // Question display area
     questionScrollArea = new QScrollArea();
@@ -76,8 +79,8 @@ void DetailedResultsWidget::setupUI() {
     questionContentLabel = new QLabel("Question content will appear here...");
     questionContentLabel->setWordWrap(true);
     questionContentLabel->setStyleSheet("font-size: 14px; color: #2c3e50; padding: 15px; "
-            "background-color: #f8f9fa; border: 1px solid #dee2e6; "
-            "border-radius: 6px; margin-bottom: 20px;");
+        "background-color: #f8f9fa; border: 1px solid #dee2e6; "
+        "border-radius: 6px; margin-bottom: 20px;");
 
     // Answer options (disabled for viewing)
     answerGroup = new QButtonGroup();
@@ -129,17 +132,17 @@ void DetailedResultsWidget::setupUI() {
     closeButton = new QPushButton("Close");
 
     previousButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; "
-            "padding: 8px 16px; border: none; border-radius: 4px; }"
-            "QPushButton:hover { background-color: #7f8c8d; }"
-            "QPushButton:disabled { background-color: #bdc3c7; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #7f8c8d; }"
+        "QPushButton:disabled { background-color: #bdc3c7; }");
 
     nextButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-            "padding: 8px 16px; border: none; border-radius: 4px; }"
-            "QPushButton:hover { background-color: #2980b9; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #2980b9; }");
 
     closeButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-            "padding: 8px 16px; border: none; border-radius: 4px; }"
-            "QPushButton:hover { background-color: #c0392b; }");
+        "padding: 8px 16px; border: none; border-radius: 4px; }"
+        "QPushButton:hover { background-color: #c0392b; }");
 
     navButtonLayout->addWidget(previousButton);
     navButtonLayout->addWidget(nextButton);
@@ -207,12 +210,12 @@ void DetailedResultsWidget::showResults(DiemThi *examResult, QuanLyMonHoc *manag
     scoreLabel->setText(QString("Score: %1/10").arg(QString::number(examScore, 'f', 2)));
 
     // Set score label color based on pass/fail
-    if (examScore >= 5.0) {
+    if (ThongKe::isPassingScore(examScore)) {
         scoreLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #27ae60; "
-                "background-color: #d5f4e6; padding: 8px 12px; border-radius: 4px;");
+            "background-color: #d5f4e6; padding: 8px 12px; border-radius: 4px;");
     } else {
         scoreLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #e74c3c; "
-                "background-color: #fdf2f2; padding: 8px 12px; border-radius: 4px;");
+            "background-color: #fdf2f2; padding: 8px 12px; border-radius: 4px;");
     }
 
     // Copy student answers
@@ -354,7 +357,7 @@ void DetailedResultsWidget::highlightAnswers(char studentAnswer, char correctAns
 
     if (correctOption) {
         correctOption->setStyleSheet("QRadioButton { font-size: 13px; color: white; padding: 8px; margin: 4px 0px; "
-                "background-color: #27ae60; border-radius: 4px; }");
+            "background-color: #27ae60; border-radius: 4px; }");
         correctOption->setChecked(true);
     }
 
@@ -372,7 +375,7 @@ void DetailedResultsWidget::highlightAnswers(char studentAnswer, char correctAns
 
         if (studentOption && studentOption != correctOption) {
             studentOption->setStyleSheet("QRadioButton { font-size: 13px; color: white; padding: 8px; margin: 4px 0px; "
-                    "background-color: #e74c3c; border-radius: 4px; }");
+                "background-color: #e74c3c; border-radius: 4px; }");
         }
     }
 }
@@ -421,21 +424,21 @@ void DetailedResultsWidget::updateQuestionNavigation() {
         if (isCorrect) {
             // Correct answer - green
             questionBtn->setStyleSheet(
-                    "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
+                "QPushButton { background-color: #27ae60; color: white; border: none; border-radius: 4px; }");
         } else if (isAnswered) {
             // Wrong answer - red
             questionBtn->setStyleSheet(
-                    "QPushButton { background-color: #e74c3c; color: white; border: none; border-radius: 4px; }");
+                "QPushButton { background-color: #e74c3c; color: white; border: none; border-radius: 4px; }");
         } else {
             // No answer - gray
             questionBtn->setStyleSheet(
-                    "QPushButton { background-color: #95a5a6; color: white; border: none; border-radius: 4px; }");
+                "QPushButton { background-color: #95a5a6; color: white; border: none; border-radius: 4px; }");
         }
 
         // Highlight current question
         if (i == currentQuestionIndex) {
             questionBtn->setStyleSheet(
-                    "QPushButton { background-color: #3498db; color: white; border: 2px solid #2980b9; border-radius: 4px; }");
+                "QPushButton { background-color: #3498db; color: white; border: 2px solid #2980b9; border-radius: 4px; }");
         }
 
         connect(questionBtn, &QPushButton::clicked, [this, i]() { goToQuestion(i); });
@@ -450,24 +453,16 @@ void DetailedResultsWidget::updateQuestionNavigation() {
 }
 
 void DetailedResultsWidget::updateProgress() {
-    if (!questions)
+    if (!questions || !studentAnswers)
         return;
 
-    int correctAnswers = 0;
-    for (int i = 0; i < questions->size() && i < studentAnswers->size(); i++) {
-        CauHoi *question = questions->get(i);
-        char studentAnswer = studentAnswers->get(i);
+    int correctAnswers = QuanLyThi::countCorrectAnswers(*questions, *studentAnswers);
+    int percentage = QuanLyThi::calculatePercentage(correctAnswers, questions->size());
 
-        if (question && question->getDapAnDung() == studentAnswer && studentAnswer != ' ') {
-            correctAnswers++;
-        }
-    }
-
-    int percentage = (correctAnswers * 100) / questions->size();
     progressBar->setValue(percentage);
     progressBar->setFormat(QString("Correct: %1/%2 questions (%p%)")
-            .arg(correctAnswers)
-            .arg(questions->size()));
+        .arg(correctAnswers)
+        .arg(questions->size()));
 }
 
 void DetailedResultsWidget::goToQuestion(int questionIndex) {

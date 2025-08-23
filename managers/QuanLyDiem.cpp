@@ -1,7 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "quanlydiem.h"
+#include "QuanLyDiem.h"
 #include "../utils/LinkedList.h"
 #include <iostream>
 
