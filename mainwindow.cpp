@@ -146,7 +146,7 @@ void MainWindow::createLoginWidget() {
     usernameEdit->setStyleSheet("padding: 8px;");
 
     // Apply input validation
-    ValidationHelper::setupInputValidation(usernameEdit, InputValidator::USERNAME);
+    ValidationHelper::setupInputValidation(usernameEdit, InputValidator::CODE);
 
     connect(usernameEdit, &QLineEdit::textChanged, this, &MainWindow::onUsernameTextChanged);
 
@@ -217,7 +217,7 @@ void MainWindow::createStudentDashboard() {
 }
 
 void MainWindow::handleLoginRequest() {
-    QString username = ValidationHelper::sanitizeForModel(usernameEdit->text(), InputValidator::USERNAME);
+    QString username = ValidationHelper::sanitizeForModel(usernameEdit->text(), InputValidator::CODE);
     QString password = passwordEdit->text();
     QString userType = userTypeCombo->currentText();
 
@@ -227,7 +227,7 @@ void MainWindow::handleLoginRequest() {
     }
 
     // Validate username format
-    if (!InputValidator::isAlphanumeric(username)) {
+    if (!InputValidator::isValidCode(username)) {
         ValidationHelper::showValidationError(this, "Username", "Username must contain only letters and numbers.");
         return;
     }

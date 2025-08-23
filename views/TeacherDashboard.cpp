@@ -399,12 +399,12 @@ void TeacherDashboard::addNewClass() {
     // Class code input
     QLabel *codeLabel = new QLabel("Class Code:");
     QLineEdit *codeEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(codeEdit, InputValidator::CLASS_CODE);
+    ValidationHelper::setupInputValidation(codeEdit, InputValidator::CODE);
 
     // Class name input
     QLabel *nameLabel = new QLabel("Class Name:");
     QLineEdit *nameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(nameEdit, InputValidator::PERSON_NAME);
+    ValidationHelper::setupInputValidation(nameEdit, InputValidator::GENERAL);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -428,8 +428,8 @@ void TeacherDashboard::addNewClass() {
 
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
-        QString classCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::CLASS_CODE);
-        QString className = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::PERSON_NAME);
+        QString classCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
+        QString className = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
         if (!ValidationHelper::validateClassData(classCode, className)) {
             ValidationHelper::showValidationError(&dialog, "Class Data", "Please check class code and name format.");
@@ -473,17 +473,17 @@ void TeacherDashboard::addNewStudent() {
     // Student ID input
     QLabel *idLabel = new QLabel("Student ID:");
     QLineEdit *idEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(idEdit, InputValidator::STUDENT_ID);
+    ValidationHelper::setupInputValidation(idEdit, InputValidator::CODE);
 
     // Last name input
     QLabel *lastNameLabel = new QLabel("Last Name:");
     QLineEdit *lastNameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(lastNameEdit, InputValidator::PERSON_NAME);
+    ValidationHelper::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
 
     // First name input
     QLabel *firstNameLabel = new QLabel("First Name:");
     QLineEdit *firstNameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(firstNameEdit, InputValidator::PERSON_NAME);
+    ValidationHelper::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
 
     // Gender selection
     QLabel *genderLabel = new QLabel("Gender:");
@@ -494,7 +494,7 @@ void TeacherDashboard::addNewStudent() {
     QLabel *passwordLabel = new QLabel("Password:");
     QLineEdit *passwordEdit = new QLineEdit();
     passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
-    ValidationHelper::setupInputValidation(passwordEdit, InputValidator::GENERAL_TEXT);
+    ValidationHelper::setupInputValidation(passwordEdit, InputValidator::GENERAL);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -524,11 +524,11 @@ void TeacherDashboard::addNewStudent() {
 
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
-        QString studentId = ValidationHelper::sanitizeForModel(idEdit->text(), InputValidator::STUDENT_ID);
-        QString lastName = ValidationHelper::sanitizeForModel(lastNameEdit->text(), InputValidator::PERSON_NAME);
-        QString firstName = ValidationHelper::sanitizeForModel(firstNameEdit->text(), InputValidator::PERSON_NAME);
+        QString studentId = ValidationHelper::sanitizeForModel(idEdit->text(), InputValidator::CODE);
+        QString lastName = ValidationHelper::sanitizeForModel(lastNameEdit->text(), InputValidator::GENERAL);
+        QString firstName = ValidationHelper::sanitizeForModel(firstNameEdit->text(), InputValidator::GENERAL);
         QString gender = genderCombo->currentText();
-        QString password = ValidationHelper::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL_TEXT);
+        QString password = ValidationHelper::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
 
         if (!ValidationHelper::validateStudentData(studentId, lastName, firstName, password)) {
             ValidationHelper::showValidationError(&dialog, "Student Data", "Please check all fields format.");
@@ -588,12 +588,12 @@ void TeacherDashboard::addNewSubject() {
     // Subject code input
     QLabel *codeLabel = new QLabel("Subject Code:");
     QLineEdit *codeEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(codeEdit, InputValidator::SUBJECT_CODE);
+    ValidationHelper::setupInputValidation(codeEdit, InputValidator::CODE);
 
     // Subject name input
     QLabel *nameLabel = new QLabel("Subject Name:");
     QLineEdit *nameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(nameEdit, InputValidator::PERSON_NAME);
+    ValidationHelper::setupInputValidation(nameEdit, InputValidator::GENERAL);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -617,8 +617,8 @@ void TeacherDashboard::addNewSubject() {
 
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
-        QString subjectCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::SUBJECT_CODE);
-        QString subjectName = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::PERSON_NAME);
+        QString subjectCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
+        QString subjectName = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
         if (!ValidationHelper::validateSubjectData(subjectCode, subjectName)) {
             ValidationHelper::showValidationError(&dialog, "Subject Data",

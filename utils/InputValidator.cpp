@@ -2,102 +2,41 @@
 #include <QRegularExpression>
 #include <QStringList>
 
-QString InputValidator::sanitizeUsername(const QString &input) {
-    QString result = input.trimmed();
+QString InputValidator::filterGeneral(const QString &input) {
+    QString result = input;
     
-    // Remove special characters, keep only alphanumeric
-    result = keepOnlyAlphanumeric(result);
-    
-    // Ensure it's not empty and within reasonable length
-    if (result.length() > 50) {
-        result = result.left(50);
-    }
-    
-    return result;
-}
-
-QString InputValidator::sanitizeStudentId(const QString &input) {
-    QString result = input.trimmed().toUpper();
-    
-    // Remove special characters and spaces, keep only alphanumeric
-    result = keepOnlyAlphanumeric(result);
-    
-    // Limit length for student ID (typical student ID format)
-    if (result.length() > 20) {
-        result = result.left(20);
-    }
-    
-    return result;
-}
-
-QString InputValidator::sanitizeClassCode(const QString &input) {
-    QString result = input.trimmed().toUpper();
-    
-    // Remove special characters and spaces, keep only alphanumeric
-    result = keepOnlyAlphanumeric(result);
-    
-    // Limit length for class code
-    if (result.length() > 20) {
-        result = result.left(20);
-    }
-    
-    return result;
-}
-
-QString InputValidator::sanitizeSubjectCode(const QString &input) {
-    QString result = input.trimmed().toUpper();
-    
-    // Remove special characters and spaces, keep only alphanumeric
-    result = keepOnlyAlphanumeric(result);
-    
-    // Subject code has a limit of 15 characters (as per MonHoc class)
-    if (result.length() > 15) {
-        result = result.left(15);
-    }
-    
-    return result;
-}
-
-QString InputValidator::sanitizeName(const QString &input) {
-    QString result = input.trimmed();
-    
-    // Keep valid name characters (letters, spaces, Vietnamese characters)
-    result = keepValidNameChars(result);
+    // Keep only letters, numbers, spaces, and some basic punctuation
+    result = keepValidGeneralChars(result);
     
     // Normalize multiple spaces to single space
     result = result.replace(QRegularExpression("\\s+"), " ");
     
-    // Limit length
-    if (result.length() > 100) {
-        result = result.left(100);
-    }
+    return result;
+}
+
+QString InputValidator::filterCode(const QString &input) {
+    QString result = input.toUpper();
+    
+    // Keep only letters, numbers, and hyphens (no spaces)
+    result = keepValidCodeChars(result);
     
     return result;
 }
 
-QString InputValidator::removeSpecialCharsAndTrim(const QString &input) {
-    QString result = input.trimmed();
+bool InputValidator::isValidGeneral(const QString &input) {
+    if (input.isEmpty()) return true; // Empty is valid for GENERAL
     
-    // Remove common special characters but keep letters, numbers, and basic punctuation
-    QRegularExpression specialChars("[^\\w\\s\\-\\.]");
-    result = result.remove(specialChars);
-    
-    return result;
+    // Allow letters, numbers, spaces, hyphens, dots, and Vietnamese characters
+    QRegularExpression generalPattern("^[a-zA-Z0-9àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ\\s\\-\\.]+$");
+    return generalPattern.match(input).hasMatch();
 }
 
-bool InputValidator::isAlphanumeric(const QString &input) {
-    if (input.isEmpty()) return false;
+bool InputValidator::isValidCode(const QString &input) {
+    if (input.isEmpty()) return true; // Empty is valid for CODE
     
-    QRegularExpression alphanumeric("^[a-zA-Z0-9\\-]+$");
-    return alphanumeric.match(input).hasMatch();
-}
-
-bool InputValidator::isValidName(const QString &input) {
-    if (input.trimmed().isEmpty()) return false;
-    
-    // Allow letters (including Vietnamese), spaces, hyphens, and dots
-    QRegularExpression namePattern("^[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ\\s\\-\\.]+$");
-    return namePattern.match(input.trimmed()).hasMatch();
+    // Allow only letters, numbers, and hyphens (no spaces, no special chars)
+    QRegularExpression codePattern("^[A-Z0-9\\-]+$");
+    return codePattern.match(input).hasMatch();
 }
 
 bool InputValidator::isValidLength(const QString &input, int minLength, int maxLength) {
@@ -107,58 +46,34 @@ bool InputValidator::isValidLength(const QString &input, int minLength, int maxL
 
 QString InputValidator::filterInput(const QString &input, InputType type) {
     switch (type) {
-        case USERNAME:
-            return sanitizeUsername(input);
-        case STUDENT_ID:
-            return sanitizeStudentId(input);
-        case CLASS_CODE:
-            return sanitizeClassCode(input);
-        case SUBJECT_CODE:
-            return sanitizeSubjectCode(input);
-        case PERSON_NAME:
-            return sanitizeName(input);
-        case GENERAL_TEXT:
-            return removeSpecialCharsAndTrim(input);
+        case NONE:
+            return input; // No filtering, freely use
+        case GENERAL:
+            return filterGeneral(input);
+        case CODE:
+            return filterCode(input);
         default:
-            return input.trimmed();
+            return input;
     }
 }
 
 // Private helper methods
-QString InputValidator::removeVietnameseTones(const QString &input) {
-    QString result = input;
-    
-    // Vietnamese character replacement map
-    QStringList vietnamese = {"àáạảãâầấậẩẫăằắặẳẵ", "èéẹẻẽêềếệểễ", "ìíịỉĩ", "òóọỏõôồốộổỗơờớợởỡ", "ùúụủũưừứựửữ", "ỳýỵỷỹ", "đ"};
-    QStringList english = {"a", "e", "i", "o", "u", "y", "d"};
-    
-    for (int i = 0; i < vietnamese.size(); i++) {
-        QString vnChars = vietnamese[i];
-        QString enChar = english[i];
-        for (int j = 0; j < vnChars.length(); j++) {
-            result = result.replace(vnChars[j], enChar);
-            result = result.replace(vnChars[j].toUpper(), enChar.toUpper());
-        }
-    }
-    
-    return result;
-}
-
-QString InputValidator::keepOnlyAlphanumeric(const QString &input) {
+QString InputValidator::keepValidGeneralChars(const QString &input) {
     QString result;
     for (QChar c : input) {
-        if (c.isLetterOrNumber() || c == '-') {
+        // Keep letters (including Vietnamese), numbers, spaces, hyphens, and dots
+        if (c.isLetter() || c.isNumber() || c.isSpace() || c == '-' || c == '.') {
             result += c;
         }
     }
     return result;
 }
 
-QString InputValidator::keepValidNameChars(const QString &input) {
+QString InputValidator::keepValidCodeChars(const QString &input) {
     QString result;
     for (QChar c : input) {
-        // Keep letters (including Vietnamese), spaces, hyphens, and dots
-        if (c.isLetter() || c.isSpace() || c == '-' || c == '.') {
+        // Keep only letters, numbers, and hyphens (no spaces, no special chars)
+        if (c.isLetterOrNumber() || c == '-') {
             result += c;
         }
     }

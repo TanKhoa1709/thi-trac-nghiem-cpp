@@ -17,33 +17,19 @@ void ValidationHelper::setupInputValidation(QLineEdit *lineEdit, InputValidator:
     
     // Set input mask and validation based on type
     switch (type) {
-        case InputValidator::USERNAME:
-            lineEdit->setMaxLength(50);
-            lineEdit->setPlaceholderText("Enter username (letters, numbers, - only)");
+        case InputValidator::NONE:
+            lineEdit->setMaxLength(500);
+            lineEdit->setPlaceholderText("Enter text (no restrictions)");
             break;
             
-        case InputValidator::STUDENT_ID:
-            lineEdit->setMaxLength(20);
-            lineEdit->setPlaceholderText("Enter student ID (e.g., N22DCCN-001)");
-            break;
-            
-        case InputValidator::CLASS_CODE:
-            lineEdit->setMaxLength(20);
-            lineEdit->setPlaceholderText("Enter class code (e.g., D22CQCN-01)");
-            break;
-            
-        case InputValidator::SUBJECT_CODE:
-            lineEdit->setMaxLength(15);
-            lineEdit->setPlaceholderText("Enter subject code (e.g., CSDL-01)");
-            break;
-            
-        case InputValidator::PERSON_NAME:
-            lineEdit->setMaxLength(100);
-            lineEdit->setPlaceholderText("Enter name");
-            break;
-            
-        case InputValidator::GENERAL_TEXT:
+        case InputValidator::GENERAL:
             lineEdit->setMaxLength(200);
+            lineEdit->setPlaceholderText("Enter text (letters, numbers, spaces allowed)");
+            break;
+            
+        case InputValidator::CODE:
+            lineEdit->setMaxLength(50);
+            lineEdit->setPlaceholderText("Enter code (uppercase, no spaces)");
             break;
     }
     
@@ -64,17 +50,14 @@ void ValidationHelper::setupInputValidation(QLineEdit *lineEdit, InputValidator:
         QString styleSheet = "";
         
         switch (type) {
-            case InputValidator::USERNAME:
-            case InputValidator::STUDENT_ID:
-            case InputValidator::CLASS_CODE:
-            case InputValidator::SUBJECT_CODE:
-                isValid = InputValidator::isAlphanumeric(filtered) && !filtered.isEmpty();
+            case InputValidator::NONE:
+                isValid = true; // Always valid for NONE type
                 break;
-            case InputValidator::PERSON_NAME:
-                isValid = InputValidator::isValidName(filtered) && !filtered.trimmed().isEmpty();
+            case InputValidator::GENERAL:
+                isValid = InputValidator::isValidGeneral(filtered);
                 break;
-            case InputValidator::GENERAL_TEXT:
-                isValid = !filtered.trimmed().isEmpty();
+            case InputValidator::CODE:
+                isValid = InputValidator::isValidCode(filtered);
                 break;
         }
         
@@ -92,15 +75,15 @@ void ValidationHelper::setupInputValidation(QLineEdit *lineEdit, InputValidator:
 
 bool ValidationHelper::validateStudentData(const QString &studentId, const QString &lastName, 
                                           const QString &firstName, const QString &password) {
-    if (!InputValidator::isValidLength(studentId, 1, 20) || !InputValidator::isAlphanumeric(studentId)) {
+    if (!InputValidator::isValidLength(studentId, 1, 20) || !InputValidator::isValidCode(studentId)) {
         return false;
     }
     
-    if (!InputValidator::isValidLength(lastName, 1, 50) || !InputValidator::isValidName(lastName)) {
+    if (!InputValidator::isValidLength(lastName, 1, 50) || !InputValidator::isValidGeneral(lastName)) {
         return false;
     }
     
-    if (!InputValidator::isValidLength(firstName, 1, 50) || !InputValidator::isValidName(firstName)) {
+    if (!InputValidator::isValidLength(firstName, 1, 50) || !InputValidator::isValidGeneral(firstName)) {
         return false;
     }
     
@@ -112,11 +95,11 @@ bool ValidationHelper::validateStudentData(const QString &studentId, const QStri
 }
 
 bool ValidationHelper::validateClassData(const QString &classCode, const QString &className) {
-    if (!InputValidator::isValidLength(classCode, 1, 20) || !InputValidator::isAlphanumeric(classCode)) {
+    if (!InputValidator::isValidLength(classCode, 1, 20) || !InputValidator::isValidCode(classCode)) {
         return false;
     }
     
-    if (!InputValidator::isValidLength(className, 1, 100) || !InputValidator::isValidName(className)) {
+    if (!InputValidator::isValidLength(className, 1, 100) || !InputValidator::isValidGeneral(className)) {
         return false;
     }
     
@@ -124,11 +107,11 @@ bool ValidationHelper::validateClassData(const QString &classCode, const QString
 }
 
 bool ValidationHelper::validateSubjectData(const QString &subjectCode, const QString &subjectName) {
-    if (!InputValidator::isValidLength(subjectCode, 1, 15) || !InputValidator::isAlphanumeric(subjectCode)) {
+    if (!InputValidator::isValidLength(subjectCode, 1, 15) || !InputValidator::isValidCode(subjectCode)) {
         return false;
     }
     
-    if (!InputValidator::isValidLength(subjectName, 1, 100) || !InputValidator::isValidName(subjectName)) {
+    if (!InputValidator::isValidLength(subjectName, 1, 100) || !InputValidator::isValidGeneral(subjectName)) {
         return false;
     }
     
@@ -145,7 +128,7 @@ void ValidationHelper::showValidationError(QWidget *parent, const QString &field
 }
 
 InputValidator::InputType ValidationHelper::getValidationType(QLineEdit *lineEdit) {
-    if (!lineEdit) return InputValidator::GENERAL_TEXT;
+    if (!lineEdit) return InputValidator::GENERAL;
     
     bool ok;
     int typeInt = lineEdit->property("validationType").toInt(&ok);
@@ -153,5 +136,5 @@ InputValidator::InputType ValidationHelper::getValidationType(QLineEdit *lineEdi
         return static_cast<InputValidator::InputType>(typeInt);
     }
     
-    return InputValidator::GENERAL_TEXT;
+    return InputValidator::GENERAL;
 }
