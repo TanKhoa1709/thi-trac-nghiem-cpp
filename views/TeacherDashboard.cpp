@@ -1631,12 +1631,6 @@ void TeacherDashboard::generateExamScoreReport() {
 
     exportReportButton->setEnabled(true);
     viewDetailsButton->setEnabled(true);
-
-    QMessageBox::information(this, "Thành công",
-                             QString("Đã tạo bảng điểm cho %1 sinh viên trong lớp %2 - môn %3.")
-                             .arg(danhSachSV.size())
-                             .arg(reportClassCombo->currentText())
-                             .arg(reportSubjectCombo->currentText()));
 }
 
 void TeacherDashboard::exportReport() {
