@@ -1310,6 +1310,14 @@ void TeacherDashboard::deleteQuestion() {
         return;
     }
 
+    // Check if question is used in any exam
+    if (isQuestionUsedInExams(questionId, currentSubjectCode.toStdString())) {
+        QMessageBox::warning(this, "Cannot Delete", 
+                            "This question cannot be deleted because it has been used in student exams.\n\n"
+                            "To maintain exam integrity, questions that have been used in exams cannot be deleted.");
+        return;
+    }
+
     // Show confirmation dialog
     QString questionPreview = QString::fromStdString(existingQuestion->getNoiDung());
     if (questionPreview.length() > 100) {
@@ -1346,6 +1354,63 @@ Lop *TeacherDashboard::getCurrentClass() {
         return nullptr;
     }
     return classManager->tim(currentClassCode.toStdString());
+}
+
+bool TeacherDashboard::isQuestionUsedInExams(int questionId, const std::string &subjectCode) {
+    if (!classManager) {
+        return false;
+    }
+
+    // Get all classes
+    DynamicArray<Lop *> danhSachLop;
+    classManager->danhSach(danhSachLop);
+
+    // Check each class
+    for (int i = 0; i < danhSachLop.size(); i++) {
+        Lop *lop = danhSachLop.get(i);
+        if (!lop || !lop->getQuanLySinhVien()) {
+            continue;
+        }
+
+        // Get all students in this class
+        DynamicArray<SinhVien *> danhSachSinhVien;
+        lop->getQuanLySinhVien()->danhSach(danhSachSinhVien);
+
+        // Check each student's exam results
+        for (int j = 0; j < danhSachSinhVien.size(); j++) {
+            SinhVien *sv = danhSachSinhVien.get(j);
+            if (!sv || !sv->getQuanLyDiem()) {
+                continue;
+            }
+
+            // Get all exam results for this student
+            DynamicArray<DiemThi *> danhSachDiem;
+            sv->getQuanLyDiem()->danhSach(danhSachDiem);
+
+            // Check if this student has an exam result for the subject
+            for (int k = 0; k < danhSachDiem.size(); k++) {
+                DiemThi *diem = danhSachDiem.get(k);
+                if (!diem) {
+                    continue;
+                }
+
+                // Check if this exam result is for the same subject
+                if (std::strcmp(diem->getMaMon(), subjectCode.c_str()) == 0) {
+                    // Check if the question ID is in this exam
+                    DynamicArray<int> *questionIds = diem->getDanhSachCauHoi();
+                    if (questionIds) {
+                        for (int l = 0; l < questionIds->size(); l++) {
+                            if (questionIds->get(l) == questionId) {
+                                return true; // Question is used in an exam
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false; // Question is not used in any exam
 }
 
 // Report Management Functions Implementation

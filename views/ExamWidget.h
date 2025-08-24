@@ -130,6 +130,9 @@ private:
     bool confirmSubmission();
 
     bool confirmCancellation();
+
+    // New method to ask for exam duration
+    int askForExamDuration();
 };
 
 #endif // EXAMWIDGET_H

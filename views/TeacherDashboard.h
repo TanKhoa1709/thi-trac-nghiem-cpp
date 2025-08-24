@@ -158,6 +158,9 @@ private:
     MonHoc *getCurrentSubject();
 
     Lop *getCurrentClass();
+
+    // Check if question is used in any exam
+    bool isQuestionUsedInExams(int questionId, const std::string &subjectCode);
 };
 
 #endif // TEACHERDASHBOARD_H

@@ -47,9 +47,6 @@ public:
     // Utility methods
     int size() { return cayQuanLyCauHoi.size(); }
     bool isEmpty() { return cayQuanLyCauHoi.isEmpty(); }
-
-    // Validation
-    bool kiemTraCauHoiDaSuDung(int maCauHoi); // TODO
 };
 
 #endif // QUANLYCAUHOI_H

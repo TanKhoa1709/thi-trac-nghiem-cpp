@@ -230,10 +230,3 @@ void QuanLyCauHoi::loadFromFile() {
 
     file.close();
 }
-
-// Check if question is used in exams (placeholder implementation)
-bool QuanLyCauHoi::kiemTraCauHoiDaSuDung(int maCauHoi) {
-    // TODO: Implement logic to check if question is used in any exam
-    // For now, return false (allowing deletion)
-    return false;
-}

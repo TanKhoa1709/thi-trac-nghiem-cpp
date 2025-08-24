@@ -14,6 +14,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <QInputDialog>
+#include <QMessageBox>
 
 ExamWidget::ExamWidget(QWidget *parent) :
     QDialog(parent), currentSubject(nullptr), currentStudent(nullptr), questions(nullptr), studentAnswers(nullptr),
@@ -210,8 +212,16 @@ void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student)
     totalQuestions = numQuestions;
     currentQuestionIndex = 0;
 
-    // Setup timer (60 minutes default)
-    setupTimer(60);
+    // Ask for exam duration before starting
+    int examDuration = askForExamDuration();
+    if (examDuration <= 0) {
+        // User cancelled or entered invalid duration
+        reject();
+        return;
+    }
+
+    // Setup timer with user-specified duration
+    setupTimer(examDuration);
 
     // Update title
     titleLabel->setText(QString("Exam: %1").arg(QString::fromStdString(subject->getTenMon())));
@@ -574,4 +584,24 @@ void ExamWidget::resetExam() {
     if (examTimer) {
         examTimer->stop();
     }
+}
+
+int ExamWidget::askForExamDuration() {
+    bool ok;
+    int duration = QInputDialog::getInt(this, "Exam Duration", 
+                                       "Enter exam duration in minutes (1-180):",
+                                       60, 1, 180, 1, &ok);
+    
+    if (!ok) {
+        // User cancelled
+        return -1;
+    }
+    
+    if (duration < 1 || duration > 180) {
+        QMessageBox::warning(this, "Invalid Duration", 
+                            "Please enter a duration between 1 and 180 minutes.");
+        return askForExamDuration(); // Recursive call to ask again
+    }
+    
+    return duration;
 }
