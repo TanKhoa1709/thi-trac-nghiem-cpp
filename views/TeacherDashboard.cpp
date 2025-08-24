@@ -426,11 +426,6 @@ void TeacherDashboard::addNewClass() {
         QString classCode = InputValidator::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
         QString className = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
-        if (classCode.trimmed().isEmpty() || className.trimmed().isEmpty()) {
-            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập đầy đủ mã lớp và tên lớp.");
-            return;
-        }
-
         if (classManager) {
             // Create new class following memory management rules
             Lop *lopMoi = new Lop(classCode.toStdString(), className.toStdString());
@@ -461,33 +456,38 @@ void TeacherDashboard::addNewStudent() {
     // Create custom dialog with validation
     QDialog dialog(this);
     dialog.setWindowTitle("Thêm sinh viên mới");
-    dialog.setMinimumSize(450, 300);
+    dialog.setMinimumSize(450, 400);
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
     // Student ID input
     QLabel *idLabel = new QLabel("Mã sinh viên:");
     QLineEdit *idEdit = new QLineEdit();
+    idEdit->setMinimumHeight(35);
     InputValidator::setupInputValidation(idEdit, InputValidator::CODE);
 
     // Last name input
     QLabel *lastNameLabel = new QLabel("Họ:");
     QLineEdit *lastNameEdit = new QLineEdit();
+    lastNameEdit->setMinimumHeight(35);
     InputValidator::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
 
     // First name input
     QLabel *firstNameLabel = new QLabel("Tên:");
     QLineEdit *firstNameEdit = new QLineEdit();
+    firstNameEdit->setMinimumHeight(35);
     InputValidator::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
 
     // Gender selection
     QLabel *genderLabel = new QLabel("Giới tính:");
     QComboBox *genderCombo = new QComboBox();
+    genderCombo->setMinimumHeight(35);
     genderCombo->addItems({"Nam", "Nữ"});
 
     // Password input
     QLabel *passwordLabel = new QLabel("Mật khẩu:");
     QLineEdit *passwordEdit = new QLineEdit();
+    passwordEdit->setMinimumHeight(35);
     passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
     InputValidator::setupInputValidation(passwordEdit, InputValidator::GENERAL);
 
@@ -525,7 +525,7 @@ void TeacherDashboard::addNewStudent() {
         QString gender = genderCombo->currentText();
         QString password = InputValidator::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
 
-        if (studentId.trimmed().isEmpty() || lastName.trimmed().isEmpty() || 
+        if (studentId.trimmed().isEmpty() || lastName.trimmed().isEmpty() ||
             firstName.trimmed().isEmpty() || password.trimmed().isEmpty()) {
             QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập đầy đủ tất cả các trường.");
             return;
@@ -974,35 +974,40 @@ void TeacherDashboard::editStudent() {
     // Create custom dialog with validation
     QDialog dialog(this);
     dialog.setWindowTitle("Sửa sinh viên");
-    dialog.setMinimumSize(450, 300);
+    dialog.setMinimumSize(450, 400);
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
     // Student ID input (read-only)
     QLabel *idLabel = new QLabel("Mã sinh viên:");
     QLineEdit *idEdit = new QLineEdit(oldStudentId);
+    idEdit->setMinimumHeight(35);
     idEdit->setReadOnly(true);
     idEdit->setStyleSheet("QLineEdit { background-color: #f0f0f0; color: #666; }");
 
     // Last name input
     QLabel *lastNameLabel = new QLabel("Họ:");
     QLineEdit *lastNameEdit = new QLineEdit(QString::fromStdString(sv->getHo()));
+    lastNameEdit->setMinimumHeight(35);
     InputValidator::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
 
     // First name input
     QLabel *firstNameLabel = new QLabel("Tên:");
     QLineEdit *firstNameEdit = new QLineEdit(QString::fromStdString(sv->getTen()));
+    firstNameEdit->setMinimumHeight(35);
     InputValidator::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
 
     // Gender selection
     QLabel *genderLabel = new QLabel("Giới tính:");
     QComboBox *genderCombo = new QComboBox();
+    genderCombo->setMinimumHeight(35);
     genderCombo->addItems({"Nam", "Nữ"});
     genderCombo->setCurrentText(sv->getPhai() ? "Nam" : "Nữ");
 
     // Password input
     QLabel *passwordLabel = new QLabel("Mật khẩu:");
     QLineEdit *passwordEdit = new QLineEdit(QString::fromStdString(sv->getPassword()));
+    passwordEdit->setMinimumHeight(35);
     passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
     InputValidator::setupInputValidation(passwordEdit, InputValidator::GENERAL);
 
@@ -1039,7 +1044,7 @@ void TeacherDashboard::editStudent() {
         QString newGender = genderCombo->currentText();
         QString newPassword = InputValidator::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
 
-        if (newLastName.trimmed().isEmpty() || newFirstName.trimmed().isEmpty() || 
+        if (newLastName.trimmed().isEmpty() || newFirstName.trimmed().isEmpty() ||
             newPassword.trimmed().isEmpty()) {
             QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập đầy đủ tất cả các trường.");
             return;
