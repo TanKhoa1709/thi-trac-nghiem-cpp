@@ -694,9 +694,9 @@ void TeacherDashboard::refreshQuestionList() {
 
         // Truncate long questions for display
         QString content = QString::fromStdString(ch->getNoiDung());
-        if (content.length() > 50) {
-            content = content.left(47) + "...";
-        }
+        // if (content.length() > 50) {
+        //     content = content.left(47) + "...";
+        // }
         questionTable->setItem(i, 1, new QTableWidgetItem(content));
         questionTable->setItem(i, 2, new QTableWidgetItem(QString(ch->getDapAnDung())));
     }
