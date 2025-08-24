@@ -217,7 +217,7 @@ void MainWindow::createStudentDashboard() {
 }
 
 void MainWindow::handleLoginRequest() {
-            QString username = InputValidator::sanitizeForModel(usernameEdit->text(), InputValidator::CODE);
+    QString username = InputValidator::sanitizeForModel(usernameEdit->text(), InputValidator::CODE);
     QString password = passwordEdit->text();
     QString userType = userTypeCombo->currentText();
 
@@ -228,7 +228,7 @@ void MainWindow::handleLoginRequest() {
 
     // Validate username format
     if (!InputValidator::isValidCode(username)) {
-                    InputValidator::showValidationError(this, "Username", "Username must contain only letters and numbers.");
+        InputValidator::showValidationError(this, "Username", "Username must contain only letters and numbers.");
         return;
     }
 
