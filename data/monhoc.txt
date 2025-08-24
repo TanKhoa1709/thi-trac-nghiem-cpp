@@ -8,4 +8,4 @@ MAHOA|Ma hoa va bao mat|5
 CSDL|Co so du lieu|6
 WEB|Phat trien ung dung web|7
 KTPT|Kiem thu phan mem|8
-PEN|Kiem thuc xam nhap (Penetration Testing)|9
+PEN|Kiem thuc xam nhap Penetration Testing|9
