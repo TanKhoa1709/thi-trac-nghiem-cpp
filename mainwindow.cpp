@@ -226,9 +226,9 @@ void MainWindow::handleLoginRequest() {
         return;
     }
 
-    // Validate username format
-    if (!InputValidator::isValidCode(username)) {
-        InputValidator::showValidationError(this, "Username", "Username must contain only letters and numbers.");
+    // Simple validation - just check if username is not empty
+    if (username.trimmed().isEmpty()) {
+        QMessageBox::warning(this, "Login Error", "Please enter a valid username.");
         return;
     }
 

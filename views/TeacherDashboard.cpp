@@ -426,9 +426,8 @@ void TeacherDashboard::addNewClass() {
         QString classCode = InputValidator::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
         QString className = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
-        if (!InputValidator::validateClassData(classCode, className)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu lớp",
-                                                "Vui lòng kiểm tra định dạng mã lớp và tên lớp.");
+        if (classCode.trimmed().isEmpty() || className.trimmed().isEmpty()) {
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập đầy đủ mã lớp và tên lớp.");
             return;
         }
 
@@ -526,9 +525,9 @@ void TeacherDashboard::addNewStudent() {
         QString gender = genderCombo->currentText();
         QString password = InputValidator::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
 
-        if (!InputValidator::validateStudentData(studentId, lastName, firstName, password)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu sinh viên",
-                                                "Vui lòng kiểm tra định dạng tất cả các trường.");
+        if (studentId.trimmed().isEmpty() || lastName.trimmed().isEmpty() || 
+            firstName.trimmed().isEmpty() || password.trimmed().isEmpty()) {
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập đầy đủ tất cả các trường.");
             return;
         }
 
@@ -617,9 +616,8 @@ void TeacherDashboard::addNewSubject() {
         QString subjectCode = InputValidator::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
         QString subjectName = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
-        if (!InputValidator::validateSubjectData(subjectCode, subjectName)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu môn học",
-                                                "Vui lòng kiểm tra định dạng mã môn và tên môn.");
+        if (subjectCode.trimmed().isEmpty() || subjectName.trimmed().isEmpty()) {
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập đầy đủ mã môn và tên môn.");
             return;
         }
 
@@ -873,9 +871,8 @@ void TeacherDashboard::editClass() {
     connect(okButton, &QPushButton::clicked, [&]() {
         QString newClassName = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
-        if (!InputValidator::validateClassData(oldClassCode, newClassName)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu lớp",
-                                                "Vui lòng kiểm tra định dạng tên lớp.");
+        if (newClassName.trimmed().isEmpty()) {
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập tên lớp.");
             return;
         }
 
@@ -1042,9 +1039,9 @@ void TeacherDashboard::editStudent() {
         QString newGender = genderCombo->currentText();
         QString newPassword = InputValidator::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
 
-        if (!InputValidator::validateStudentData(oldStudentId, newLastName, newFirstName, newPassword)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu sinh viên",
-                                                "Vui lòng kiểm tra định dạng tất cả các trường.");
+        if (newLastName.trimmed().isEmpty() || newFirstName.trimmed().isEmpty() || 
+            newPassword.trimmed().isEmpty()) {
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập đầy đủ tất cả các trường.");
             return;
         }
 
@@ -1186,9 +1183,8 @@ void TeacherDashboard::editSubject() {
     connect(okButton, &QPushButton::clicked, [&]() {
         QString newSubjectName = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
-        if (!InputValidator::validateSubjectData(oldSubjectCode, newSubjectName)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu môn học",
-                                                "Vui lòng kiểm tra định dạng tên môn.");
+        if (newSubjectName.trimmed().isEmpty()) {
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng nhập tên môn.");
             return;
         }
 

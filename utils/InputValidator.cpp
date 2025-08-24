@@ -38,11 +38,6 @@ bool InputValidator::isValidCode(const QString &input) {
     return pattern.match(input).hasMatch();
 }
 
-bool InputValidator::isValidLength(const QString &input, int minLength, int maxLength) {
-    int length = input.trimmed().length();
-    return length >= minLength && length <= maxLength;
-}
-
 QString InputValidator::filterInput(const QString &input, InputType type) {
     switch (type) {
         case NONE:
@@ -120,38 +115,7 @@ void InputValidator::setupInputValidation(QLineEdit *lineEdit, InputType type) {
     });
 }
 
-// Data validation methods
-bool InputValidator::validateStudentData(const QString &studentId, const QString &lastName,
-                                         const QString &firstName, const QString &password) {
-    return isValidLength(studentId, 1, 20) && isValidCode(studentId) &&
-           isValidLength(lastName, 1, 50) && isValidGeneral(lastName) &&
-           isValidLength(firstName, 1, 50) && isValidGeneral(firstName) &&
-           isValidLength(password, 1, 50);
-}
-
-bool InputValidator::validateClassData(const QString &classCode, const QString &className) {
-    return isValidLength(classCode, 1, 20) && isValidCode(classCode) &&
-           isValidLength(className, 1, 100) && isValidGeneral(className);
-}
-
-bool InputValidator::validateSubjectData(const QString &subjectCode, const QString &subjectName) {
-    return isValidLength(subjectCode, 1, 15) && isValidCode(subjectCode) &&
-           isValidLength(subjectName, 1, 100) && isValidGeneral(subjectName);
-}
-
 // Utility methods
 QString InputValidator::sanitizeForModel(const QString &input, InputType type) {
     return filterInput(input, type);
-}
-
-void InputValidator::showValidationError(QWidget *parent, const QString &title, const QString &message) {
-    QMessageBox::warning(parent, "Lỗi xác thực", message);
-}
-
-InputValidator::InputType InputValidator::getValidationType(QLineEdit *lineEdit) {
-    if (!lineEdit)
-        return GENERAL;
-    bool ok;
-    int typeInt = lineEdit->property("validationType").toInt(&ok);
-    return ok ? static_cast<InputType>(typeInt) : GENERAL;
 }
