@@ -394,11 +394,13 @@ void TeacherDashboard::addNewClass() {
     // Class code input
     QLabel *codeLabel = new QLabel("Mã Lớp:");
     QLineEdit *codeEdit = new QLineEdit();
+    codeEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(codeEdit, InputValidator::CODE);
 
     // Class name input
     QLabel *nameLabel = new QLabel("Tên Lớp:");
     QLineEdit *nameEdit = new QLineEdit();
+    nameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
 
     // Buttons
@@ -463,31 +465,31 @@ void TeacherDashboard::addNewStudent() {
     // Student ID input
     QLabel *idLabel = new QLabel("Mã sinh viên:");
     QLineEdit *idEdit = new QLineEdit();
-    idEdit->setMinimumHeight(35);
+    idEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(idEdit, InputValidator::CODE);
 
     // Last name input
     QLabel *lastNameLabel = new QLabel("Họ:");
     QLineEdit *lastNameEdit = new QLineEdit();
-    lastNameEdit->setMinimumHeight(35);
+    lastNameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
 
     // First name input
     QLabel *firstNameLabel = new QLabel("Tên:");
     QLineEdit *firstNameEdit = new QLineEdit();
-    firstNameEdit->setMinimumHeight(35);
+    firstNameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
 
     // Gender selection
     QLabel *genderLabel = new QLabel("Giới tính:");
     QComboBox *genderCombo = new QComboBox();
-    genderCombo->setMinimumHeight(35);
+    genderCombo->setFixedHeight(35);
     genderCombo->addItems({"Nam", "Nữ"});
 
     // Password input
     QLabel *passwordLabel = new QLabel("Mật khẩu:");
     QLineEdit *passwordEdit = new QLineEdit();
-    passwordEdit->setMinimumHeight(35);
+    passwordEdit->setFixedHeight(35);
     passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
     InputValidator::setupInputValidation(passwordEdit, InputValidator::GENERAL);
 
@@ -584,11 +586,13 @@ void TeacherDashboard::addNewSubject() {
     // Subject code input
     QLabel *codeLabel = new QLabel("Mã Môn:");
     QLineEdit *codeEdit = new QLineEdit();
+    codeEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(codeEdit, InputValidator::CODE);
 
     // Subject name input
     QLabel *nameLabel = new QLabel("Tên Môn:");
     QLineEdit *nameEdit = new QLineEdit();
+    nameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
 
     // Buttons
@@ -839,12 +843,14 @@ void TeacherDashboard::editClass() {
     // Class code input (read-only)
     QLabel *codeLabel = new QLabel("Mã Lớp:");
     QLineEdit *codeEdit = new QLineEdit(oldClassCode);
+    codeEdit->setFixedHeight(35);
     codeEdit->setReadOnly(true);
     codeEdit->setStyleSheet("QLineEdit { background-color: #f0f0f0; color: #666; }");
 
     // Class name input
     QLabel *nameLabel = new QLabel("Tên Lớp:");
     QLineEdit *nameEdit = new QLineEdit(QString::fromStdString(lop->getTenLop()));
+    nameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
 
     // Buttons
@@ -981,33 +987,33 @@ void TeacherDashboard::editStudent() {
     // Student ID input (read-only)
     QLabel *idLabel = new QLabel("Mã sinh viên:");
     QLineEdit *idEdit = new QLineEdit(oldStudentId);
-    idEdit->setMinimumHeight(35);
+    idEdit->setFixedHeight(35);
     idEdit->setReadOnly(true);
     idEdit->setStyleSheet("QLineEdit { background-color: #f0f0f0; color: #666; }");
 
     // Last name input
     QLabel *lastNameLabel = new QLabel("Họ:");
     QLineEdit *lastNameEdit = new QLineEdit(QString::fromStdString(sv->getHo()));
-    lastNameEdit->setMinimumHeight(35);
+    lastNameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
 
     // First name input
     QLabel *firstNameLabel = new QLabel("Tên:");
     QLineEdit *firstNameEdit = new QLineEdit(QString::fromStdString(sv->getTen()));
-    firstNameEdit->setMinimumHeight(35);
+    firstNameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
 
     // Gender selection
     QLabel *genderLabel = new QLabel("Giới tính:");
     QComboBox *genderCombo = new QComboBox();
-    genderCombo->setMinimumHeight(35);
+    genderCombo->setFixedHeight(35);
     genderCombo->addItems({"Nam", "Nữ"});
     genderCombo->setCurrentText(sv->getPhai() ? "Nam" : "Nữ");
 
     // Password input
     QLabel *passwordLabel = new QLabel("Mật khẩu:");
     QLineEdit *passwordEdit = new QLineEdit(QString::fromStdString(sv->getPassword()));
-    passwordEdit->setMinimumHeight(35);
+    passwordEdit->setFixedHeight(35);
     passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
     InputValidator::setupInputValidation(passwordEdit, InputValidator::GENERAL);
 
@@ -1156,12 +1162,14 @@ void TeacherDashboard::editSubject() {
     // Subject code input (read-only)
     QLabel *codeLabel = new QLabel("Mã Môn:");
     QLineEdit *codeEdit = new QLineEdit(oldSubjectCode);
+    codeEdit->setFixedHeight(35);
     codeEdit->setReadOnly(true);
     codeEdit->setStyleSheet("QLineEdit { background-color: #f0f0f0; color: #666; }");
 
     // Subject name input
     QLabel *nameLabel = new QLabel("Tên Môn:");
     QLineEdit *nameEdit = new QLineEdit(QString::fromStdString(mon->getTenMon()));
+    nameEdit->setFixedHeight(35);
     InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
 
     // Buttons
