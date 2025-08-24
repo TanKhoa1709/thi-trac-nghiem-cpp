@@ -9,8 +9,8 @@
 #include "../models/diemthi.h"
 #include "../utils/DynamicArray.h"
 
-StudentDashboard::StudentDashboard(QWidget *parent)
-    : QWidget(parent), currentStudent(nullptr), subjectManager(nullptr), examDialog(nullptr) {
+StudentDashboard::StudentDashboard(QWidget *parent) :
+    QWidget(parent), currentStudent(nullptr), subjectManager(nullptr), examDialog(nullptr) {
     setupUI();
     setupConnections();
 }
@@ -50,8 +50,8 @@ void StudentDashboard::setupUI() {
 
     takeExamButton = new QPushButton("Start New Exam");
     takeExamButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
-        "padding: 12px; font-size: 14px; border: none; border-radius: 6px; }"
-        "QPushButton:hover { background-color: #2980b9; }");
+            "padding: 12px; font-size: 14px; border: none; border-radius: 6px; }"
+            "QPushButton:hover { background-color: #2980b9; }");
     takeExamButton->setMinimumHeight(40);
 
     examLayout->addWidget(takeExamButton);
@@ -71,16 +71,11 @@ void StudentDashboard::setupUI() {
     QHBoxLayout *scoresButtonLayout = new QHBoxLayout();
     viewDetailButton = new QPushButton("View Detailed Results");
     viewDetailButton->setStyleSheet("QPushButton { background-color: #9b59b6; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #8e44ad; }");
+            "padding: 8px 16px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #8e44ad; }");
 
-    viewProfileButton = new QPushButton("View Profile");
-    viewProfileButton->setStyleSheet("QPushButton { background-color: #1abc9c; color: white; "
-        "padding: 8px 16px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #16a085; }");
 
     scoresButtonLayout->addWidget(viewDetailButton);
-    scoresButtonLayout->addWidget(viewProfileButton);
     scoresButtonLayout->addStretch();
 
     statisticsLabel = new QLabel("Statistics will appear here");
@@ -95,8 +90,8 @@ void StudentDashboard::setupUI() {
     bottomLayout->addStretch();
     logoutButton = new QPushButton("Logout");
     logoutButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
-        "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
-        "QPushButton:hover { background-color: #c0392b; }");
+            "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
+            "QPushButton:hover { background-color: #c0392b; }");
     bottomLayout->addWidget(logoutButton);
 
     // Add all to main layout
@@ -111,7 +106,6 @@ void StudentDashboard::setupUI() {
 void StudentDashboard::setupConnections() {
     connect(takeExamButton, &QPushButton::clicked, this, &StudentDashboard::startExam);
     connect(viewDetailButton, &QPushButton::clicked, this, &StudentDashboard::viewDetailedScores);
-    connect(viewProfileButton, &QPushButton::clicked, this, &StudentDashboard::viewProfile);
     connect(logoutButton, &QPushButton::clicked, this, &StudentDashboard::logoutRequested);
 }
 
@@ -124,10 +118,10 @@ void StudentDashboard::updateStudentInfo() {
 
     QString fullName = QString::fromStdString(currentStudent->getHo() + " " + currentStudent->getTen());
     QString studentId = QString::fromStdString(currentStudent->getMaSinhVien());
-    QString gender = currentStudent->getPhai() ? "Male" : "Female";
+    QString gender = currentStudent->getPhai() ? "Nam" : "Nữ";
 
-    welcomeLabel->setText(QString("Welcome, %1!").arg(fullName));
-    studentInfoLabel->setText(QString("Student ID: %1 | Gender: %2").arg(studentId, gender));
+    welcomeLabel->setText(fullName + " " + studentId);
+    studentInfoLabel->setText(QString("Mã sinh viên: %1 | Giới tính: %2").arg(studentId).arg(gender));
 }
 
 void StudentDashboard::refreshScores() {
@@ -218,8 +212,8 @@ void StudentDashboard::startExam() {
     }
 
     bool ok;
-    QString selectedSubject = QInputDialog::getItem(this, "Select Subject",
-                                                    "Choose a subject for examination:",
+    QString selectedSubject = QInputDialog::getItem(this, "Chọn Môn",
+                                                    "Chọn một môn để thi:",
                                                     subjectList, 0, false, &ok);
     if (!ok)
         return;
@@ -301,30 +295,6 @@ void StudentDashboard::viewDetailedScores() {
     detailsDialog->showResults(ketQua, subjectManager);
     detailsDialog->exec();
     delete detailsDialog;
-}
-
-void StudentDashboard::viewProfile() {
-    if (!currentStudent) {
-        QMessageBox::warning(this, "Error", "Student information not available.");
-        return;
-    }
-
-    QString profile = QString("STUDENT PROFILE\n\n") + QString("Student ID: %1\n").
-                      arg(QString::fromStdString(currentStudent->getMaSinhVien())) + QString("Full Name: %1 %2\n").
-                      arg(QString::fromStdString(currentStudent->getHo())).
-                      arg(QString::fromStdString(currentStudent->getTen())) + QString("Gender: %1\n\n").arg(
-                          currentStudent->getPhai() ? "Male" : "Female");
-
-    if (currentStudent->getQuanLyDiem()) {
-        profile += QString("ACADEMIC RECORD\n");
-        profile += QString("Total Exams Taken: %1\n").arg(currentStudent->getQuanLyDiem()->demSoMonDaThi());
-        profile += QString("Exams Passed: %1\n").arg(currentStudent->getQuanLyDiem()->demSoMonDau());
-        profile += QString("Exams Failed: %1\n").arg(currentStudent->getQuanLyDiem()->demSoMonRot());
-        profile += QString("Average Score: %1/10").arg(
-            QString::number(currentStudent->getQuanLyDiem()->tinhDiemTrungBinh(), 'f', 2));
-    }
-
-    QMessageBox::information(this, "Student Profile", profile);
 }
 
 void StudentDashboard::refreshData() {

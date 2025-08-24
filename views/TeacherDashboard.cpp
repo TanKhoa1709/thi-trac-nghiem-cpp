@@ -76,18 +76,18 @@ void TeacherDashboard::setupClassTab() {
 
     // Left side - Classes
     QVBoxLayout *classLayout = new QVBoxLayout();
-    QLabel *classLabel = new QLabel("Classes");
+    QLabel *classLabel = new QLabel("Lớp Học");
     classLabel->setStyleSheet("font-weight: bold; margin: 5px;");
 
     classTable = new QTableWidget(0, 3);
-    classTable->setHorizontalHeaderLabels({"Class Code", "Class Name", "Students"});
+    classTable->setHorizontalHeaderLabels({"Mã Lớp", "Tên Lớp", "Số Sinh Viên"});
     classTable->horizontalHeader()->setStretchLastSection(true);
     classTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     QHBoxLayout *classButtonLayout = new QHBoxLayout();
-    addClassButton = new QPushButton("Add Class");
-    editClassButton = new QPushButton("Edit Class");
-    deleteClassButton = new QPushButton("Delete Class");
+    addClassButton = new QPushButton("Thêm Lớp");
+    editClassButton = new QPushButton("Sửa Lớp");
+    deleteClassButton = new QPushButton("Xóa Lớp");
 
     addClassButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
@@ -107,18 +107,18 @@ void TeacherDashboard::setupClassTab() {
 
     // Right side - Students in selected class
     QVBoxLayout *studentLayout = new QVBoxLayout();
-    QLabel *studentLabel = new QLabel("Students in Selected Class");
+    QLabel *studentLabel = new QLabel("Sinh Viên Trong Lớp");
     studentLabel->setStyleSheet("font-weight: bold; margin: 5px;");
 
     studentTable = new QTableWidget(0, 4);
-    studentTable->setHorizontalHeaderLabels({"Student ID", "Last Name", "First Name", "Gender"});
+    studentTable->setHorizontalHeaderLabels({"Mã SV", "Họ", "Tên", "Phái"});
     studentTable->horizontalHeader()->setStretchLastSection(true);
     studentTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     QHBoxLayout *studentButtonLayout = new QHBoxLayout();
-    addStudentButton = new QPushButton("Add Student");
-    editStudentButton = new QPushButton("Edit Student");
-    deleteStudentButton = new QPushButton("Delete Student");
+    addStudentButton = new QPushButton("Thêm Sinh Viên");
+    editStudentButton = new QPushButton("Sửa Sinh Viên");
+    deleteStudentButton = new QPushButton("Xóa Sinh Viên");
 
     addStudentButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
@@ -147,19 +147,18 @@ void TeacherDashboard::setupSubjectTab() {
     subjectTab = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(subjectTab);
 
-    QLabel *subjectLabel = new QLabel("Subjects");
+    QLabel *subjectLabel = new QLabel("Môn học");
     subjectLabel->setStyleSheet("font-weight: bold; margin: 5px;");
 
     subjectTable = new QTableWidget(0, 3);
-    subjectTable->setHorizontalHeaderLabels({"Subject Code", "Subject Name", "Questions"});
+    subjectTable->setHorizontalHeaderLabels({"Mã Môn", "Tên Môn", "Chỉ Số"});
     subjectTable->horizontalHeader()->setStretchLastSection(true);
     subjectTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    addSubjectButton = new QPushButton("Add Subject");
-    editSubjectButton = new QPushButton("Edit Subject");
-    deleteSubjectButton = new QPushButton("Delete Subject");
-    manageQuestionsButton = new QPushButton("Manage Questions");
+    addSubjectButton = new QPushButton("Thêm Môn");
+    editSubjectButton = new QPushButton("Sửa Môn");
+    deleteSubjectButton = new QPushButton("Xóa Môn");
 
     addSubjectButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
@@ -167,13 +166,10 @@ void TeacherDashboard::setupSubjectTab() {
             "QPushButton { background-color: #3498db; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
     deleteSubjectButton->setStyleSheet(
             "QPushButton { background-color: #e74c3c; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
-    manageQuestionsButton->setStyleSheet(
-            "QPushButton { background-color: #9b59b6; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
 
     buttonLayout->addWidget(addSubjectButton);
     buttonLayout->addWidget(editSubjectButton);
     buttonLayout->addWidget(deleteSubjectButton);
-    buttonLayout->addWidget(manageQuestionsButton);
     buttonLayout->addStretch();
 
     layout->addWidget(subjectLabel);
@@ -189,7 +185,7 @@ void TeacherDashboard::setupQuestionTab() {
 
     // Subject selection
     QHBoxLayout *subjectSelectLayout = new QHBoxLayout();
-    QLabel *selectLabel = new QLabel("Select Subject:");
+    QLabel *selectLabel = new QLabel("Chọn môn học:");
     subjectComboForQuestions = new QComboBox();
     subjectSelectLayout->addWidget(selectLabel);
     subjectSelectLayout->addWidget(subjectComboForQuestions);
@@ -204,9 +200,9 @@ void TeacherDashboard::setupQuestionTab() {
     questionTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    addQuestionButton = new QPushButton("Add Question");
-    editQuestionButton = new QPushButton("Edit Question");
-    deleteQuestionButton = new QPushButton("Delete Question");
+    addQuestionButton = new QPushButton("Thêm Câu Hỏi");
+    editQuestionButton = new QPushButton("Sửa Câu Hỏi");
+    deleteQuestionButton = new QPushButton("Xóa Câu Hỏi");
 
     addQuestionButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 5px 10px; border: none; border-radius: 3px; }");
@@ -311,7 +307,6 @@ void TeacherDashboard::setupConnections() {
     connect(addSubjectButton, &QPushButton::clicked, this, &TeacherDashboard::addNewSubject);
     connect(editSubjectButton, &QPushButton::clicked, this, &TeacherDashboard::editSubject);
     connect(deleteSubjectButton, &QPushButton::clicked, this, &TeacherDashboard::deleteSubject);
-    connect(manageQuestionsButton, &QPushButton::clicked, this, &TeacherDashboard::manageQuestions);
 
     // Question management connections
     connect(subjectComboForQuestions, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -384,7 +379,7 @@ void TeacherDashboard::refreshStudentList() {
         studentTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(sv->getMaSinhVien())));
         studentTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(sv->getHo())));
         studentTable->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(sv->getTen())));
-        studentTable->setItem(i, 3, new QTableWidgetItem(sv->getPhai() ? "Male" : "Female"));
+        studentTable->setItem(i, 3, new QTableWidgetItem(sv->getPhai() ? "Nam" : "Nữ"));
     }
 }
 
@@ -397,7 +392,7 @@ void TeacherDashboard::addNewClass() {
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
     // Class code input
-    QLabel *codeLabel = new QLabel("Class Code:");
+    QLabel *codeLabel = new QLabel("Mã Lớp:");
     QLineEdit *codeEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(codeEdit, InputValidator::CODE);
 
@@ -408,7 +403,7 @@ void TeacherDashboard::addNewClass() {
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    QPushButton *okButton = new QPushButton("Add Class");
+    QPushButton *okButton = new QPushButton("Thêm Lớp");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
     okButton->setStyleSheet(
@@ -488,7 +483,7 @@ void TeacherDashboard::addNewStudent() {
     // Gender selection
     QLabel *genderLabel = new QLabel("Gender:");
     QComboBox *genderCombo = new QComboBox();
-    genderCombo->addItems({"Male", "Female"});
+    genderCombo->addItems({"Nam", "Nữ"});
 
     // Password input
     QLabel *passwordLabel = new QLabel("Password:");
@@ -498,7 +493,7 @@ void TeacherDashboard::addNewStudent() {
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    QPushButton *okButton = new QPushButton("Add Student");
+    QPushButton *okButton = new QPushButton("Thêm Sinh Viên");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
     okButton->setStyleSheet(
@@ -539,7 +534,7 @@ void TeacherDashboard::addNewStudent() {
         if (lop && lop->getQuanLySinhVien()) {
             // Create new student following memory management rules
             SinhVien *svMoi = new SinhVien(studentId.toStdString(), lastName.toStdString(),
-                                           firstName.toStdString(), gender == "Male", password.toStdString());
+                                           firstName.toStdString(), gender == "Nam", password.toStdString());
             if (lop->getQuanLySinhVien()->them(*svMoi)) {
                 lop->getQuanLySinhVien()->saveToFile();
                 QMessageBox::information(&dialog, "Success", "Student added successfully!");
@@ -586,18 +581,18 @@ void TeacherDashboard::addNewSubject() {
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
     // Subject code input
-    QLabel *codeLabel = new QLabel("Subject Code:");
+    QLabel *codeLabel = new QLabel("Mã Môn:");
     QLineEdit *codeEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(codeEdit, InputValidator::CODE);
 
     // Subject name input
-    QLabel *nameLabel = new QLabel("Subject Name:");
+    QLabel *nameLabel = new QLabel("Tên Môn:");
     QLineEdit *nameEdit = new QLineEdit();
     ValidationHelper::setupInputValidation(nameEdit, InputValidator::GENERAL);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    QPushButton *okButton = new QPushButton("Add Subject");
+    QPushButton *okButton = new QPushButton("Thêm Môn");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
     okButton->setStyleSheet(
@@ -746,7 +741,7 @@ void TeacherDashboard::addNewQuestion() {
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    QPushButton *okButton = new QPushButton("Add Question");
+    QPushButton *okButton = new QPushButton("Thêm Câu Hỏi");
     QPushButton *cancelButton = new QPushButton("Cancel");
 
     okButton->setStyleSheet(
@@ -881,9 +876,9 @@ void TeacherDashboard::deleteClass() {
 
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
-                                       QString("Are you sure you want to delete class '%1 - %2'?\n\n"
-                                               "This will also delete all students in this class and their exam results.\n"
-                                               "This action cannot be undone.")
+                                       QString("Bạn có chắc chắn muốn xóa lớp '%1 - %2'?\n\n"
+                                               "Việc này sẽ xóa tất cả sinh viên trong lớp và kết quả thi của họ.\n"
+                                               "Hành động này không thể hoàn tác.")
                                        .arg(classCode)
                                        .arg(className),
                                        QMessageBox::Yes | QMessageBox::No,
@@ -954,8 +949,8 @@ void TeacherDashboard::editStudent() {
     if (!ok || newFirstName.isEmpty())
         return;
 
-    QStringList genders = {"Male", "Female"};
-    QString currentGender = sv->getPhai() ? "Male" : "Female";
+    QStringList genders = {"Nam", "Nữ"};
+    QString currentGender = sv->getPhai() ? "Nam" : "Nữ";
     QString newGender = QInputDialog::getItem(this, "Edit Student", "Gender:", genders,
                                               genders.indexOf(currentGender), false, &ok);
     if (!ok)
@@ -970,7 +965,7 @@ void TeacherDashboard::editStudent() {
     sv->setMaSinhVien(newStudentId.toStdString());
     sv->setHo(newLastName.toStdString());
     sv->setTen(newFirstName.toStdString());
-    sv->setPhai(newGender == "Male");
+    sv->setPhai(newGender == "Nam");
     sv->setPassword(newPassword.toStdString());
 
     if (lop->getQuanLySinhVien()->sua(*sv)) {
@@ -983,7 +978,7 @@ void TeacherDashboard::editStudent() {
         sv->setMaSinhVien(oldStudentId.toStdString());
         sv->setHo(studentTable->item(row, 1)->text().toStdString());
         sv->setTen(studentTable->item(row, 2)->text().toStdString());
-        sv->setPhai(studentTable->item(row, 3)->text() == "Male");
+        sv->setPhai(studentTable->item(row, 3)->text() == "Nam");
         QMessageBox::warning(this, "Error", "Failed to update student. Student ID may already exist.");
     }
 }
@@ -1010,9 +1005,9 @@ void TeacherDashboard::deleteStudent() {
 
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
-                                       QString("Are you sure you want to delete student '%1 - %2'?\n\n"
-                                               "This will also delete all exam results for this student.\n"
-                                               "This action cannot be undone.")
+                                       QString("Bạn có chắc chắn muốn xóa sinh viên '%1 - %2'?\n\n"
+                                               "Việc này sẽ xóa tất cả kết quả thi của sinh viên này.\n"
+                                               "Hành động này không thể hoàn tác.")
                                        .arg(studentId)
                                        .arg(studentName),
                                        QMessageBox::Yes | QMessageBox::No,
@@ -1056,12 +1051,12 @@ void TeacherDashboard::editSubject() {
     }
 
     bool ok;
-    QString newSubjectCode = QInputDialog::getText(this, "Edit Subject", "Subject Code:",
+    QString newSubjectCode = QInputDialog::getText(this, "Sửa Môn", "Mã Môn:",
                                                    QLineEdit::Normal, oldSubjectCode, &ok);
     if (!ok || newSubjectCode.isEmpty())
         return;
 
-    QString newSubjectName = QInputDialog::getText(this, "Edit Subject", "Subject Name:",
+    QString newSubjectName = QInputDialog::getText(this, "Sửa Môn", "Tên Môn:",
                                                    QLineEdit::Normal, QString::fromStdString(mon->getTenMon()), &ok);
     if (!ok || newSubjectName.isEmpty())
         return;
@@ -1110,9 +1105,9 @@ void TeacherDashboard::deleteSubject() {
 
     // Confirmation dialog
     int result = QMessageBox::question(this, "Confirm Delete",
-                                       QString("Are you sure you want to delete subject '%1 - %2'?\n\n"
-                                               "This will also delete all questions for this subject and related exam results.\n"
-                                               "This action cannot be undone.")
+                                       QString("Bạn có chắc chắn muốn xóa môn '%1 - %2'?\n\n"
+                                               "Việc này sẽ xóa tất cả câu hỏi của môn học này và kết quả thi liên quan.\n"
+                                               "Hành động này không thể hoàn tác.")
                                        .arg(subjectCode)
                                        .arg(subjectName),
                                        QMessageBox::Yes | QMessageBox::No,
@@ -1312,9 +1307,9 @@ void TeacherDashboard::deleteQuestion() {
 
     // Check if question is used in any exam
     if (isQuestionUsedInExams(questionId, currentSubjectCode.toStdString())) {
-        QMessageBox::warning(this, "Cannot Delete", 
-                            "This question cannot be deleted because it has been used in student exams.\n\n"
-                            "To maintain exam integrity, questions that have been used in exams cannot be deleted.");
+        QMessageBox::warning(this, "Cannot Delete",
+                             "This question cannot be deleted because it has been used in student exams.\n\n"
+                             "To maintain exam integrity, questions that have been used in exams cannot be deleted.");
         return;
     }
 
@@ -1325,7 +1320,7 @@ void TeacherDashboard::deleteQuestion() {
     }
 
     int reply = QMessageBox::question(this, "Confirm Delete",
-                                      QString("Are you sure you want to delete this question?\n\n\"%1\"").arg(
+                                      QString("Bạn có chắc chắn muốn xóa câu hỏi này?\n\n\"%1\"").arg(
                                               questionPreview),
                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 

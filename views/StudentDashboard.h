@@ -49,8 +49,6 @@ private slots:
 
     void viewDetailedScores();
 
-    void viewProfile();
-
     void onExamCompleted(double score);
 
 private:

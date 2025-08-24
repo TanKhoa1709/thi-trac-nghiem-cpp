@@ -537,18 +537,18 @@ bool ExamWidget::confirmSubmission() {
         }
     }
 
-    QString message = "Are you sure you want to submit your exam?";
+    QString message = "Bạn có chắc chắn muốn nộp bài thi không?";
     if (unanswered > 0) {
-        message += QString("\n\nYou have %1 unanswered questions.").arg(unanswered);
+        message += QString("\n\nBạn có %1 câu chưa trả lời.").arg(unanswered);
     }
 
-    return QMessageBox::question(this, "Submit Exam", message,
+    return QMessageBox::question(this, "Nộp Bài Thi", message,
                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
 }
 
 bool ExamWidget::confirmCancellation() {
     return QMessageBox::question(this, "Cancel Exam",
-                                 "Are you sure you want to cancel the exam? All progress will be lost.",
+                                 "Bạn có chắc chắn muốn hủy bài thi? Mọi tiến trình sẽ bị mất.",
                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
 }
 
@@ -588,20 +588,20 @@ void ExamWidget::resetExam() {
 
 int ExamWidget::askForExamDuration() {
     bool ok;
-    int duration = QInputDialog::getInt(this, "Exam Duration", 
-                                       "Enter exam duration in minutes (1-180):",
-                                       60, 1, 180, 1, &ok);
-    
+    int duration = QInputDialog::getInt(this, "Exam Duration",
+                                        "Enter exam duration in minutes (1-180):",
+                                        60, 1, 180, 1, &ok);
+
     if (!ok) {
         // User cancelled
         return -1;
     }
-    
+
     if (duration < 1 || duration > 180) {
-        QMessageBox::warning(this, "Invalid Duration", 
-                            "Please enter a duration between 1 and 180 minutes.");
+        QMessageBox::warning(this, "Invalid Duration",
+                             "Please enter a duration between 1 and 180 minutes.");
         return askForExamDuration(); // Recursive call to ask again
     }
-    
+
     return duration;
 }
