@@ -399,7 +399,7 @@ void TeacherDashboard::addNewClass() {
     // Class name input
     QLabel *nameLabel = new QLabel("Tên Lớp:");
     QLineEdit *nameEdit = new QLineEdit();
-    InputValidator::setupInputValidation(nameEdit, InputValidator::GENERAL);
+    InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -427,7 +427,8 @@ void TeacherDashboard::addNewClass() {
         QString className = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
         if (!InputValidator::validateClassData(classCode, className)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu lớp", "Vui lòng kiểm tra định dạng mã lớp và tên lớp.");
+            InputValidator::showValidationError(&dialog, "Dữ liệu lớp",
+                                                "Vui lòng kiểm tra định dạng mã lớp và tên lớp.");
             return;
         }
 
@@ -526,7 +527,8 @@ void TeacherDashboard::addNewStudent() {
         QString password = InputValidator::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
 
         if (!InputValidator::validateStudentData(studentId, lastName, firstName, password)) {
-            InputValidator::showValidationError(&dialog, "Dữ liệu sinh viên", "Vui lòng kiểm tra định dạng tất cả các trường.");
+            InputValidator::showValidationError(&dialog, "Dữ liệu sinh viên",
+                                                "Vui lòng kiểm tra định dạng tất cả các trường.");
             return;
         }
 
@@ -588,7 +590,7 @@ void TeacherDashboard::addNewSubject() {
     // Subject name input
     QLabel *nameLabel = new QLabel("Tên Môn:");
     QLineEdit *nameEdit = new QLineEdit();
-    InputValidator::setupInputValidation(nameEdit, InputValidator::GENERAL);
+    InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
@@ -617,7 +619,7 @@ void TeacherDashboard::addNewSubject() {
 
         if (!InputValidator::validateSubjectData(subjectCode, subjectName)) {
             InputValidator::showValidationError(&dialog, "Dữ liệu môn học",
-                                                  "Vui lòng kiểm tra định dạng mã môn và tên môn.");
+                                                "Vui lòng kiểm tra định dạng mã môn và tên môn.");
             return;
         }
 
