@@ -35,20 +35,20 @@ void StudentDashboard::setupUI() {
     mainLayout->setContentsMargins(20, 20, 20, 20);
 
     // Welcome section
-    welcomeLabel = new QLabel("Student Dashboard");
+    welcomeLabel = new QLabel("Bảng điều khiển sinh viên");
     welcomeLabel->setAlignment(Qt::AlignCenter);
     welcomeLabel->setStyleSheet("font-size: 20px; font-weight: bold; color: #2c3e50; margin: 10px;");
 
-    studentInfoLabel = new QLabel("Student information will appear here");
+    studentInfoLabel = new QLabel("Thông tin sinh viên sẽ hiển thị ở đây");
     studentInfoLabel->setAlignment(Qt::AlignCenter);
     studentInfoLabel->setStyleSheet("font-size: 14px; color: #34495e; margin: 5px;");
 
     // Exam section
-    examGroup = new QGroupBox("Take Exam");
+    examGroup = new QGroupBox("Làm bài thi");
     examGroup->setStyleSheet("QGroupBox { font-weight: bold; color: #2c3e50; padding-top: 10px; }");
     QVBoxLayout *examLayout = new QVBoxLayout(examGroup);
 
-    takeExamButton = new QPushButton("Start New Exam");
+    takeExamButton = new QPushButton("Bắt đầu bài thi mới");
     takeExamButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
             "padding: 12px; font-size: 14px; border: none; border-radius: 6px; }"
             "QPushButton:hover { background-color: #2980b9; }");
@@ -57,19 +57,19 @@ void StudentDashboard::setupUI() {
     examLayout->addWidget(takeExamButton);
 
     // Scores section
-    scoresGroup = new QGroupBox("Your Exam Results");
+    scoresGroup = new QGroupBox("Kết quả bài thi của bạn");
     scoresGroup->setStyleSheet("QGroupBox { font-weight: bold; color: #2c3e50; padding-top: 10px; }");
     QVBoxLayout *scoresLayout = new QVBoxLayout(scoresGroup);
 
     scoresTable = new QTableWidget(0, 4);
-    scoresTable->setHorizontalHeaderLabels({"Subject", "Subject Name", "Score", "Status"});
+    scoresTable->setHorizontalHeaderLabels({"Môn học", "Tên môn", "Điểm", "Trạng thái"});
     scoresTable->horizontalHeader()->setStretchLastSection(true);
     scoresTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     scoresTable->setAlternatingRowColors(true);
     scoresTable->setMaximumHeight(200);
 
     QHBoxLayout *scoresButtonLayout = new QHBoxLayout();
-    viewDetailButton = new QPushButton("View Detailed Results");
+    viewDetailButton = new QPushButton("Chi tiết bài thi");
     viewDetailButton->setStyleSheet("QPushButton { background-color: #9b59b6; color: white; "
             "padding: 8px 16px; border: none; border-radius: 4px; }"
             "QPushButton:hover { background-color: #8e44ad; }");
@@ -78,7 +78,7 @@ void StudentDashboard::setupUI() {
     scoresButtonLayout->addWidget(viewDetailButton);
     scoresButtonLayout->addStretch();
 
-    statisticsLabel = new QLabel("Statistics will appear here");
+    statisticsLabel = new QLabel("Thống kê sẽ hiển thị ở đây");
     statisticsLabel->setStyleSheet("font-size: 12px; color: #7f8c8d; margin: 10px;");
 
     scoresLayout->addWidget(scoresTable);
@@ -88,7 +88,7 @@ void StudentDashboard::setupUI() {
     // Logout section
     QHBoxLayout *bottomLayout = new QHBoxLayout();
     bottomLayout->addStretch();
-    logoutButton = new QPushButton("Logout");
+    logoutButton = new QPushButton("Đăng xuất");
     logoutButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
             "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
             "QPushButton:hover { background-color: #c0392b; }");
@@ -111,8 +111,8 @@ void StudentDashboard::setupConnections() {
 
 void StudentDashboard::updateStudentInfo() {
     if (!currentStudent) {
-        welcomeLabel->setText("Student Dashboard");
-        studentInfoLabel->setText("No student information available");
+        welcomeLabel->setText("Bảng điều khiển sinh viên");
+        studentInfoLabel->setText("Không có thông tin sinh viên");
         return;
     }
 
@@ -167,7 +167,7 @@ void StudentDashboard::refreshScores() {
 
 void StudentDashboard::updateStatistics() {
     if (!currentStudent || !currentStudent->getQuanLyDiem()) {
-        statisticsLabel->setText("No statistics available");
+        statisticsLabel->setText("Không có thống kê");
         return;
     }
 
@@ -176,7 +176,7 @@ void StudentDashboard::updateStatistics() {
     int failed = currentStudent->getQuanLyDiem()->demSoMonRot();
     double average = currentStudent->getQuanLyDiem()->tinhDiemTrungBinh();
 
-    QString stats = QString("Total Exams: %1 | Passed: %2 | Failed: %3 | Average: %4/10")
+    QString stats = QString("Tổng bài thi: %1 | Đậu: %2 | Rớt: %3 | Trung bình: %4/10")
             .arg(totalExams)
             .arg(passed)
             .arg(failed)
@@ -187,7 +187,7 @@ void StudentDashboard::updateStatistics() {
 
 void StudentDashboard::startExam() {
     if (!subjectManager) {
-        QMessageBox::warning(this, "Error", "Subject manager not available.");
+        QMessageBox::warning(this, "Lỗi", "Quản lý môn học không khả dụng.");
         return;
     }
 
@@ -196,7 +196,7 @@ void StudentDashboard::startExam() {
     subjectManager->danhSach(danhSachMon);
 
     if (danhSachMon.size() == 0) {
-        QMessageBox::information(this, "No Subjects", "No subjects available for examination.");
+        QMessageBox::information(this, "Không có môn học", "Không có môn học nào để thi.");
         return;
     }
 
@@ -204,7 +204,7 @@ void StudentDashboard::startExam() {
     QStringList subjectList;
     for (int i = 0; i < danhSachMon.size(); i++) {
         MonHoc *mon = danhSachMon.get(i);
-        QString item = QString("%1 - %2 (%3 questions)")
+        QString item = QString("%1 - %2 (%3 câu hỏi)")
                 .arg(QString::fromStdString(mon->getMaMon()))
                 .arg(QString::fromStdString(mon->getTenMon()))
                 .arg(mon->getQuanLyCauHoi() ? mon->getQuanLyCauHoi()->size() : 0);
@@ -225,14 +225,14 @@ void StudentDashboard::startExam() {
 
     MonHoc *selectedMon = danhSachMon.get(selectedIndex);
     if (!selectedMon->getQuanLyCauHoi() || selectedMon->getQuanLyCauHoi()->size() == 0) {
-        QMessageBox::warning(this, "No Questions", "This subject has no questions available for examination.");
+        QMessageBox::warning(this, "Không có câu hỏi", "Môn học này không có câu hỏi để thi.");
         return;
     }
 
     // Get number of questions
     int maxQuestions = selectedMon->getQuanLyCauHoi()->size();
-    int numQuestions = QInputDialog::getInt(this, "Number of Questions",
-                                            QString("How many questions? (Max: %1)").arg(maxQuestions),
+    int numQuestions = QInputDialog::getInt(this, "Số câu hỏi",
+                                            QString("Bao nhiêu câu hỏi? (Tối đa: %1)").arg(maxQuestions),
                                             qMin(10, maxQuestions), 1, maxQuestions, 1, &ok);
     if (!ok)
         return;
@@ -244,7 +244,7 @@ void StudentDashboard::startExam() {
 void StudentDashboard::viewDetailedScores() {
     int currentRow = scoresTable->currentRow();
     if (currentRow < 0) {
-        QMessageBox::information(this, "No Selection", "Please select an exam result to view details.");
+        QMessageBox::information(this, "Không có lựa chọn", "Vui lòng chọn một kết quả bài thi để xem chi tiết.");
         return;
     }
 
@@ -255,13 +255,13 @@ void StudentDashboard::viewDetailedScores() {
     QString subjectCode = subjectItem->text();
 
     if (!currentStudent || !currentStudent->getQuanLyDiem()) {
-        QMessageBox::warning(this, "Error", "Student data not available.");
+        QMessageBox::warning(this, "Lỗi", "Dữ liệu sinh viên không khả dụng.");
         return;
     }
 
     DiemThi *ketQua = currentStudent->getQuanLyDiem()->tim(subjectCode.toStdString().c_str());
     if (!ketQua) {
-        QMessageBox::warning(this, "Error", "Exam result not found.");
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy kết quả bài thi.");
         return;
     }
 
@@ -269,7 +269,7 @@ void StudentDashboard::viewDetailedScores() {
     DynamicArray<int> *questionIds = ketQua->getDanhSachCauHoi();
     if (!questionIds || questionIds->size() == 0) {
         // Fallback to simple text display for old exam results
-        QString details = QString("Subject: %1\nScore: %2/10\nStatus: %3\n\nAnswers: ")
+        QString details = QString("Môn học: %1\nĐiểm: %2/10\nTrạng thái: %3\n\nCâu trả lời: ")
                 .arg(subjectCode)
                 .arg(QString::number(ketQua->getDiem(), 'f', 2))
                 .arg(getPassFailStatus(ketQua->getDiem()));
@@ -277,17 +277,17 @@ void StudentDashboard::viewDetailedScores() {
         DynamicArray<char> *answers = ketQua->getDanhSachCauTraLoi();
         if (answers) {
             for (int i = 0; i < answers->size(); i++) {
-                details += QString("Q%1:%2 ").arg(i + 1).arg(answers->get(i));
+                details += QString("C%1:%2 ").arg(i + 1).arg(answers->get(i));
             }
         }
 
-        QMessageBox::information(this, "Detailed Results", details);
+        QMessageBox::information(this, "Kết quả chi tiết", details);
         return;
     }
 
     // Use the new detailed results widget
     if (!subjectManager) {
-        QMessageBox::warning(this, "Error", "Subject manager not available.");
+        QMessageBox::warning(this, "Lỗi", "Quản lý môn học không khả dụng.");
         return;
     }
 
@@ -303,11 +303,11 @@ void StudentDashboard::refreshData() {
 }
 
 void StudentDashboard::onExamCompleted(double score) {
-    QString message = QString("Exam completed!\nYour score: %1/10\nStatus: %2")
+    QString message = QString("Bài thi hoàn thành!\nĐiểm của bạn: %1/10\nTrạng thái: %2")
             .arg(QString::number(score, 'f', 2))
             .arg(getPassFailStatus(score));
 
-    QMessageBox::information(this, "Exam Results", message);
+    QMessageBox::information(this, "Kết quả bài thi", message);
 
     // Refresh scores to show the new result
     refreshScores();
@@ -318,5 +318,5 @@ QString StudentDashboard::formatGrade(double score) {
 }
 
 QString StudentDashboard::getPassFailStatus(double score) {
-    return (score >= 5.0) ? "PASSED" : "FAILED";
+    return (score >= 5.0) ? "ĐẬU" : "RỚT";
 }

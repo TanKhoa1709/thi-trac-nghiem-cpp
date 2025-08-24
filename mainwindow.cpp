@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "InputValidator.h"
-#include "ValidationHelper.h"
+#include "utils/InputValidator.h"
 #include "controllers/AuthController.h"
 #include "managers/quanlylop.h"
 #include "managers/quanlymonhoc.h"
@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Set window properties
-    setWindowTitle("Exam Management System - CTDL&GT");
+    setWindowTitle("Hệ thống quản lý thi trắc nghiệm - CTDL&GT");
     resize(1024, 768);
 
     // Initialize the application
@@ -123,7 +123,7 @@ void MainWindow::createLoginWidget() {
     QVBoxLayout *layout = new QVBoxLayout(loginWidget);
 
     // Title
-    QLabel *titleLabel = new QLabel("Exam Management System");
+    QLabel *titleLabel = new QLabel("Hệ thống quản lý thi trắc nghiệm");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet("font-size: 24px; font-weight: bold; color: #2c3e50; margin: 20px;");
 
@@ -132,7 +132,7 @@ void MainWindow::createLoginWidget() {
     formLayout->setSpacing(5);
 
     // User type selection
-    QLabel *userTypeLabel = new QLabel("User Type:");
+    QLabel *userTypeLabel = new QLabel("Loại người dùng:");
     userTypeCombo = new QComboBox();
     userTypeCombo->addItem("Teacher");
     userTypeCombo->addItem("Student");
@@ -140,25 +140,25 @@ void MainWindow::createLoginWidget() {
             "QComboBox QAbstractItemView { max-height: 60px; padding: 8px; }");
 
     // Username field
-    QLabel *usernameLabel = new QLabel("Username:");
+    QLabel *usernameLabel = new QLabel("Tên đăng nhập:");
     usernameEdit = new QLineEdit();
-    usernameEdit->setPlaceholderText("Enter username/student ID");
+    usernameEdit->setPlaceholderText("Nhập tên đăng nhập/mã sinh viên");
     usernameEdit->setStyleSheet("padding: 8px;");
 
     // Apply input validation
-    ValidationHelper::setupInputValidation(usernameEdit, InputValidator::CODE);
+    InputValidator::setupInputValidation(usernameEdit, InputValidator::CODE);
 
     connect(usernameEdit, &QLineEdit::textChanged, this, &MainWindow::onUsernameTextChanged);
 
     // Password field
-    QLabel *passwordLabel = new QLabel("Password:");
+    QLabel *passwordLabel = new QLabel("Mật khẩu:");
     passwordEdit = new QLineEdit();
     passwordEdit->setEchoMode(QLineEdit::Password);
-    passwordEdit->setPlaceholderText("Enter password");
+    passwordEdit->setPlaceholderText("Nhập mật khẩu");
     passwordEdit->setStyleSheet("padding: 8px;");
 
     // Login button
-    loginButton = new QPushButton("Login");
+    loginButton = new QPushButton("Đăng nhập");
     loginButton->setStyleSheet("QPushButton { background-color: #3498db; color: white; "
             "padding: 10px; font-size: 14px; border: none; border-radius: 5px; "
             "min-width: 350px; margin-right: 2px; }"
@@ -217,7 +217,7 @@ void MainWindow::createStudentDashboard() {
 }
 
 void MainWindow::handleLoginRequest() {
-    QString username = ValidationHelper::sanitizeForModel(usernameEdit->text(), InputValidator::CODE);
+            QString username = InputValidator::sanitizeForModel(usernameEdit->text(), InputValidator::CODE);
     QString password = passwordEdit->text();
     QString userType = userTypeCombo->currentText();
 
@@ -228,7 +228,7 @@ void MainWindow::handleLoginRequest() {
 
     // Validate username format
     if (!InputValidator::isValidCode(username)) {
-        ValidationHelper::showValidationError(this, "Username", "Username must contain only letters and numbers.");
+                    InputValidator::showValidationError(this, "Username", "Username must contain only letters and numbers.");
         return;
     }
 
@@ -278,7 +278,7 @@ void MainWindow::handleLoginFailed(QString errorMessage) {
     loginButton->setText("Login");
 
     // Show error message
-    QMessageBox::warning(this, "Login Failed", errorMessage);
+    QMessageBox::warning(this, "Đăng nhập thất bại", errorMessage);
 
     // Clear password field
     passwordEdit->clear();
@@ -318,7 +318,7 @@ void MainWindow::cleanupResources() {
 
 void MainWindow::handleExamRequest(MonHoc *subject, int numQuestions) {
     if (!currentStudent || !subject) {
-        QMessageBox::warning(this, "Error", "Invalid exam request parameters.");
+        QMessageBox::warning(this, "Lỗi", "Tham số yêu cầu bài thi không hợp lệ.");
         return;
     }
 
@@ -331,15 +331,7 @@ void MainWindow::handleExamRequest(MonHoc *subject, int numQuestions) {
 
     // Start the exam
     examDialog->startExam(subject, numQuestions, currentStudent);
-
-    // Show exam dialog
-    if (examDialog->exec() == QDialog::Accepted) {
-        // Exam was completed successfully
-        statusBar()->showMessage("Exam completed successfully", 3000);
-    } else {
-        // Exam was cancelled
-        statusBar()->showMessage("Exam cancelled", 3000);
-    }
+    examDialog->exec();
 }
 
 void MainWindow::handleExamCompleted(double score) {

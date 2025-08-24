@@ -45,10 +45,10 @@ void DetailedResultsWidget::setupUI() {
     // Header section
     QHBoxLayout *headerLayout = new QHBoxLayout();
 
-    titleLabel = new QLabel("Exam Results");
+    titleLabel = new QLabel("Kết quả bài thi");
     titleLabel->setStyleSheet("font-size: 18px; font-weight: bold; color: #2c3e50;");
 
-    scoreLabel = new QLabel("Score: 0/10");
+    scoreLabel = new QLabel("Điểm: 0/10");
     scoreLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #27ae60; "
             "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
 
@@ -70,10 +70,10 @@ void DetailedResultsWidget::setupUI() {
     QWidget *questionWidget = new QWidget();
     QVBoxLayout *questionLayout = new QVBoxLayout(questionWidget);
 
-    questionNumberLabel = new QLabel("Question 1 of 10");
+    questionNumberLabel = new QLabel("Câu hỏi 1 / 10");
     questionNumberLabel->setStyleSheet("font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 10px;");
 
-    questionContentLabel = new QLabel("Question content will appear here...");
+    questionContentLabel = new QLabel("Nội dung câu hỏi sẽ hiển thị ở đây...");
     questionContentLabel->setWordWrap(true);
     questionContentLabel->setStyleSheet("font-size: 14px; color: #2c3e50; padding: 15px; "
             "background-color: #f8f9fa; border: 1px solid #dee2e6; "
@@ -82,10 +82,10 @@ void DetailedResultsWidget::setupUI() {
     // Answer options (disabled for viewing)
     answerGroup = new QButtonGroup();
 
-    optionA = new QRadioButton("A. Option A");
-    optionB = new QRadioButton("B. Option B");
-    optionC = new QRadioButton("C. Option C");
-    optionD = new QRadioButton("D. Option D");
+    optionA = new QRadioButton("A. Lựa chọn A");
+    optionB = new QRadioButton("B. Lựa chọn B");
+    optionC = new QRadioButton("C. Lựa chọn C");
+    optionD = new QRadioButton("D. Lựa chọn D");
 
     // Disable all options since this is view-only
     optionA->setEnabled(false);
@@ -99,13 +99,13 @@ void DetailedResultsWidget::setupUI() {
     answerGroup->addButton(optionD, 3);
 
     // Result information labels
-    studentAnswerLabel = new QLabel("Your Answer: ");
+    studentAnswerLabel = new QLabel("Câu trả lời của bạn: ");
     studentAnswerLabel->setStyleSheet("font-size: 13px; font-weight: bold; color: #3498db; margin: 8px 0px;");
 
-    correctAnswerLabel = new QLabel("Correct Answer: ");
+    correctAnswerLabel = new QLabel("Đáp án đúng: ");
     correctAnswerLabel->setStyleSheet("font-size: 13px; font-weight: bold; color: #27ae60; margin: 8px 0px;");
 
-    resultLabel = new QLabel("Result: ");
+    resultLabel = new QLabel("Kết quả: ");
     resultLabel->setStyleSheet("font-size: 14px; font-weight: bold; margin: 8px 0px;");
 
     questionLayout->addWidget(questionNumberLabel);
@@ -124,9 +124,9 @@ void DetailedResultsWidget::setupUI() {
     // Navigation buttons
     QHBoxLayout *navButtonLayout = new QHBoxLayout();
 
-    previousButton = new QPushButton("← Previous");
-    nextButton = new QPushButton("Next →");
-    closeButton = new QPushButton("Close");
+    previousButton = new QPushButton("← Trước");
+    nextButton = new QPushButton("Tiếp →");
+    closeButton = new QPushButton("Đóng");
 
     previousButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; "
             "padding: 8px 16px; border: none; border-radius: 4px; }"
@@ -174,7 +174,7 @@ void DetailedResultsWidget::createNavigationPanel() {
 
     navLayout = new QVBoxLayout(navigationPanel);
 
-    QLabel *navTitle = new QLabel("Question Navigation");
+    QLabel *navTitle = new QLabel("Câu hỏi");
     navTitle->setAlignment(Qt::AlignCenter);
     navTitle->setStyleSheet("font-weight: bold; color: #2c3e50; margin: 10px;");
 
@@ -184,7 +184,7 @@ void DetailedResultsWidget::createNavigationPanel() {
 
 void DetailedResultsWidget::showResults(DiemThi *examResult, QuanLyMonHoc *manager) {
     if (!examResult || !manager) {
-        QMessageBox::critical(this, "Error", "Invalid exam result data.");
+        QMessageBox::critical(this, "Lỗi", "Dữ liệu kết quả bài thi không hợp lệ.");
         reject();
         return;
     }
@@ -196,15 +196,15 @@ void DetailedResultsWidget::showResults(DiemThi *examResult, QuanLyMonHoc *manag
     // Get subject information
     MonHoc *subject = subjectManager->tim(examResult->getMaMon());
     if (!subject) {
-        QMessageBox::critical(this, "Error", "Subject not found.");
+        QMessageBox::critical(this, "Lỗi", "Không tìm thấy môn học.");
         reject();
         return;
     }
 
     // Update title and score
-    titleLabel->setText(QString("Exam Results: %1").arg(QString::fromStdString(subject->getTenMon())));
-    setWindowTitle(QString("Detailed Results - %1").arg(QString::fromStdString(subject->getTenMon())));
-    scoreLabel->setText(QString("Score: %1/10").arg(QString::number(examScore, 'f', 2)));
+    titleLabel->setText(QString("Kết quả bài thi: %1").arg(QString::fromStdString(subject->getTenMon())));
+    setWindowTitle(QString("Kết quả chi tiết - %1").arg(QString::fromStdString(subject->getTenMon())));
+    scoreLabel->setText(QString("Điểm: %1/10").arg(QString::number(examScore, 'f', 2)));
 
     // Set score label color based on pass/fail
     if (examScore >= 5.0) {
@@ -240,7 +240,7 @@ void DetailedResultsWidget::showResults(DiemThi *examResult, QuanLyMonHoc *manag
     loadQuestionsFromIds();
 
     if (questions->size() == 0) {
-        QMessageBox::warning(this, "Warning", "No questions found for this exam result.");
+        QMessageBox::warning(this, "Cảnh báo", "Không tìm thấy câu hỏi cho kết quả bài thi này.");
         reject();
         return;
     }
@@ -286,12 +286,12 @@ void DetailedResultsWidget::loadQuestion(int index) {
     CauHoi *question = questions->get(index);
 
     if (!question) {
-        questionContentLabel->setText("Question not found in database.");
+        questionContentLabel->setText("Không tìm thấy câu hỏi trong cơ sở dữ liệu.");
         return;
     }
 
     // Update question display
-    questionNumberLabel->setText(QString("Question %1 of %2").arg(index + 1).arg(questions->size()));
+    questionNumberLabel->setText(QString("Câu hỏi %1 / %2").arg(index + 1).arg(questions->size()));
     questionContentLabel->setText(QString::fromStdString(question->getNoiDung()));
 
     // Update answer options
@@ -305,15 +305,15 @@ void DetailedResultsWidget::loadQuestion(int index) {
     char correctAnswer = question->getDapAnDung();
 
     // Update result information
-    studentAnswerLabel->setText(QString("Your Answer: %1").arg(getAnswerText(studentAnswer)));
-    correctAnswerLabel->setText(QString("Correct Answer: %1").arg(getAnswerText(correctAnswer)));
+    studentAnswerLabel->setText(QString("Câu trả lời của bạn: %1").arg(getAnswerText(studentAnswer)));
+    correctAnswerLabel->setText(QString("Đáp án đúng: %1").arg(getAnswerText(correctAnswer)));
 
     bool isCorrect = (studentAnswer == correctAnswer && studentAnswer != ' ');
     if (isCorrect) {
-        resultLabel->setText("Result: ✓ CORRECT");
+        resultLabel->setText("Kết quả: ✓ ĐÚNG");
         resultLabel->setStyleSheet("font-size: 14px; font-weight: bold; color: #27ae60; margin: 8px 0px;");
     } else {
-        resultLabel->setText("Result: ✗ INCORRECT");
+        resultLabel->setText("Kết quả: ✗ SAI");
         resultLabel->setStyleSheet("font-size: 14px; font-weight: bold; color: #e74c3c; margin: 8px 0px;");
     }
 
@@ -465,7 +465,7 @@ void DetailedResultsWidget::updateProgress() {
 
     int percentage = (correctAnswers * 100) / questions->size();
     progressBar->setValue(percentage);
-    progressBar->setFormat(QString("Correct: %1/%2 questions (%p%)")
+    progressBar->setFormat(QString("Đúng: %1/%2 câu hỏi (%p%)")
             .arg(correctAnswers)
             .arg(questions->size()));
 }
@@ -487,7 +487,7 @@ QString DetailedResultsWidget::getAnswerText(char answer) {
         case 'D':
             return "D";
         default:
-            return "No Answer";
+            return "Không trả lời";
     }
 }
 

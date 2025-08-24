@@ -73,8 +73,6 @@ set(PROJECT_SOURCES
     utils/DynamicArray.h
     utils/InputValidator.cpp
     utils/InputValidator.h
-    utils/ValidationHelper.cpp
-    utils/ValidationHelper.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

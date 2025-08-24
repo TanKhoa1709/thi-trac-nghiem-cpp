@@ -17,7 +17,7 @@
 #include <QMessageBox>
 #include <QTextEdit>
 #include <cstring>
-#include "../utils/ValidationHelper.h"
+#include "../utils/InputValidator.h"
 
 TeacherDashboard::TeacherDashboard(QWidget *parent) :
     QWidget(parent), mainTabs(nullptr), classManager(nullptr), subjectManager(nullptr) {
@@ -43,7 +43,7 @@ void TeacherDashboard::setupUI() {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     // Title
-    QLabel *titleLabel = new QLabel("Teacher Dashboard");
+    QLabel *titleLabel = new QLabel("Bảng điều khiển giáo viên");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet("font-size: 18px; font-weight: bold; color: #2c3e50; margin: 10px;");
 
@@ -58,7 +58,7 @@ void TeacherDashboard::setupUI() {
     // Logout button
     QHBoxLayout *bottomLayout = new QHBoxLayout();
     bottomLayout->addStretch();
-    QPushButton *logoutButton = new QPushButton("Logout");
+    QPushButton *logoutButton = new QPushButton("Đăng xuất");
     logoutButton->setStyleSheet("QPushButton { background-color: #e74c3c; color: white; "
             "padding: 8px 16px; font-size: 12px; border: none; border-radius: 4px; }"
             "QPushButton:hover { background-color: #c0392b; }");
@@ -191,11 +191,11 @@ void TeacherDashboard::setupQuestionTab() {
     subjectSelectLayout->addWidget(subjectComboForQuestions);
     subjectSelectLayout->addStretch();
 
-    QLabel *questionLabel = new QLabel("Questions");
+    QLabel *questionLabel = new QLabel("Câu hỏi");
     questionLabel->setStyleSheet("font-weight: bold; margin: 5px;");
 
     questionTable = new QTableWidget(0, 3);
-    questionTable->setHorizontalHeaderLabels({"Question ID", "Question Content", "Correct Answer"});
+    questionTable->setHorizontalHeaderLabels({"Mã câu hỏi", "Nội dung câu hỏi", "Đáp án đúng"});
     questionTable->horizontalHeader()->setStretchLastSection(true);
     questionTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -386,7 +386,7 @@ void TeacherDashboard::refreshStudentList() {
 void TeacherDashboard::addNewClass() {
     // Create custom dialog with validation
     QDialog dialog(this);
-    dialog.setWindowTitle("Add New Class");
+    dialog.setWindowTitle("Thêm lớp mới");
     dialog.setMinimumSize(400, 200);
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
@@ -394,17 +394,17 @@ void TeacherDashboard::addNewClass() {
     // Class code input
     QLabel *codeLabel = new QLabel("Mã Lớp:");
     QLineEdit *codeEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(codeEdit, InputValidator::CODE);
+    InputValidator::setupInputValidation(codeEdit, InputValidator::CODE);
 
     // Class name input
-    QLabel *nameLabel = new QLabel("Class Name:");
+    QLabel *nameLabel = new QLabel("Tên Lớp:");
     QLineEdit *nameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(nameEdit, InputValidator::GENERAL);
+    InputValidator::setupInputValidation(nameEdit, InputValidator::GENERAL);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *okButton = new QPushButton("Thêm Lớp");
-    QPushButton *cancelButton = new QPushButton("Cancel");
+    QPushButton *cancelButton = new QPushButton("Hủy");
 
     okButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
@@ -423,11 +423,11 @@ void TeacherDashboard::addNewClass() {
 
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
-        QString classCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
-        QString className = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
+        QString classCode = InputValidator::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
+        QString className = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
-        if (!ValidationHelper::validateClassData(classCode, className)) {
-            ValidationHelper::showValidationError(&dialog, "Class Data", "Please check class code and name format.");
+        if (!InputValidator::validateClassData(classCode, className)) {
+            InputValidator::showValidationError(&dialog, "Dữ liệu lớp", "Vui lòng kiểm tra định dạng mã lớp và tên lớp.");
             return;
         }
 
@@ -436,11 +436,11 @@ void TeacherDashboard::addNewClass() {
             Lop *lopMoi = new Lop(classCode.toStdString(), className.toStdString());
             if (classManager->them(*lopMoi)) {
                 classManager->saveToFile();
-                QMessageBox::information(&dialog, "Success", "Class added successfully!");
+                QMessageBox::information(&dialog, "Thành công", "Đã thêm lớp thành công!");
                 dialog.accept();
             } else {
                 delete lopMoi; // Clean up if adding failed
-                QMessageBox::warning(&dialog, "Error", "Failed to add class. Class code may already exist.");
+                QMessageBox::warning(&dialog, "Lỗi", "Không thể thêm lớp. Mã lớp có thể đã tồn tại.");
             }
         }
     });
@@ -454,47 +454,47 @@ void TeacherDashboard::addNewClass() {
 
 void TeacherDashboard::addNewStudent() {
     if (currentClassCode.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please select a class first.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một lớp trước.");
         return;
     }
 
     // Create custom dialog with validation
     QDialog dialog(this);
-    dialog.setWindowTitle("Add New Student");
+    dialog.setWindowTitle("Thêm sinh viên mới");
     dialog.setMinimumSize(450, 300);
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
     // Student ID input
-    QLabel *idLabel = new QLabel("Student ID:");
+    QLabel *idLabel = new QLabel("Mã sinh viên:");
     QLineEdit *idEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(idEdit, InputValidator::CODE);
+    InputValidator::setupInputValidation(idEdit, InputValidator::CODE);
 
     // Last name input
-    QLabel *lastNameLabel = new QLabel("Last Name:");
+    QLabel *lastNameLabel = new QLabel("Họ:");
     QLineEdit *lastNameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
+    InputValidator::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
 
     // First name input
-    QLabel *firstNameLabel = new QLabel("First Name:");
+    QLabel *firstNameLabel = new QLabel("Tên:");
     QLineEdit *firstNameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
+    InputValidator::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
 
     // Gender selection
-    QLabel *genderLabel = new QLabel("Gender:");
+    QLabel *genderLabel = new QLabel("Giới tính:");
     QComboBox *genderCombo = new QComboBox();
     genderCombo->addItems({"Nam", "Nữ"});
 
     // Password input
-    QLabel *passwordLabel = new QLabel("Password:");
+    QLabel *passwordLabel = new QLabel("Mật khẩu:");
     QLineEdit *passwordEdit = new QLineEdit();
     passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
-    ValidationHelper::setupInputValidation(passwordEdit, InputValidator::GENERAL);
+    InputValidator::setupInputValidation(passwordEdit, InputValidator::GENERAL);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *okButton = new QPushButton("Thêm Sinh Viên");
-    QPushButton *cancelButton = new QPushButton("Cancel");
+    QPushButton *cancelButton = new QPushButton("Hủy");
 
     okButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
@@ -519,14 +519,14 @@ void TeacherDashboard::addNewStudent() {
 
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
-        QString studentId = ValidationHelper::sanitizeForModel(idEdit->text(), InputValidator::CODE);
-        QString lastName = ValidationHelper::sanitizeForModel(lastNameEdit->text(), InputValidator::GENERAL);
-        QString firstName = ValidationHelper::sanitizeForModel(firstNameEdit->text(), InputValidator::GENERAL);
+        QString studentId = InputValidator::sanitizeForModel(idEdit->text(), InputValidator::CODE);
+        QString lastName = InputValidator::sanitizeForModel(lastNameEdit->text(), InputValidator::GENERAL);
+        QString firstName = InputValidator::sanitizeForModel(firstNameEdit->text(), InputValidator::GENERAL);
         QString gender = genderCombo->currentText();
-        QString password = ValidationHelper::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
+        QString password = InputValidator::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
 
-        if (!ValidationHelper::validateStudentData(studentId, lastName, firstName, password)) {
-            ValidationHelper::showValidationError(&dialog, "Student Data", "Please check all fields format.");
+        if (!InputValidator::validateStudentData(studentId, lastName, firstName, password)) {
+            InputValidator::showValidationError(&dialog, "Dữ liệu sinh viên", "Vui lòng kiểm tra định dạng tất cả các trường.");
             return;
         }
 
@@ -537,11 +537,11 @@ void TeacherDashboard::addNewStudent() {
                                            firstName.toStdString(), gender == "Nam", password.toStdString());
             if (lop->getQuanLySinhVien()->them(*svMoi)) {
                 lop->getQuanLySinhVien()->saveToFile();
-                QMessageBox::information(&dialog, "Success", "Student added successfully!");
+                QMessageBox::information(&dialog, "Thành công", "Đã thêm sinh viên thành công!");
                 dialog.accept();
             } else {
                 delete svMoi; // Clean up if adding failed
-                QMessageBox::warning(&dialog, "Error", "Failed to add student. Student ID may already exist.");
+                QMessageBox::warning(&dialog, "Lỗi", "Không thể thêm sinh viên. Mã sinh viên có thể đã tồn tại.");
             }
         }
     });
@@ -575,7 +575,7 @@ void TeacherDashboard::refreshSubjectList() {
 void TeacherDashboard::addNewSubject() {
     // Create custom dialog with validation
     QDialog dialog(this);
-    dialog.setWindowTitle("Add New Subject");
+    dialog.setWindowTitle("Thêm môn học mới");
     dialog.setMinimumSize(400, 200);
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
@@ -583,17 +583,17 @@ void TeacherDashboard::addNewSubject() {
     // Subject code input
     QLabel *codeLabel = new QLabel("Mã Môn:");
     QLineEdit *codeEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(codeEdit, InputValidator::CODE);
+    InputValidator::setupInputValidation(codeEdit, InputValidator::CODE);
 
     // Subject name input
     QLabel *nameLabel = new QLabel("Tên Môn:");
     QLineEdit *nameEdit = new QLineEdit();
-    ValidationHelper::setupInputValidation(nameEdit, InputValidator::GENERAL);
+    InputValidator::setupInputValidation(nameEdit, InputValidator::GENERAL);
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *okButton = new QPushButton("Thêm Môn");
-    QPushButton *cancelButton = new QPushButton("Cancel");
+    QPushButton *cancelButton = new QPushButton("Hủy");
 
     okButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
@@ -612,12 +612,12 @@ void TeacherDashboard::addNewSubject() {
 
     // Connect buttons
     connect(okButton, &QPushButton::clicked, [&]() {
-        QString subjectCode = ValidationHelper::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
-        QString subjectName = ValidationHelper::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
+        QString subjectCode = InputValidator::sanitizeForModel(codeEdit->text(), InputValidator::CODE);
+        QString subjectName = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
 
-        if (!ValidationHelper::validateSubjectData(subjectCode, subjectName)) {
-            ValidationHelper::showValidationError(&dialog, "Subject Data",
-                                                  "Please check subject code and name format.");
+        if (!InputValidator::validateSubjectData(subjectCode, subjectName)) {
+            InputValidator::showValidationError(&dialog, "Dữ liệu môn học",
+                                                  "Vui lòng kiểm tra định dạng mã môn và tên môn.");
             return;
         }
 
@@ -627,11 +627,11 @@ void TeacherDashboard::addNewSubject() {
                                         subjectManager->size());
             if (subjectManager->them(*monMoi)) {
                 subjectManager->saveToFile();
-                QMessageBox::information(&dialog, "Success", "Subject added successfully!");
+                QMessageBox::information(&dialog, "Thành công", "Đã thêm môn học thành công!");
                 dialog.accept();
             } else {
                 delete monMoi; // Clean up if adding failed
-                QMessageBox::warning(&dialog, "Error", "Failed to add subject. Subject code may already exist.");
+                QMessageBox::warning(&dialog, "Lỗi", "Không thể thêm môn học. Mã môn có thể đã tồn tại.");
             }
         }
     });
@@ -700,49 +700,49 @@ void TeacherDashboard::refreshQuestionList() {
 
 void TeacherDashboard::addNewQuestion() {
     if (currentSubjectCode.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please select a subject first.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một môn học trước.");
         return;
     }
 
     MonHoc *mon = subjectManager->tim(currentSubjectCode.toStdString().c_str());
     if (!mon || !mon->getQuanLyCauHoi()) {
-        QMessageBox::warning(this, "Error", "Subject not found or question manager not initialized.");
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy môn học hoặc quản lý câu hỏi chưa được khởi tạo.");
         return;
     }
 
     // Create dialog for adding new question
     QDialog dialog(this);
-    dialog.setWindowTitle("Add New Question");
+    dialog.setWindowTitle("Thêm câu hỏi mới");
     dialog.setMinimumSize(600, 400);
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
     // Question content
-    QLabel *contentLabel = new QLabel("Question Content:");
+    QLabel *contentLabel = new QLabel("Nội dung câu hỏi:");
     QTextEdit *contentEdit = new QTextEdit();
-    contentEdit->setPlaceholderText("Enter the question content here...");
+    contentEdit->setPlaceholderText("Nhập nội dung câu hỏi ở đây...");
 
     // Answer options
-    QLabel *optionsLabel = new QLabel("Answer Options:");
+    QLabel *optionsLabel = new QLabel("Các lựa chọn trả lời:");
     QLineEdit *optionA = new QLineEdit();
     QLineEdit *optionB = new QLineEdit();
     QLineEdit *optionC = new QLineEdit();
     QLineEdit *optionD = new QLineEdit();
 
-    optionA->setPlaceholderText("Option A");
-    optionB->setPlaceholderText("Option B");
-    optionC->setPlaceholderText("Option C");
-    optionD->setPlaceholderText("Option D");
+    optionA->setPlaceholderText("Lựa chọn A");
+    optionB->setPlaceholderText("Lựa chọn B");
+    optionC->setPlaceholderText("Lựa chọn C");
+    optionD->setPlaceholderText("Lựa chọn D");
 
     // Correct answer
-    QLabel *correctLabel = new QLabel("Correct Answer:");
+    QLabel *correctLabel = new QLabel("Đáp án đúng:");
     QComboBox *correctCombo = new QComboBox();
     correctCombo->addItems({"A", "B", "C", "D"});
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     QPushButton *okButton = new QPushButton("Thêm Câu Hỏi");
-    QPushButton *cancelButton = new QPushButton("Cancel");
+    QPushButton *cancelButton = new QPushButton("Hủy");
 
     okButton->setStyleSheet(
             "QPushButton { background-color: #27ae60; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
@@ -775,7 +775,7 @@ void TeacherDashboard::addNewQuestion() {
         char correct = correctCombo->currentText().at(0).toLatin1();
 
         if (content.isEmpty() || a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty()) {
-            QMessageBox::warning(&dialog, "Error", "Please fill in all fields.");
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng điền đầy đủ tất cả các trường.");
             return;
         }
 
@@ -796,10 +796,10 @@ void TeacherDashboard::addNewQuestion() {
         if (mon->getQuanLyCauHoi()->them(*newQuestion)) {
             // Save changes to file immediately
             mon->getQuanLyCauHoi()->saveToFile();
-            QMessageBox::information(&dialog, "Success", "Question added successfully!");
+            QMessageBox::information(&dialog, "Thành công", "Đã thêm câu hỏi thành công!");
             dialog.accept();
         } else {
-            QMessageBox::warning(&dialog, "Error", "Failed to add question. Please check the input.");
+            QMessageBox::warning(&dialog, "Lỗi", "Không thể thêm câu hỏi. Vui lòng kiểm tra đầu vào.");
             delete newQuestion; // Clean up on failure
         }
     });
@@ -814,7 +814,7 @@ void TeacherDashboard::addNewQuestion() {
 void TeacherDashboard::editClass() {
     int row = classTable->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, "Error", "Please select a class to edit.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một lớp để sửa.");
         return;
     }
 
@@ -825,17 +825,17 @@ void TeacherDashboard::editClass() {
     QString oldClassCode = item->text();
     Lop *lop = classManager->tim(oldClassCode.toStdString());
     if (!lop) {
-        QMessageBox::warning(this, "Error", "Selected class not found.");
+        QMessageBox::warning(this, "Lỗi", "Lớp đã chọn không tồn tại.");
         return;
     }
 
     bool ok;
-    QString newClassCode = QInputDialog::getText(this, "Edit Class", "Class Code:",
+    QString newClassCode = QInputDialog::getText(this, "Sửa Lớp", "Mã Lớp:",
                                                  QLineEdit::Normal, oldClassCode, &ok);
     if (!ok || newClassCode.isEmpty())
         return;
 
-    QString newClassName = QInputDialog::getText(this, "Edit Class", "Class Name:",
+    QString newClassName = QInputDialog::getText(this, "Sửa Lớp", "Tên Lớp:",
                                                  QLineEdit::Normal, QString::fromStdString(lop->getTenLop()), &ok);
     if (!ok || newClassName.isEmpty())
         return;
@@ -851,19 +851,19 @@ void TeacherDashboard::editClass() {
         if (currentClassCode == oldClassCode) {
             currentClassCode = newClassCode;
         }
-        QMessageBox::information(this, "Success", "Class updated successfully!");
+        QMessageBox::information(this, "Thành công", "Đã cập nhật lớp thành công!");
     } else {
         // Restore original values if update failed
         lop->setMaLop(oldClassCode.toStdString());
         lop->setTenLop(item ? classTable->item(row, 1)->text().toStdString() : "");
-        QMessageBox::warning(this, "Error", "Failed to update class. Class code may already exist.");
+        QMessageBox::warning(this, "Lỗi", "Không thể cập nhật lớp. Mã lớp có thể đã tồn tại.");
     }
 }
 
 void TeacherDashboard::deleteClass() {
     int row = classTable->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, "Error", "Please select a class to delete.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một lớp để xóa.");
         return;
     }
 
@@ -875,7 +875,7 @@ void TeacherDashboard::deleteClass() {
     QString className = classTable->item(row, 1)->text();
 
     // Confirmation dialog
-    int result = QMessageBox::question(this, "Confirm Delete",
+    int result = QMessageBox::question(this, "Xác nhận xóa",
                                        QString("Bạn có chắc chắn muốn xóa lớp '%1 - %2'?\n\n"
                                                "Việc này sẽ xóa tất cả sinh viên trong lớp và kết quả thi của họ.\n"
                                                "Hành động này không thể hoàn tác.")
@@ -897,21 +897,21 @@ void TeacherDashboard::deleteClass() {
         }
 
         refreshClassList();
-        QMessageBox::information(this, "Success", "Class deleted successfully!");
+        QMessageBox::information(this, "Thành công", "Đã xóa lớp thành công!");
     } else {
-        QMessageBox::warning(this, "Error", "Failed to delete class.");
+        QMessageBox::warning(this, "Lỗi", "Không thể xóa lớp.");
     }
 }
 
 void TeacherDashboard::editStudent() {
     if (currentClassCode.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please select a class first.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một lớp trước.");
         return;
     }
 
     int row = studentTable->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, "Error", "Please select a student to edit.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một sinh viên để sửa.");
         return;
     }
 
@@ -923,40 +923,40 @@ void TeacherDashboard::editStudent() {
 
     Lop *lop = classManager->tim(currentClassCode.toStdString());
     if (!lop || !lop->getQuanLySinhVien()) {
-        QMessageBox::warning(this, "Error", "Class or student manager not found.");
+        QMessageBox::warning(this, "Lỗi", "Quản lý lớp hoặc sinh viên chưa được khởi tạo.");
         return;
     }
 
     SinhVien *sv = lop->getQuanLySinhVien()->tim(oldStudentId.toStdString());
     if (!sv) {
-        QMessageBox::warning(this, "Error", "Selected student not found.");
+        QMessageBox::warning(this, "Lỗi", "Sinh viên đã chọn không tồn tại.");
         return;
     }
 
     bool ok;
-    QString newStudentId = QInputDialog::getText(this, "Edit Student", "Student ID:",
+    QString newStudentId = QInputDialog::getText(this, "Sửa Sinh Viên", "Mã Sinh Viên:",
                                                  QLineEdit::Normal, oldStudentId, &ok);
     if (!ok || newStudentId.isEmpty())
         return;
 
-    QString newLastName = QInputDialog::getText(this, "Edit Student", "Last Name:",
+    QString newLastName = QInputDialog::getText(this, "Sửa Sinh Viên", "Họ:",
                                                 QLineEdit::Normal, QString::fromStdString(sv->getHo()), &ok);
     if (!ok || newLastName.isEmpty())
         return;
 
-    QString newFirstName = QInputDialog::getText(this, "Edit Student", "First Name:",
+    QString newFirstName = QInputDialog::getText(this, "Sửa Sinh Viên", "Tên:",
                                                  QLineEdit::Normal, QString::fromStdString(sv->getTen()), &ok);
     if (!ok || newFirstName.isEmpty())
         return;
 
     QStringList genders = {"Nam", "Nữ"};
     QString currentGender = sv->getPhai() ? "Nam" : "Nữ";
-    QString newGender = QInputDialog::getItem(this, "Edit Student", "Gender:", genders,
+    QString newGender = QInputDialog::getItem(this, "Sửa Sinh Viên", "Giới tính:", genders,
                                               genders.indexOf(currentGender), false, &ok);
     if (!ok)
         return;
 
-    QString newPassword = QInputDialog::getText(this, "Edit Student", "Password:",
+    QString newPassword = QInputDialog::getText(this, "Sửa Sinh Viên", "Mật khẩu:",
                                                 QLineEdit::Normal, QString::fromStdString(sv->getPassword()), &ok);
     if (!ok || newPassword.isEmpty())
         return;
@@ -972,26 +972,26 @@ void TeacherDashboard::editStudent() {
         lop->getQuanLySinhVien()->saveToFile();
         refreshStudentList();
         refreshClassList(); // Update student count if needed
-        QMessageBox::information(this, "Success", "Student updated successfully!");
+        QMessageBox::information(this, "Thành công", "Đã cập nhật sinh viên thành công!");
     } else {
         // Restore original values if update failed
         sv->setMaSinhVien(oldStudentId.toStdString());
         sv->setHo(studentTable->item(row, 1)->text().toStdString());
         sv->setTen(studentTable->item(row, 2)->text().toStdString());
         sv->setPhai(studentTable->item(row, 3)->text() == "Nam");
-        QMessageBox::warning(this, "Error", "Failed to update student. Student ID may already exist.");
+        QMessageBox::warning(this, "Lỗi", "Không thể cập nhật sinh viên. Mã sinh viên có thể đã tồn tại.");
     }
 }
 
 void TeacherDashboard::deleteStudent() {
     if (currentClassCode.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please select a class first.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một lớp trước.");
         return;
     }
 
     int row = studentTable->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, "Error", "Please select a student to delete.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một sinh viên để xóa.");
         return;
     }
 
@@ -1004,7 +1004,7 @@ void TeacherDashboard::deleteStudent() {
             studentTable->item(row, 2)->text());
 
     // Confirmation dialog
-    int result = QMessageBox::question(this, "Confirm Delete",
+    int result = QMessageBox::question(this, "Xác nhận xóa",
                                        QString("Bạn có chắc chắn muốn xóa sinh viên '%1 - %2'?\n\n"
                                                "Việc này sẽ xóa tất cả kết quả thi của sinh viên này.\n"
                                                "Hành động này không thể hoàn tác.")
@@ -1018,7 +1018,7 @@ void TeacherDashboard::deleteStudent() {
 
     Lop *lop = classManager->tim(currentClassCode.toStdString());
     if (!lop || !lop->getQuanLySinhVien()) {
-        QMessageBox::warning(this, "Error", "Class or student manager not found.");
+        QMessageBox::warning(this, "Lỗi", "Quản lý lớp hoặc sinh viên chưa được khởi tạo.");
         return;
     }
 
@@ -1026,16 +1026,16 @@ void TeacherDashboard::deleteStudent() {
         lop->getQuanLySinhVien()->saveToFile();
         refreshStudentList();
         refreshClassList(); // Update student count
-        QMessageBox::information(this, "Success", "Student deleted successfully!");
+        QMessageBox::information(this, "Thành công", "Đã xóa sinh viên thành công!");
     } else {
-        QMessageBox::warning(this, "Error", "Failed to delete student.");
+        QMessageBox::warning(this, "Lỗi", "Không thể xóa sinh viên.");
     }
 }
 
 void TeacherDashboard::editSubject() {
     int row = subjectTable->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, "Error", "Please select a subject to edit.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một môn học để sửa.");
         return;
     }
 
@@ -1046,7 +1046,7 @@ void TeacherDashboard::editSubject() {
     QString oldSubjectCode = item->text();
     MonHoc *mon = subjectManager->tim(oldSubjectCode.toStdString().c_str());
     if (!mon) {
-        QMessageBox::warning(this, "Error", "Selected subject not found.");
+        QMessageBox::warning(this, "Lỗi", "Môn học đã chọn không tồn tại.");
         return;
     }
 
@@ -1080,19 +1080,19 @@ void TeacherDashboard::editSubject() {
             currentSubjectCode = newSubjectCode;
         }
 
-        QMessageBox::information(this, "Success", "Subject updated successfully!");
+        QMessageBox::information(this, "Thành công", "Đã cập nhật môn học thành công!");
     } else {
         // Restore original values if update failed
         mon->setMaMon(originalCode);
         mon->setTenMon(originalName);
-        QMessageBox::warning(this, "Error", "Failed to update subject. Subject code may already exist.");
+        QMessageBox::warning(this, "Lỗi", "Không thể cập nhật môn học. Mã môn có thể đã tồn tại.");
     }
 }
 
 void TeacherDashboard::deleteSubject() {
     int row = subjectTable->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, "Error", "Please select a subject to delete.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một môn học để xóa.");
         return;
     }
 
@@ -1104,7 +1104,7 @@ void TeacherDashboard::deleteSubject() {
     QString subjectName = subjectTable->item(row, 1)->text();
 
     // Confirmation dialog
-    int result = QMessageBox::question(this, "Confirm Delete",
+    int result = QMessageBox::question(this, "Xác nhận xóa",
                                        QString("Bạn có chắc chắn muốn xóa môn '%1 - %2'?\n\n"
                                                "Việc này sẽ xóa tất cả câu hỏi của môn học này và kết quả thi liên quan.\n"
                                                "Hành động này không thể hoàn tác.")
@@ -1128,9 +1128,9 @@ void TeacherDashboard::deleteSubject() {
         refreshSubjectList();
         populateSubjectCombo();
         refreshQuestionList(); // Update question list if current subject was deleted
-        QMessageBox::information(this, "Success", "Subject deleted successfully!");
+        QMessageBox::information(this, "Thành công", "Đã xóa môn học thành công!");
     } else {
-        QMessageBox::warning(this, "Error", "Failed to delete subject.");
+        QMessageBox::warning(this, "Lỗi", "Không thể xóa môn học.");
     }
 }
 
@@ -1141,19 +1141,19 @@ void TeacherDashboard::manageQuestions() {
 
 void TeacherDashboard::editQuestion() {
     if (currentSubjectCode.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please select a subject first.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một môn học trước.");
         return;
     }
 
     int currentRow = questionTable->currentRow();
     if (currentRow < 0) {
-        QMessageBox::warning(this, "Error", "Please select a question to edit.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một câu hỏi để sửa.");
         return;
     }
 
     MonHoc *mon = subjectManager->tim(currentSubjectCode.toStdString().c_str());
     if (!mon || !mon->getQuanLyCauHoi()) {
-        QMessageBox::warning(this, "Error", "Subject not found or question manager not initialized.");
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy môn học hoặc quản lý câu hỏi chưa được khởi tạo.");
         return;
     }
 
@@ -1165,36 +1165,36 @@ void TeacherDashboard::editQuestion() {
     int questionId = idItem->text().toInt();
     CauHoi *existingQuestion = mon->getQuanLyCauHoi()->tim(questionId);
     if (!existingQuestion) {
-        QMessageBox::warning(this, "Error", "Question not found.");
+        QMessageBox::warning(this, "Lỗi", "Câu hỏi không tồn tại.");
         return;
     }
 
     // Create dialog for editing question
     QDialog dialog(this);
-    dialog.setWindowTitle("Edit Question");
+    dialog.setWindowTitle("Sửa Câu Hỏi");
     dialog.setMinimumSize(600, 400);
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
     // Question content
-    QLabel *contentLabel = new QLabel("Question Content:");
+    QLabel *contentLabel = new QLabel("Nội dung câu hỏi:");
     QTextEdit *contentEdit = new QTextEdit();
     contentEdit->setText(QString::fromStdString(existingQuestion->getNoiDung()));
 
     // Answer options
-    QLabel *optionsLabel = new QLabel("Answer Options:");
+    QLabel *optionsLabel = new QLabel("Các lựa chọn trả lời:");
     QLineEdit *optionA = new QLineEdit(QString::fromStdString(existingQuestion->getLuaChonA()));
     QLineEdit *optionB = new QLineEdit(QString::fromStdString(existingQuestion->getLuaChonB()));
     QLineEdit *optionC = new QLineEdit(QString::fromStdString(existingQuestion->getLuaChonC()));
     QLineEdit *optionD = new QLineEdit(QString::fromStdString(existingQuestion->getLuaChonD()));
 
-    optionA->setPlaceholderText("Option A");
-    optionB->setPlaceholderText("Option B");
-    optionC->setPlaceholderText("Option C");
-    optionD->setPlaceholderText("Option D");
+    optionA->setPlaceholderText("Lựa chọn A");
+    optionB->setPlaceholderText("Lựa chọn B");
+    optionC->setPlaceholderText("Lựa chọn C");
+    optionD->setPlaceholderText("Lựa chọn D");
 
     // Correct answer
-    QLabel *correctLabel = new QLabel("Correct Answer:");
+    QLabel *correctLabel = new QLabel("Đáp án đúng:");
     QComboBox *correctCombo = new QComboBox();
     correctCombo->addItems({"A", "B", "C", "D"});
 
@@ -1211,8 +1211,8 @@ void TeacherDashboard::editQuestion() {
 
     // Buttons
     QHBoxLayout *buttonLayout = new QHBoxLayout();
-    QPushButton *okButton = new QPushButton("Update Question");
-    QPushButton *cancelButton = new QPushButton("Cancel");
+    QPushButton *okButton = new QPushButton("Cập nhật câu hỏi");
+    QPushButton *cancelButton = new QPushButton("Hủy");
 
     okButton->setStyleSheet(
             "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
@@ -1245,7 +1245,7 @@ void TeacherDashboard::editQuestion() {
         char correct = correctCombo->currentText().at(0).toLatin1();
 
         if (content.isEmpty() || a.isEmpty() || b.isEmpty() || c.isEmpty() || d.isEmpty()) {
-            QMessageBox::warning(&dialog, "Error", "Please fill in all fields.");
+            QMessageBox::warning(&dialog, "Lỗi", "Vui lòng điền đầy đủ tất cả các trường.");
             return;
         }
 
@@ -1261,10 +1261,10 @@ void TeacherDashboard::editQuestion() {
         if (mon->getQuanLyCauHoi()->sua(*existingQuestion)) {
             // Save changes to file immediately
             mon->getQuanLyCauHoi()->saveToFile();
-            QMessageBox::information(&dialog, "Success", "Question updated successfully!");
+            QMessageBox::information(&dialog, "Thành công", "Đã cập nhật câu hỏi thành công!");
             dialog.accept();
         } else {
-            QMessageBox::warning(&dialog, "Error", "Failed to update question.");
+            QMessageBox::warning(&dialog, "Lỗi", "Không thể cập nhật câu hỏi.");
         }
     });
 
@@ -1277,19 +1277,19 @@ void TeacherDashboard::editQuestion() {
 
 void TeacherDashboard::deleteQuestion() {
     if (currentSubjectCode.isEmpty()) {
-        QMessageBox::warning(this, "Error", "Please select a subject first.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một môn học trước.");
         return;
     }
 
     int currentRow = questionTable->currentRow();
     if (currentRow < 0) {
-        QMessageBox::warning(this, "Error", "Please select a question to delete.");
+        QMessageBox::warning(this, "Lỗi", "Vui lòng chọn một câu hỏi để xóa.");
         return;
     }
 
     MonHoc *mon = subjectManager->tim(currentSubjectCode.toStdString().c_str());
     if (!mon || !mon->getQuanLyCauHoi()) {
-        QMessageBox::warning(this, "Error", "Subject not found or question manager not initialized.");
+        QMessageBox::warning(this, "Lỗi", "Không tìm thấy môn học hoặc quản lý câu hỏi chưa được khởi tạo.");
         return;
     }
 
@@ -1301,15 +1301,15 @@ void TeacherDashboard::deleteQuestion() {
     int questionId = idItem->text().toInt();
     CauHoi *existingQuestion = mon->getQuanLyCauHoi()->tim(questionId);
     if (!existingQuestion) {
-        QMessageBox::warning(this, "Error", "Question not found.");
+        QMessageBox::warning(this, "Lỗi", "Câu hỏi không tồn tại.");
         return;
     }
 
     // Check if question is used in any exam
     if (isQuestionUsedInExams(questionId, currentSubjectCode.toStdString())) {
-        QMessageBox::warning(this, "Cannot Delete",
-                             "This question cannot be deleted because it has been used in student exams.\n\n"
-                             "To maintain exam integrity, questions that have been used in exams cannot be deleted.");
+        QMessageBox::warning(this, "Không thể xóa",
+                             "Không thể xóa câu hỏi này vì nó đã được sử dụng trong bài thi của sinh viên.\n\n"
+                             "Để đảm bảo tính nguyên vẹn của bài thi, câu hỏi đã được sử dụng không thể xóa.");
         return;
     }
 
@@ -1319,7 +1319,7 @@ void TeacherDashboard::deleteQuestion() {
         questionPreview = questionPreview.left(97) + "...";
     }
 
-    int reply = QMessageBox::question(this, "Confirm Delete",
+    int reply = QMessageBox::question(this, "Xác nhận xóa",
                                       QString("Bạn có chắc chắn muốn xóa câu hỏi này?\n\n\"%1\"").arg(
                                               questionPreview),
                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
@@ -1329,10 +1329,10 @@ void TeacherDashboard::deleteQuestion() {
         if (mon->getQuanLyCauHoi()->xoa(questionId)) {
             // Save changes to file immediately
             mon->getQuanLyCauHoi()->saveToFile();
-            QMessageBox::information(this, "Success", "Question deleted successfully!");
+            QMessageBox::information(this, "Thành công", "Đã xóa câu hỏi thành công!");
             refreshQuestionList();
         } else {
-            QMessageBox::warning(this, "Error", "Failed to delete question.");
+            QMessageBox::warning(this, "Lỗi", "Không thể xóa câu hỏi.");
         }
     }
 }
@@ -1523,7 +1523,7 @@ void TeacherDashboard::exportReport() {
     QString fileName = QFileDialog::getSaveFileName(this, "Xuất bảng điểm",
                                                     QString("BangDiem_%1.txt").arg(
                                                             QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss")),
-                                                    "Text Files (*.txt);;CSV Files (*.csv)");
+                                                    "Tệp văn bản (*.txt);;Tệp CSV (*.csv)");
 
     if (fileName.isEmpty())
         return;

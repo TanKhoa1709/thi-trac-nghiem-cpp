@@ -51,10 +51,10 @@ void ExamWidget::setupUI() {
     // Header section
     QHBoxLayout *headerLayout = new QHBoxLayout();
 
-    titleLabel = new QLabel("Exam Title");
+    titleLabel = new QLabel("Tiêu đề bài thi");
     titleLabel->setStyleSheet("font-size: 18px; font-weight: bold; color: #2c3e50;");
 
-    timerLabel = new QLabel("Time: 60:00");
+    timerLabel = new QLabel("Thời gian: 60:00");
     timerLabel->setStyleSheet("font-size: 16px; font-weight: bold; color: #e74c3c; "
             "background-color: #ecf0f1; padding: 8px 12px; border-radius: 4px;");
 
@@ -76,10 +76,10 @@ void ExamWidget::setupUI() {
     QWidget *questionWidget = new QWidget();
     QVBoxLayout *questionLayout = new QVBoxLayout(questionWidget);
 
-    questionNumberLabel = new QLabel("Question 1 of 10");
+    questionNumberLabel = new QLabel("Câu hỏi 1 / 10");
     questionNumberLabel->setStyleSheet("font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 10px;");
 
-    questionContentLabel = new QLabel("Question content will appear here...");
+    questionContentLabel = new QLabel("Nội dung câu hỏi sẽ hiển thị ở đây...");
     questionContentLabel->setWordWrap(true);
     questionContentLabel->setStyleSheet("font-size: 14px; color: #2c3e50; padding: 15px; "
             "background-color: #f8f9fa; border: 1px solid #dee2e6; "
@@ -88,10 +88,10 @@ void ExamWidget::setupUI() {
     // Answer options
     answerGroup = new QButtonGroup();
 
-    optionA = new QRadioButton("A. Option A");
-    optionB = new QRadioButton("B. Option B");
-    optionC = new QRadioButton("C. Option C");
-    optionD = new QRadioButton("D. Option D");
+    optionA = new QRadioButton("A. Lựa chọn A");
+    optionB = new QRadioButton("B. Lựa chọn B");
+    optionC = new QRadioButton("C. Lựa chọn C");
+    optionD = new QRadioButton("D. Lựa chọn D");
 
     answerGroup->addButton(optionA, 0);
     answerGroup->addButton(optionB, 1);
@@ -125,10 +125,10 @@ void ExamWidget::setupUI() {
     // Navigation buttons
     QHBoxLayout *navButtonLayout = new QHBoxLayout();
 
-    previousButton = new QPushButton("← Previous");
-    nextButton = new QPushButton("Next →");
-    submitButton = new QPushButton("Submit Exam");
-    cancelButton = new QPushButton("Cancel");
+    previousButton = new QPushButton("← Trước");
+    nextButton = new QPushButton("Tiếp →");
+    submitButton = new QPushButton("Nộp bài");
+    cancelButton = new QPushButton("Hủy");
 
     previousButton->setStyleSheet("QPushButton { background-color: #95a5a6; color: white; "
             "padding: 8px 16px; border: none; border-radius: 4px; }"
@@ -192,7 +192,7 @@ void ExamWidget::createNavigationPanel() {
 
     navLayout = new QVBoxLayout(navigationPanel);
 
-    QLabel *navTitle = new QLabel("Question Navigation");
+    QLabel *navTitle = new QLabel("Câu hỏi");
     navTitle->setAlignment(Qt::AlignCenter);
     navTitle->setStyleSheet("font-weight: bold; color: #2c3e50; margin: 10px;");
 
@@ -202,7 +202,7 @@ void ExamWidget::createNavigationPanel() {
 
 void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student) {
     if (!subject || !student || !subject->getQuanLyCauHoi()) {
-        QMessageBox::critical(this, "Error", "Invalid exam parameters.");
+        QMessageBox::critical(this, "Lỗi", "Tham số bài thi không hợp lệ.");
         reject();
         return;
     }
@@ -224,15 +224,15 @@ void ExamWidget::startExam(MonHoc *subject, int numQuestions, SinhVien *student)
     setupTimer(examDuration);
 
     // Update title
-    titleLabel->setText(QString("Exam: %1").arg(QString::fromStdString(subject->getTenMon())));
-    setWindowTitle(QString("Exam - %1").arg(QString::fromStdString(subject->getTenMon())));
+    titleLabel->setText(QString("Bài thi: %1").arg(QString::fromStdString(subject->getTenMon())));
+    setWindowTitle(QString("Bài thi - %1").arg(QString::fromStdString(subject->getTenMon())));
 
     // Get random questions from BST
     questions = new DynamicArray<CauHoi *>();
     subject->getQuanLyCauHoi()->layNgauNhien(*questions, numQuestions);
 
     if (questions->size() == 0) {
-        QMessageBox::critical(this, "Error", "No questions available for this exam.");
+        QMessageBox::critical(this, "Lỗi", "Không có câu hỏi nào cho bài thi này.");
         reject();
         return;
     }
@@ -271,7 +271,7 @@ void ExamWidget::loadQuestion(int index) {
     CauHoi *question = questions->get(index);
 
     // Update question display
-    questionNumberLabel->setText(QString("Question %1 of %2").arg(index + 1).arg(questions->size()));
+    questionNumberLabel->setText(QString("Câu %1 / %2").arg(index + 1).arg(questions->size()));
     questionContentLabel->setText(QString::fromStdString(question->getNoiDung()));
 
     // Update answer options
@@ -348,7 +348,7 @@ void ExamWidget::updateTimer() {
     // Auto-submit when time runs out
     if (timeRemaining <= 0) {
         examTimer->stop();
-        QMessageBox::information(this, "Time Up", "Time has expired. Your exam will be submitted automatically.");
+        QMessageBox::information(this, "Hết thời gian", "Thời gian đã hết. Bài thi sẽ được nộp tự động.");
         saveCurrentAnswer();
         calculateAndSaveResults();
         accept();
@@ -488,7 +488,7 @@ void ExamWidget::updateProgress() {
 
     int percentage = (answeredQuestions * 100) / questions->size();
     progressBar->setValue(percentage);
-    progressBar->setFormat(QString("Progress: %1/%2 questions answered (%p%)")
+    progressBar->setFormat(QString("Tiến độ: %1/%2 câu đã trả lời (%p%)")
             .arg(answeredQuestions)
             .arg(questions->size()));
 }
@@ -547,7 +547,7 @@ bool ExamWidget::confirmSubmission() {
 }
 
 bool ExamWidget::confirmCancellation() {
-    return QMessageBox::question(this, "Cancel Exam",
+    return QMessageBox::question(this, "Hủy bài thi",
                                  "Bạn có chắc chắn muốn hủy bài thi? Mọi tiến trình sẽ bị mất.",
                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes;
 }
@@ -588,8 +588,8 @@ void ExamWidget::resetExam() {
 
 int ExamWidget::askForExamDuration() {
     bool ok;
-    int duration = QInputDialog::getInt(this, "Exam Duration",
-                                        "Enter exam duration in minutes (1-180):",
+    int duration = QInputDialog::getInt(this, "Thời gian làm bài",
+                                        "Nhập thời gian làm bài tính bằng phút (1-180):",
                                         60, 1, 180, 1, &ok);
 
     if (!ok) {
@@ -598,8 +598,8 @@ int ExamWidget::askForExamDuration() {
     }
 
     if (duration < 1 || duration > 180) {
-        QMessageBox::warning(this, "Invalid Duration",
-                             "Please enter a duration between 1 and 180 minutes.");
+        QMessageBox::warning(this, "Thời gian không hợp lệ",
+                             "Vui lòng nhập thời gian từ 1 đến 180 phút.");
         return askForExamDuration(); // Recursive call to ask again
     }
 
