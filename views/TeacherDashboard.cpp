@@ -831,34 +831,73 @@ void TeacherDashboard::editClass() {
         return;
     }
 
-    bool ok;
-    QString newClassCode = QInputDialog::getText(this, "Sửa Lớp", "Mã Lớp:",
-                                                 QLineEdit::Normal, oldClassCode, &ok);
-    if (!ok || newClassCode.isEmpty())
-        return;
+    // Create custom dialog with validation
+    QDialog dialog(this);
+    dialog.setWindowTitle("Sửa lớp");
+    dialog.setMinimumSize(400, 200);
 
-    QString newClassName = QInputDialog::getText(this, "Sửa Lớp", "Tên Lớp:",
-                                                 QLineEdit::Normal, QString::fromStdString(lop->getTenLop()), &ok);
-    if (!ok || newClassName.isEmpty())
-        return;
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
-    // Update the class object
-    lop->setMaLop(newClassCode.toStdString());
-    lop->setTenLop(newClassName.toStdString());
+    // Class code input (read-only)
+    QLabel *codeLabel = new QLabel("Mã Lớp:");
+    QLineEdit *codeEdit = new QLineEdit(oldClassCode);
+    codeEdit->setReadOnly(true);
+    codeEdit->setStyleSheet("QLineEdit { background-color: #f0f0f0; color: #666; }");
 
-    if (classManager->sua(*lop)) {
-        classManager->saveToFile();
-        refreshClassList();
-        // Update current selection if it was the edited class
-        if (currentClassCode == oldClassCode) {
-            currentClassCode = newClassCode;
+    // Class name input
+    QLabel *nameLabel = new QLabel("Tên Lớp:");
+    QLineEdit *nameEdit = new QLineEdit(QString::fromStdString(lop->getTenLop()));
+    InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
+
+    // Buttons
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    QPushButton *okButton = new QPushButton("Cập nhật");
+    QPushButton *cancelButton = new QPushButton("Hủy");
+
+    okButton->setStyleSheet(
+            "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+
+    layout->addWidget(codeLabel);
+    layout->addWidget(codeEdit);
+    layout->addWidget(nameLabel);
+    layout->addWidget(nameEdit);
+    layout->addLayout(buttonLayout);
+
+    // Connect buttons
+    connect(okButton, &QPushButton::clicked, [&]() {
+        QString newClassName = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
+
+        if (!InputValidator::validateClassData(oldClassCode, newClassName)) {
+            InputValidator::showValidationError(&dialog, "Dữ liệu lớp",
+                                                "Vui lòng kiểm tra định dạng tên lớp.");
+            return;
         }
-        QMessageBox::information(this, "Thành công", "Đã cập nhật lớp thành công!");
-    } else {
-        // Restore original values if update failed
-        lop->setMaLop(oldClassCode.toStdString());
-        lop->setTenLop(item ? classTable->item(row, 1)->text().toStdString() : "");
-        QMessageBox::warning(this, "Lỗi", "Không thể cập nhật lớp. Mã lớp có thể đã tồn tại.");
+
+        // Update the class object
+        lop->setTenLop(newClassName.toStdString());
+
+        if (classManager->sua(*lop)) {
+            classManager->saveToFile();
+            refreshClassList();
+            QMessageBox::information(&dialog, "Thành công", "Đã cập nhật lớp thành công!");
+            dialog.accept();
+        } else {
+            // Restore original values if update failed
+            lop->setTenLop(item ? classTable->item(row, 1)->text().toStdString() : "");
+            QMessageBox::warning(&dialog, "Lỗi", "Không thể cập nhật lớp.");
+        }
+    });
+
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        refreshClassList();
     }
 }
 
@@ -935,53 +974,106 @@ void TeacherDashboard::editStudent() {
         return;
     }
 
-    bool ok;
-    QString newStudentId = QInputDialog::getText(this, "Sửa Sinh Viên", "Mã Sinh Viên:",
-                                                 QLineEdit::Normal, oldStudentId, &ok);
-    if (!ok || newStudentId.isEmpty())
-        return;
+    // Create custom dialog with validation
+    QDialog dialog(this);
+    dialog.setWindowTitle("Sửa sinh viên");
+    dialog.setMinimumSize(450, 300);
 
-    QString newLastName = QInputDialog::getText(this, "Sửa Sinh Viên", "Họ:",
-                                                QLineEdit::Normal, QString::fromStdString(sv->getHo()), &ok);
-    if (!ok || newLastName.isEmpty())
-        return;
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
-    QString newFirstName = QInputDialog::getText(this, "Sửa Sinh Viên", "Tên:",
-                                                 QLineEdit::Normal, QString::fromStdString(sv->getTen()), &ok);
-    if (!ok || newFirstName.isEmpty())
-        return;
+    // Student ID input (read-only)
+    QLabel *idLabel = new QLabel("Mã sinh viên:");
+    QLineEdit *idEdit = new QLineEdit(oldStudentId);
+    idEdit->setReadOnly(true);
+    idEdit->setStyleSheet("QLineEdit { background-color: #f0f0f0; color: #666; }");
 
-    QStringList genders = {"Nam", "Nữ"};
-    QString currentGender = sv->getPhai() ? "Nam" : "Nữ";
-    QString newGender = QInputDialog::getItem(this, "Sửa Sinh Viên", "Giới tính:", genders,
-                                              genders.indexOf(currentGender), false, &ok);
-    if (!ok)
-        return;
+    // Last name input
+    QLabel *lastNameLabel = new QLabel("Họ:");
+    QLineEdit *lastNameEdit = new QLineEdit(QString::fromStdString(sv->getHo()));
+    InputValidator::setupInputValidation(lastNameEdit, InputValidator::GENERAL);
 
-    QString newPassword = QInputDialog::getText(this, "Sửa Sinh Viên", "Mật khẩu:",
-                                                QLineEdit::Normal, QString::fromStdString(sv->getPassword()), &ok);
-    if (!ok || newPassword.isEmpty())
-        return;
+    // First name input
+    QLabel *firstNameLabel = new QLabel("Tên:");
+    QLineEdit *firstNameEdit = new QLineEdit(QString::fromStdString(sv->getTen()));
+    InputValidator::setupInputValidation(firstNameEdit, InputValidator::GENERAL);
 
-    // Update the student object
-    sv->setMaSinhVien(newStudentId.toStdString());
-    sv->setHo(newLastName.toStdString());
-    sv->setTen(newFirstName.toStdString());
-    sv->setPhai(newGender == "Nam");
-    sv->setPassword(newPassword.toStdString());
+    // Gender selection
+    QLabel *genderLabel = new QLabel("Giới tính:");
+    QComboBox *genderCombo = new QComboBox();
+    genderCombo->addItems({"Nam", "Nữ"});
+    genderCombo->setCurrentText(sv->getPhai() ? "Nam" : "Nữ");
 
-    if (lop->getQuanLySinhVien()->sua(*sv)) {
-        lop->getQuanLySinhVien()->saveToFile();
+    // Password input
+    QLabel *passwordLabel = new QLabel("Mật khẩu:");
+    QLineEdit *passwordEdit = new QLineEdit(QString::fromStdString(sv->getPassword()));
+    passwordEdit->setEchoMode(QLineEdit::Normal); // Show password for admin convenience
+    InputValidator::setupInputValidation(passwordEdit, InputValidator::GENERAL);
+
+    // Buttons
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    QPushButton *okButton = new QPushButton("Cập nhật");
+    QPushButton *cancelButton = new QPushButton("Hủy");
+
+    okButton->setStyleSheet(
+            "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+
+    layout->addWidget(idLabel);
+    layout->addWidget(idEdit);
+    layout->addWidget(lastNameLabel);
+    layout->addWidget(lastNameEdit);
+    layout->addWidget(firstNameLabel);
+    layout->addWidget(firstNameEdit);
+    layout->addWidget(genderLabel);
+    layout->addWidget(genderCombo);
+    layout->addWidget(passwordLabel);
+    layout->addWidget(passwordEdit);
+    layout->addLayout(buttonLayout);
+
+    // Connect buttons
+    connect(okButton, &QPushButton::clicked, [&]() {
+        QString newLastName = InputValidator::sanitizeForModel(lastNameEdit->text(), InputValidator::GENERAL);
+        QString newFirstName = InputValidator::sanitizeForModel(firstNameEdit->text(), InputValidator::GENERAL);
+        QString newGender = genderCombo->currentText();
+        QString newPassword = InputValidator::sanitizeForModel(passwordEdit->text(), InputValidator::GENERAL);
+
+        if (!InputValidator::validateStudentData(oldStudentId, newLastName, newFirstName, newPassword)) {
+            InputValidator::showValidationError(&dialog, "Dữ liệu sinh viên",
+                                                "Vui lòng kiểm tra định dạng tất cả các trường.");
+            return;
+        }
+
+        // Update the student object
+        sv->setHo(newLastName.toStdString());
+        sv->setTen(newFirstName.toStdString());
+        sv->setPhai(newGender == "Nam");
+        sv->setPassword(newPassword.toStdString());
+
+        if (lop->getQuanLySinhVien()->sua(*sv)) {
+            lop->getQuanLySinhVien()->saveToFile();
+            refreshStudentList();
+            refreshClassList(); // Update student count if needed
+            QMessageBox::information(&dialog, "Thành công", "Đã cập nhật sinh viên thành công!");
+            dialog.accept();
+        } else {
+            // Restore original values if update failed
+            sv->setHo(studentTable->item(row, 1)->text().toStdString());
+            sv->setTen(studentTable->item(row, 2)->text().toStdString());
+            sv->setPhai(studentTable->item(row, 3)->text() == "Nam");
+            QMessageBox::warning(&dialog, "Lỗi", "Không thể cập nhật sinh viên.");
+        }
+    });
+
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+
+    if (dialog.exec() == QDialog::Accepted) {
         refreshStudentList();
         refreshClassList(); // Update student count if needed
-        QMessageBox::information(this, "Thành công", "Đã cập nhật sinh viên thành công!");
-    } else {
-        // Restore original values if update failed
-        sv->setMaSinhVien(oldStudentId.toStdString());
-        sv->setHo(studentTable->item(row, 1)->text().toStdString());
-        sv->setTen(studentTable->item(row, 2)->text().toStdString());
-        sv->setPhai(studentTable->item(row, 3)->text() == "Nam");
-        QMessageBox::warning(this, "Lỗi", "Không thể cập nhật sinh viên. Mã sinh viên có thể đã tồn tại.");
     }
 }
 
@@ -1052,42 +1144,73 @@ void TeacherDashboard::editSubject() {
         return;
     }
 
-    bool ok;
-    QString newSubjectCode = QInputDialog::getText(this, "Sửa Môn", "Mã Môn:",
-                                                   QLineEdit::Normal, oldSubjectCode, &ok);
-    if (!ok || newSubjectCode.isEmpty())
-        return;
+    // Create custom dialog with validation
+    QDialog dialog(this);
+    dialog.setWindowTitle("Sửa môn học");
+    dialog.setMinimumSize(400, 200);
 
-    QString newSubjectName = QInputDialog::getText(this, "Sửa Môn", "Tên Môn:",
-                                                   QLineEdit::Normal, QString::fromStdString(mon->getTenMon()), &ok);
-    if (!ok || newSubjectName.isEmpty())
-        return;
+    QVBoxLayout *layout = new QVBoxLayout(&dialog);
 
-    // Store original values for potential rollback
-    char originalCode[16];
-    strcpy(originalCode, mon->getMaMon());
-    std::string originalName = mon->getTenMon();
+    // Subject code input (read-only)
+    QLabel *codeLabel = new QLabel("Mã Môn:");
+    QLineEdit *codeEdit = new QLineEdit(oldSubjectCode);
+    codeEdit->setReadOnly(true);
+    codeEdit->setStyleSheet("QLineEdit { background-color: #f0f0f0; color: #666; }");
 
-    // Update the subject object
-    mon->setMaMon(newSubjectCode.toStdString().c_str());
-    mon->setTenMon(newSubjectName.toStdString());
+    // Subject name input
+    QLabel *nameLabel = new QLabel("Tên Môn:");
+    QLineEdit *nameEdit = new QLineEdit(QString::fromStdString(mon->getTenMon()));
+    InputValidator::setupInputValidation(nameEdit, InputValidator::NONE);
 
-    if (subjectManager->sua(*mon)) {
-        subjectManager->saveToFile();
-        refreshSubjectList();
-        populateSubjectCombo();
+    // Buttons
+    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    QPushButton *okButton = new QPushButton("Cập nhật");
+    QPushButton *cancelButton = new QPushButton("Hủy");
 
-        // Update current selection if it was the edited subject
-        if (currentSubjectCode == oldSubjectCode) {
-            currentSubjectCode = newSubjectCode;
+    okButton->setStyleSheet(
+            "QPushButton { background-color: #3498db; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+    cancelButton->setStyleSheet(
+            "QPushButton { background-color: #95a5a6; color: white; padding: 8px 16px; border: none; border-radius: 4px; }");
+
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(okButton);
+    buttonLayout->addWidget(cancelButton);
+
+    layout->addWidget(codeLabel);
+    layout->addWidget(codeEdit);
+    layout->addWidget(nameLabel);
+    layout->addWidget(nameEdit);
+    layout->addLayout(buttonLayout);
+
+    // Connect buttons
+    connect(okButton, &QPushButton::clicked, [&]() {
+        QString newSubjectName = InputValidator::sanitizeForModel(nameEdit->text(), InputValidator::GENERAL);
+
+        if (!InputValidator::validateSubjectData(oldSubjectCode, newSubjectName)) {
+            InputValidator::showValidationError(&dialog, "Dữ liệu môn học",
+                                                "Vui lòng kiểm tra định dạng tên môn.");
+            return;
         }
 
-        QMessageBox::information(this, "Thành công", "Đã cập nhật môn học thành công!");
-    } else {
-        // Restore original values if update failed
-        mon->setMaMon(originalCode);
-        mon->setTenMon(originalName);
-        QMessageBox::warning(this, "Lỗi", "Không thể cập nhật môn học. Mã môn có thể đã tồn tại.");
+        // Update the subject object
+        mon->setTenMon(newSubjectName.toStdString());
+
+        if (subjectManager->sua(*mon)) {
+            subjectManager->saveToFile();
+            refreshSubjectList();
+            populateSubjectCombo();
+            QMessageBox::information(&dialog, "Thành công", "Đã cập nhật môn học thành công!");
+            dialog.accept();
+        } else {
+            QMessageBox::warning(&dialog, "Lỗi", "Không thể cập nhật môn học.");
+        }
+    });
+
+    connect(cancelButton, &QPushButton::clicked, &dialog, &QDialog::reject);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        refreshSubjectList();
+        populateSubjectCombo();
     }
 }
 
